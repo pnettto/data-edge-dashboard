@@ -1,7 +1,7 @@
 from typing import Literal, Callable
-from ui.components.charts_components.single_line import render_single_line_chart
-from ui.components.charts_components.multi_line import render_multi_line_chart
-from ui.components.charts_components.bar import render_bar_chart
+from ui.components.components.single_line import render_single_line_chart
+from ui.components.components.multi_line import render_multi_line_chart
+from ui.components.components.bar import render_bar_chart
 
 ChartType = Literal['single_line', 'multi_line', 'bar']
 

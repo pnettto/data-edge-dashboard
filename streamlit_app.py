@@ -4,7 +4,7 @@ Entry point for the Data Edge Dashboard (Streamlit).
 
 import streamlit as st
 
-from ui.components import charts
+from ui.components import sample_charts
 
 from utils.chart_loader import render_chart
 
@@ -33,21 +33,21 @@ def render_nav_and_content() -> None:
     with tabs[0]:
         st.header('Revenue & Cashflow')
 
-        st.header('Charts coming from the import mechanism')
+        st.header('Charts using analysis data')
         for chart_config in pedro_chart_configs:
             print(chart_config)
             render_chart(chart_config['type'], chart_config)
         
 
-        st.header('Charts coming from the sample code (development purpose)')
+        st.header('Sample charts (development purpose)')
         lcol, rcol = st.columns(2)
         with lcol:
-            charts.revenue_timeseries()
+            sample_charts.sample_revenue_timeseries()
         with rcol:
-            charts.cashflow_timeseries()
+            sample_charts.sample_cashflow_timeseries()
 
-        charts.revenue_bar()
-        charts.sample_multi_line()
+        sample_charts.sample_revenue_bar()
+        sample_charts.sample_multi_line()
 
 
 

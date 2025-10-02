@@ -28,18 +28,3 @@ def render_multi_line_chart(config: MultiLineChartConfig):
         ),
         use_container_width=True,
     )
-
-
-def sample_multi_line() -> None:
-    render_multi_line_chart({
-        'title': 'Revenue by Segment (multi-line)',
-        'description': 'Four segments shown as separate lines over time',
-        'df': generate_multiline_df(),
-        'x_field': 'date',
-        'x_label': 'Date',
-        'category_field': 'series',
-        'y_field': 'value',
-        'y_label': 'Revenue'
-    })
-
-

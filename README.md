@@ -1,7 +1,5 @@
-Data Edge KPI Dashboard (Streamlit)
+Data Edge Dashboard (Streamlit)
 ===================================
-
-A minimal, clean scaffold resembling the provided screenshot. Charts are simple reusable components ready to be wired to outputs from `exploratory_analysis/*`.
 
 Quickstart
 ----------
