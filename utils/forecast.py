@@ -1,2 +1,1 @@
-"""Forecast utilities placeholder.
-"""
+"""Forecast utilities placeholder"""
