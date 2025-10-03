@@ -20,7 +20,6 @@ def render_bar_chart(config):
                             title=config['y_label'], format=","),
             ],
         )
-        .properties(height=340)
-        .interactive(),
+        .properties(height=340),
         use_container_width=True,
     )

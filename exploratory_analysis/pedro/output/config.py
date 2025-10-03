@@ -25,7 +25,7 @@ config = [
                     },
 
                     {
-                        'type': 'multi_line',
+                        'type': 'multi_line_forecast',
                         'title': 'Revenue by Segment (multi-line)',
                         'description': 'Four segments shown as separate lines over time',
                         'df': csv_to_df('multi_line'),
@@ -41,7 +41,7 @@ config = [
             {
                 'columns': [
                     {
-                        'type': 'single_line',
+                        'type': 'single_line_forecast',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
                         'df': csv_to_df('single_line'),
@@ -67,6 +67,17 @@ config = [
     {
         'tab': 'More samples',
         'items': [
+            {
+                'type': 'bar_forecast',
+                'title': 'Revenue (bar)',
+                'description': 'Monthly revenue totals as bars',
+                'df': csv_to_df('bar'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'y_field': 'value',
+                'y_label': 'Revenue'
+            },
+
             {
                 'type': 'bar',
                 'title': 'Revenue (bar)',

@@ -13,7 +13,7 @@ def render_multi_line_chart(config):
         .encode(
             x=alt.X(f"{config['x_field']}:T", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q",
-                    title=config['y_label'], axis=alt.Axis(format=",")),
+                    title=config['y_label'], axis=alt.Axis(format=",.0f")),
             color=alt.Color(f"{config['category_field']}:N", title="series"),
             tooltip=[
                 alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
@@ -22,7 +22,6 @@ def render_multi_line_chart(config):
                             title=config['y_label'], format=","),
             ],
         )
-        .properties(height=340)
-        .interactive(),
+        .properties(height=340),
         use_container_width=True,
     )
