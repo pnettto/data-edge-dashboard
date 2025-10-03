@@ -11,6 +11,7 @@ def make_df(filename):
 configs = [
     # Multi line chart
     {
+        'tab': 'Sample charts',
         'type': 'multi_line',
         'title': 'Revenue by Segment (multi-line)',
         'description': 'Four segments shown as separate lines over time',
@@ -23,31 +24,36 @@ configs = [
     },
 
     # Split columns
-    [
+    {
+        'tab': 'Etc',
+        'columns': [
+            # Bar chart
+            {
+                'type': 'bar',
+                'title': 'Revenue (bar)',
+                'description': 'Monthly revenue totals as bars',
+                'df': make_df('bar'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'y_field': 'value',
+                'y_label': 'Revenue'
+            },
 
-        # Bar chart
-        {
-            'type': 'bar',
-            'title': 'Revenue (bar)',
-            'description': 'Monthly revenue totals as bars',
-            'df': make_df('bar'),
-            'x_field': 'date',
-            'x_label': 'Date',
-            'y_field': 'value',
-            'y_label': 'Revenue'
-        },
+            # Single bar chart
+            {
+                'type': 'single_line',
+                'title': 'Revenue (invoice date)',
+                'description': 'Monthly revenue tracked by invoice date',
+                'df': make_df('single_line'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'y_field': 'value',
+                'y_label': 'Revenue'
+            },
+        ]
+    }
 
-        # Single bar chart
-        {
-            'type': 'single_line',
-            'title': 'Revenue (invoice date)',
-            'description': 'Monthly revenue tracked by invoice date',
-            'df': make_df('single_line'),
-            'x_field': 'date',
-            'x_label': 'Date',
-            'y_field': 'value',
-            'y_label': 'Revenue'
-        },
 
-    ]
+
+
 ]
