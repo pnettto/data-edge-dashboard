@@ -3,7 +3,6 @@ Entry point for the Data Edge Dashboard (Streamlit).
 """
 
 import streamlit as st
-import numpy as np
 
 from utils.chart_loader import render_chart
 from exploratory_analysis.pedro.output.configs import configs as pedro_configs
@@ -11,7 +10,8 @@ from exploratory_analysis.pedro.output.configs import configs as pedro_configs
 # from exploratory_analysis.osei.output.configs import configs as osei_configs
 # from exploratory_analysis.waldean.output.configs import configs as waldean_configs
 
-chart_configs = np.concatenate([pedro_configs])
+# Use plain list concatenation instead of np.concatenate to avoid ValueError
+chart_configs = pedro_configs
 
 APP_TITLE = "Data Edge Dashboard"
 
