@@ -1,6 +1,7 @@
-from ...utils import csv_to_df
+import pandas as pd
+csv_to_df = lambda f: pd.read_csv(__file__.replace('config.py', f'{f}.csv'))
 
-configs = [
+config = [
     {
         'tab': 'Sample charts',
         'items': [

@@ -6,12 +6,12 @@ import streamlit as st
 from collections import defaultdict
 
 from utils.chart_loader import render_chart
-from exploratory_analysis.pedro.output.configs import configs as pedro_configs
-from exploratory_analysis.guillermo.output.configs import configs as guillermo_configs
-# from exploratory_analysis.osei.output.configs import configs as osei_configs
-# from exploratory_analysis.waldean.output.configs import configs as waldean_configs
+from exploratory_analysis.pedro.output.config import config as pedro_config
+from exploratory_analysis.guillermo.output.config import config as guillermo_config
+# from exploratory_analysis.osei.output.config import config as osei_config
+# from exploratory_analysis.waldean.output.config import config as waldean_config
 
-all_configs = pedro_configs + guillermo_configs # + osei_configs + waldean_configs
+all_configs = pedro_config + guillermo_config # + osei_config + waldean_config
 
 # Merge tabs with same name
 merged = defaultdict(list)
