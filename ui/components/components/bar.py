@@ -5,7 +5,7 @@ from __future__ import annotations
 import streamlit as st
 from dataclasses import dataclass
 
-from .base import BaseChartConfig, generate_timeseries_df, bar_chart
+from .base import BaseChartConfig, bar_chart
 
 @dataclass
 class BarChartConfig(BaseChartConfig):
@@ -23,15 +23,3 @@ def render_bar_chart(config: BarChartConfig):
                   config['y_field'], config['y_label']),
         use_container_width=True,
     )
-
-
-def revenue_bar() -> None:
-    render_bar_chart({
-        'title': 'Revenue (bar)',
-        'description': 'Monthly revenue totals as bars',
-        'df': generate_timeseries_df(),
-        'x_field': 'date',
-        'x_label': 'Date',
-        'y_field': 'value',
-        'y_label': 'Revenue'
-    })

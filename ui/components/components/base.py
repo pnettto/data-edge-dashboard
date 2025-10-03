@@ -16,42 +16,6 @@ class BaseChartConfig:
     df: pd.DataFrame
     description: str
 
-# In the future this could be part of a global filter
-DEFAULT_DATE_RANGE = ('2023-01-01', '2025-01-01')
-
-# Temporary functions to mimic the dfs coming from the exploratory analysis
-def generate_timeseries_df():
-    start, end = DEFAULT_DATE_RANGE
-    idx = pd.date_range(start=start, end=end, freq="MS") # freq month start
-    n_points = len(idx)
-    rng = np.random.default_rng(np.random.randint(1, 99))
-    base = rng.normal(loc=5500, scale=1500, size=n_points)
-    trend = np.linspace(0, 2000, n_points)
-    values = np.maximum(base + trend, 1000).astype(float)
-    values = np.minimum(values, 10000)
-    df = pd.DataFrame({"value": values})
-    df.insert(0, "date", idx)
-    return df
-    
-def generate_multiline_df():
-    start, end = DEFAULT_DATE_RANGE
-    idx = pd.date_range(start=start, end=end, freq="MS")
-
-    rng = np.random.default_rng(17)
-    series_names = ["North", "South", "East", "West"]
-    frames: list[pd.DataFrame] = []
-    for i, name in enumerate(series_names):
-        values = np.maximum(
-            rng.normal(loc=700_000 + i * 120_000, scale=250_000, size=len(idx))
-            + np.linspace(0, 400_000, len(idx)),
-            0,
-        )
-        frames.append(pd.DataFrame({"date": idx, "series": name, "value": values}))
-
-    df = pd.concat(frames, ignore_index=True)
-    return df
-# End of temporary functions
-
 def line_chart_single(df: pd.DataFrame, x_field: str, x_title: str, y_field: str, y_title: str) -> alt.Chart:
     return (
         alt.Chart(df)

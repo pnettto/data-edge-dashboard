@@ -3,15 +3,17 @@ Entry point for the Data Edge Dashboard (Streamlit).
 """
 
 import streamlit as st
-
-from ui.components import sample_charts
+import numpy as np
 
 from utils.chart_loader import render_chart
+from exploratory_analysis.pedro.output.configs import configs as pedro_configs
+# from exploratory_analysis.guillermo.output.configs import configs as guillermo_configs
+# from exploratory_analysis.osei.output.configs import configs as osei_configs
+# from exploratory_analysis.waldean.output.configs import configs as waldean_configs
 
-from exploratory_analysis.pedro.output.chart_configs import chart_configs as pedro_chart_configs
+chart_configs = np.concatenate([pedro_configs])
 
 APP_TITLE = "Data Edge Dashboard"
-
 
 def configure_page() -> None:
     """Set Streamlit page-wide configuration and base styles."""
@@ -22,34 +24,26 @@ def configure_page() -> None:
     )
 
 def render_header() -> None:
+    """Render the main page header."""
     st.title(APP_TITLE)
 
-
 def render_nav_and_content() -> None:
-    tabs = st.tabs([
-        "Revenue & Cashflow"
-    ])
+    """Render navigation tabs and chart content."""
+    tab_titles = ["Sample charts"]
+    tabs = st.tabs(tab_titles)
 
     with tabs[0]:
-        st.header('Revenue & Cashflow')
-
-        st.header('Charts using analysis data')
-        for chart_config in pedro_chart_configs:
-            print(chart_config)
-            render_chart(chart_config['type'], chart_config)
-        
-
-        st.header('Sample charts (development purpose)')
-        lcol, rcol = st.columns(2)
-        with lcol:
-            sample_charts.sample_revenue_timeseries()
-        with rcol:
-            sample_charts.sample_cashflow_timeseries()
-
-        sample_charts.sample_revenue_bar()
-        sample_charts.sample_multi_line()
-
-
+        st.header(tab_titles[0])
+        for chart_config in chart_configs:
+            # Handle multi column cases
+            if isinstance(chart_config, list):
+                cols = st.columns(len(chart_config))
+                for i, col in enumerate(cols):
+                    with col:
+                        render_chart(chart_config[i])
+            # Single column case
+            else:
+                render_chart(chart_config)
 
 def main() -> None:
     configure_page()

@@ -5,7 +5,7 @@ from __future__ import annotations
 import streamlit as st
 from dataclasses import dataclass
 
-from .base import BaseChartConfig, generate_multiline_df, line_chart_multi
+from .base import BaseChartConfig, line_chart_multi
 
 @dataclass
 class MultiLineChartConfig(BaseChartConfig):
