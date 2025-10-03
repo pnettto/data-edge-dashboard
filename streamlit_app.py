@@ -5,7 +5,9 @@ Entry point for the Data Edge Dashboard (Streamlit).
 import streamlit as st
 from collections import defaultdict
 
+from utils.static_tabs import render_overview_tab
 from utils.chart_loader import render_chart
+
 from exploratory_analysis.pedro.output.config import config as pedro_config
 from exploratory_analysis.guillermo.output.config import config as guillermo_config
 # from exploratory_analysis.osei.output.config import config as osei_config
@@ -30,18 +32,41 @@ def configure_page() -> None:
         layout="wide"
     )
 
+    st.markdown("""
+    <style>
+    /* Gap between columns */
+    [data-testid="stHorizontalBlock"] {
+        gap: 2rem;
+    }
+    /* Nav font size */
+    [data-testid="stMarkdownContainer"] p {
+        font-size: 1rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 def render_header() -> None:
     """Render the main page header."""
     st.title(APP_TITLE)
+    st.markdown("""
+    Group 6: Guillermo Contreras, Osei Caesar, Pedro Netto and Waldean Nelson
+    """)
 
 def render_nav_and_content() -> None:
-    """Render navigation tabs and chart content."""
-    tab_titles = [config['tab'] for config in chart_configs]
+    """Render navigation tabs and chart content, with a standalone summary/intro tab."""
+    # Create a summary/intro tab as the first tab
+    intro_tab_title = "Overview"
+    tab_titles = [intro_tab_title] + [config['tab'] for config in chart_configs]
     tabs = st.tabs(tab_titles)
 
-    for tab_index, tab in enumerate(tabs):
+    # Render the intro/summary tab
+    with tabs[0]:
+        render_overview_tab(intro_tab_title)
+
+    # Render the rest of the tabs (shifted by 1 due to intro tab)
+    for tab_index, tab in enumerate(tabs[1:]):
         with tab:
-            st.header(tab_titles[tab_index])
+            st.header(tab_titles[tab_index + 1])
             items = chart_configs[tab_index]['items']
             
             for item in items:
