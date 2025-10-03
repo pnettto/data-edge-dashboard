@@ -3,14 +3,22 @@ Entry point for the Data Edge Dashboard (Streamlit).
 """
 
 import streamlit as st
+from collections import defaultdict
 
 from utils.chart_loader import render_chart
 from exploratory_analysis.pedro.output.configs import configs as pedro_configs
-# from exploratory_analysis.guillermo.output.configs import configs as guillermo_configs
+from exploratory_analysis.guillermo.output.configs import configs as guillermo_configs
 # from exploratory_analysis.osei.output.configs import configs as osei_configs
 # from exploratory_analysis.waldean.output.configs import configs as waldean_configs
 
-chart_configs = pedro_configs
+all_configs = pedro_configs + guillermo_configs # + osei_configs + waldean_configs
+
+# Merge tabs with same name
+merged = defaultdict(list)
+for config in all_configs:
+    merged[config['tab']].extend(config['items'])
+
+chart_configs = [{'tab': tab, 'items': items} for tab, items in merged.items()]
 
 APP_TITLE = "Data Edge Dashboard"
 
@@ -37,14 +45,15 @@ def render_nav_and_content() -> None:
             items = chart_configs[tab_index]['items']
             
             for item in items:
-                # Handle multi-column layout
                 if 'columns' in item:
-                    cols = st.columns(len(item['columns']))
+                    # Handle multi-column layout
+                    column_items = item['columns']
+                    cols = st.columns(len(column_items))
                     for i, col in enumerate(cols):
                         with col:
-                            render_chart(item['columns'][i])
-                # Single chart
+                            render_chart(column_items[i])
                 else:
+                    # Single chart
                     render_chart(item)
 
 def main() -> None:
