@@ -10,19 +10,7 @@ from exploratory_analysis.pedro.output.configs import configs as pedro_configs
 # from exploratory_analysis.osei.output.configs import configs as osei_configs
 # from exploratory_analysis.waldean.output.configs import configs as waldean_configs
 
-# Use plain list concatenation instead of np.concatenate to avoid ValueError
 chart_configs = pedro_configs
-
-# Create a dictionary mapping tab names to lists of chart configs for that tab
-tab_configs = {}
-for item in chart_configs:
-    if isinstance(item, list):
-        for subitem in item:
-            tab = subitem.get("tab", "Other")
-            tab_configs.setdefault(tab, []).append(subitem)
-    else:
-        tab = item.get("tab", "Other")
-        tab_configs.setdefault(tab, []).append(item)
 
 APP_TITLE = "Data Edge Dashboard"
 
@@ -40,23 +28,24 @@ def render_header() -> None:
 
 def render_nav_and_content() -> None:
     """Render navigation tabs and chart content."""
-    tab_titles = list(tab_configs.keys())
+    tab_titles = [config['tab'] for config in chart_configs]
     tabs = st.tabs(tab_titles)
 
     for tab_index, tab in enumerate(tabs):
         with tab:
             st.header(tab_titles[tab_index])
-            # Get configs for THIS tab only
-            for chart_config in tab_configs[tab_titles[tab_index]]:
-                # Handle multi column cases
-                if 'columns' in chart_config:
-                    cols = st.columns(len(chart_config['columns']))
+            items = chart_configs[tab_index]['items']
+            
+            for item in items:
+                # Handle multi-column layout
+                if 'columns' in item:
+                    cols = st.columns(len(item['columns']))
                     for i, col in enumerate(cols):
                         with col:
-                            render_chart(chart_config['columns'][i])
-                # Single chart case
+                            render_chart(item['columns'][i])
+                # Single chart
                 else:
-                    render_chart(chart_config)
+                    render_chart(item)
 
 def main() -> None:
     configure_page()
