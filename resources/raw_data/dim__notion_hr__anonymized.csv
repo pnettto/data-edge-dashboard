@@ -1,0 +1,14 @@
+consultant_id,active,startdate,enddate,seniority,consultant_name_anon
+2a554628-d7f2-475f-8872-5a7057388c36,No,2024-08-19,,K2,Bertil Grind
+261b42da-30b3-801f-ade8-e0f9f5d087b6,Yes,2025-09-01,,K2,Alexander Macedon
+261b42da-30b3-8088-b413-f0676fb78aa4,,2025-09-01,,K1,Luke Rhinehart
+086ef6c0-d4f2-45bb-bf64-2cb51ce8fec4,Yes,2023-09-04,,K1,Rachel Lamb
+afd559ec-90bf-40c9-8e96-57e3d7af66fd,Yes,2023-03-13,,K2,Astarion Baldursson
+db394d2e-2ed0-47a1-b5b9-236f864768ab,Yes,2022-12-01,,K2,Dag Ström
+85808593-b0e4-4163-b8f1-a5fc90b219ee,Yes,2021-12-01,,K2,Bingo Storm
+38eebb46-9733-484c-afd2-543d79eb80b1,No,2023-08-23,,K2,Jacqueline Harpman
+61948bc5-3844-4219-a605-94e22f59571a,Yes,2023-12-01,,K3,Marlen Haushofer
+40d8972b-c3ad-450e-a56d-873a8cdc4368,Yes,2019-12-01,,K3,Ilya Altman
+d2458d77-5056-43b5-82c4-12543225bcd9,Yes,2020-10-01,,K3,Jana Björk
+8b3bf3a7-ae48-4c80-8b37-b3bb0796aea2,Yes,2019-05-01,,K3,Haruki Taleb
+348c564a-f3b1-42f9-95e5-cd6a9ca66aa7,Yes,2020-10-01,,K4,Erroll Datasson

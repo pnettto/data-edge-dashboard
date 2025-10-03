@@ -1,0 +1,92 @@
+project_id,client_id,clockify_project_billable,project_duration,estimated_durationn,client_anon,project_anon
+5f60a92df2bfed445099122e,5f437b54d13ed94468add358,False,232H,Not estimated,"Taylor, Simmons and Anderson",Obetald semester
+65a66b6f7349ba6dbd1f1086,5f437b54d13ed94468add358,False,414H,Not estimated,"Taylor, Simmons and Anderson","Brown, Martinez and Manning Projects"
+5f437f189decb91192e37bc0,5f437b54d13ed94468add358,False,10321H,Not estimated,"Taylor, Simmons and Anderson",Semester
+6179a9ac4d694b7ecbe75ea6,5f437b54d13ed94468add358,False,396H,Not estimated,"Taylor, Simmons and Anderson",Vård av barn
+65a66b65efacdd3a4371df50,5f437b54d13ed94468add358,False,52H,Not estimated,"Taylor, Simmons and Anderson",Competence development
+60106d6e9ab6ce7c1dacbc9c,5f437b54d13ed94468add358,False,7156H,Not estimated,"Taylor, Simmons and Anderson",Föräldraledighet
+5f437b557d26442bf54530ac,5f437b54d13ed94468add358,False,21358H8M,Not estimated,"Taylor, Simmons and Anderson",Interntid
+60d2dc4af7c72268ae9f111a,5f437b54d13ed94468add358,False,982H12M,Not estimated,"Taylor, Simmons and Anderson",Sjuk
+65a4f2b9c103c556d36f5a75,65a4f2b0c103c556d36f58f9,False,0S,Not estimated,"Brown, Martinez and Manning",First blog post on website
+66f65d5bce65d308a05d83a1,,True,0S,Not estimated,,svenska
+5f437b18d13ed94468add25e,5f437b119decb91192e3696c,True,3027H,Not estimated,"Fernandez, Brewer and Vasquez",Datadriven produktion
+5f68f9ef5d3b7b2b1d6318e1,5f68ec2f5d3b7b2b1d62ee6a,True,1313H,Not estimated,"Rice, Strickland and Soto",Head of Data Services
+6012e665c57d2118e911c6cc,5f68ec2f5d3b7b2b1d62ee6a,True,800H,Not estimated,"Rice, Strickland and Soto","Rice, Strickland and Soto Sosa, Phelps and Smith"
+5f9a78d0705f52421cccf38f,5f9a78c9e16a5c5558319fb5,True,639H,Not estimated,"Thomas, Morales and Porter","DWH Thomas, Morales and Porter"
+6062d8290a1d5962625aece9,6038e369b5d4135b129bb832,True,3608H,Not estimated,Sullivan PLC,LF Datadriven affärsutveckling
+6360159c980fd406068014ed,6038e369b5d4135b129bb832,True,212H,Not estimated,Sullivan PLC,Data Platform
+626a5a6334fd3c736767565b,6038e369b5d4135b129bb832,True,4667H,Not estimated,Sullivan PLC,LF Analys / Datadriven affärsutveckling
+6017b65f21800912c64a4f50,6038e369b5d4135b129bb832,True,200H,Not estimated,Sullivan PLC,LF strategi
+60b73320b2f84254e54252e3,60b733135b540044b99c2c8e,True,1088H,Not estimated,"Moody, Craig and Duncan","Sosa, Phelps and Smith"
+60c255da1054771e634d0080,60c255c97a48f36236eae371,True,763H,Not estimated,"Campbell, Johnson and Smith",Delprojektledare
+60d2daa0f7c72268ae9f007a,60d2da9b4f112235499bb80e,True,100H3M,PT400H,"Clark, David and Murphy","Campbell, Johnson and Smith"
+63524f9e9cc2917e2fd06cd4,60dac2573e575122aec33423,True,280H,Not estimated,Gonzalez-Miller,Migrate data transformations
+60dac25ad48e003d2a997ba0,60dac2573e575122aec33423,True,1351H30M,Not estimated,Gonzalez-Miller,"Gonzalez-Miller Sosa, Phelps and Smith"
+62fb42e745106f2b5a1d5d7d,60dac2573e575122aec33423,True,34H30M,Not estimated,Gonzalez-Miller,Service support
+6245fd02b3683a40aaf47c65,60dac2573e575122aec33423,True,611H,Not estimated,Gonzalez-Miller,"Gonzalez-Miller Alexander, Fletcher and Ruiz lead"
+60de22e5dbd2a938db63bdea,60de22d486e7ee16bcdc4f39,True,1156H,Not estimated,Roberts-Adkins,Product Insights Lead
+648c0b83abc41f2c316ece73,613b393eac2a7406faeb54f1,True,2H,Not estimated,Ortega Group,BI Support
+6620e01f38907a5b7a56f13f,613b393eac2a7406faeb54f1,True,42H,Not estimated,Ortega Group,AI Chat with your data demo
+655b1e481dcb09169ee2be98,613b393eac2a7406faeb54f1,True,113H,Not estimated,Ortega Group,AI support
+619e81ffb55cac13305c0358,613b393eac2a7406faeb54f1,True,1705H,Not estimated,Ortega Group,Infra BI implementation - Implementation
+618139c71e0030251bd8549c,613b393eac2a7406faeb54f1,True,135H,Not estimated,Ortega Group,Veko BI Support
+63987b91842125054850c22a,613b393eac2a7406faeb54f1,True,178H30M,Not estimated,Ortega Group,Delta load
+65d649b8b62c79048ac384c8,613b393eac2a7406faeb54f1,True,131H,Not estimated,Ortega Group,Group Quote Report
+664d98d4dc73c3483df0add5,613b393eac2a7406faeb54f1,True,56H,Not estimated,Ortega Group,Collection BI Pre-study
+613b395eac2a7406faeb56b6,613b393eac2a7406faeb54f1,True,119H,Not estimated,Ortega Group,Infra BI implementation - Pre study
+62b9a7cb41f3c44e22fdeb6d,615df4c8939aa5668fb288ec,True,756H,Not estimated,"Gamble, Summers and Bailey",LTV modell
+615df4cc939aa5668fb2890b,615df4c8939aa5668fb288ec,True,1213H,Not estimated,"Gamble, Summers and Bailey",Chef data och analys
+61a9c8f31799d3570fbdcf5d,61a9c8e85ec63565ccfa3145,True,250H,Not estimated,Robinson-Gilbert,Senior Advisor
+61e141a275015b508b2c7526,61e14193a9af6133e719603f,True,56H1M,Not estimated,Roy Group,Polar simulations
+66572450ac3f0b629829f9ad,620ea0b08c287a1dbf02070f,True,168H,Not estimated,Anderson Ltd,Data Strategy
+620ea0beac46e3525d1390ba,620ea0b08c287a1dbf02070f,True,513H,Not estimated,Anderson Ltd,Head of Analytics
+621ce0beba7fbc148a636603,621ce09bedaba27d0a558e80,True,133H30M,Not estimated,"Harper, Moore and Erickson",Tucker-White
+621ced26e475a260c9f4f403,621ced208cb9606d935fa05e,True,2928H,Not estimated,"Richards, Acosta and Mccall","Sosa, Phelps and Smith / Scientist"
+6329b1968bf0ea1d424867d3,625e8513bdcc2633b147c0f4,True,43H,Not estimated,Jones-Willis,report_haulage
+6409faa980cf733177b96872,625e8513bdcc2633b147c0f4,True,107H,Not estimated,Jones-Willis,report_Sales_overview
+63876958bf21f203729a6a88,625e8513bdcc2633b147c0f4,True,8H,Not estimated,Jones-Willis,report_checklist_dates
+63482b4561d1940b39ec156b,625e8513bdcc2633b147c0f4,True,17H,Not estimated,Jones-Willis,report_actuals_vs_budget
+6392eef502bd235c77154780,625e8513bdcc2633b147c0f4,True,7H,Not estimated,Jones-Willis,report_admin
+66f67942f787917face83383,625e8513bdcc2633b147c0f4,True,36H,Not estimated,Jones-Willis,"Sosa, Phelps and Smith Christina"
+632088d2546c0d171c027014,625e8513bdcc2633b147c0f4,True,0S,Not estimated,Jones-Willis,Transfers
+64ad18dc5cb99f4131632898,625e8513bdcc2633b147c0f4,True,6H,Not estimated,Jones-Willis,report_customer_margin_analysis_us
+6446656b63a55154ded6ba1d,625e8513bdcc2633b147c0f4,True,51H,Not estimated,Jones-Willis,Report_Sales_Overview_US
+65bcdfd8b57d5153f9a60b69,625e8513bdcc2633b147c0f4,True,8H,Not estimated,Jones-Willis,asvp_christina
+64b8f11bc662fd305d92692b,625e8513bdcc2633b147c0f4,True,67H,Not estimated,Jones-Willis,report_Sales_v_Production
+625e8520bfb19a1dd51fb694,625e8513bdcc2633b147c0f4,True,1536H30M,Not estimated,Jones-Willis,"Sosa, Phelps and Smith"
+64103fd7cd49c2355813d5c9,625e8513bdcc2633b147c0f4,True,172H30M,Not estimated,Jones-Willis,US data platform
+62b36bc2d89d704daa03f394,62b36bb95e3ee911b51c6418,True,410H,Not estimated,Eaton LLC,Business Analyst
+6576c719b0e5636f81a62549,62b36bb95e3ee911b51c6418,True,1076H,Not estimated,Eaton LLC,"Senior Miller, Kidd and Dickson"
+6307524e45e295773c9f3946,6307523db59c366b0e0523c5,True,1428H,Not estimated,Payne-Nelson,"Senior Sosa, Phelps and Smith"
+630e6242b59c366b0e36e179,630e623490cfd87893766ce5,True,816H,Not estimated,"Miller, Swanson and Black","Miller, Swanson and Black Sosa, Phelps and Smith"
+6345773461d1940b39c10462,6345772c98d3761140ab0380,True,756H,Not estimated,"Gibson, Nguyen and Graham",Business Analyst
+63c9368e2d26644e28ab300f,63c936752d26644e28ab2d5e,True,805H,Not estimated,George Ltd,"Sosa, Phelps and Smith"
+63e665000e3a990cd573f5ea,63e664f7ea5a6117297c5c95,True,288H,Not estimated,Price and Sons,Analyst
+63ff0dff6c533d00ff83b9b0,63e664f7ea5a6117297c5c95,True,388H,Not estimated,Price and Sons,Advisor
+63ff0e13a094e40fbef46cb5,63ff0e10b155bb2363bb777e,True,19H,Not estimated,Cooper LLC,Advisor
+651422b3700d5d465203936e,63ff0e10b155bb2363bb777e,True,429H30M,Not estimated,Cooper LLC,Data platform & Core metrics
+64130bc480994e1aa4892d2a,63ff0e10b155bb2363bb777e,True,23H,Not estimated,Cooper LLC,Core metrics
+6447b0322280b611f9e69345,6426b575775d020dc93ac90e,True,659H45M,Not estimated,"Rogers, Perry and Ramsey",Reporting Assignment
+6426b57bf9cb2478145b7820,6426b575775d020dc93ac90e,True,1352H,Not estimated,"Rogers, Perry and Ramsey","Sosa, Phelps and Smith Rogers, Perry and Ramsey"
+65b621afdfeae474a92193dc,642c320f77aed916ab7b1d4a,True,2041H,Not estimated,Barnes and Sons,EA Data & Info
+642c32258f07b05a812deafe,642c320f77aed916ab7b1d4a,True,1311H,Not estimated,Barnes and Sons,Data Science - WoW
+64873d76ef25817935b3a67d,64873d6d3f488827f9e16929,True,2441H30M,Not estimated,"Morris, Juarez and Chavez","Senior Sosa, Phelps and Smith & Architect"
+649ab2ef8212c016cee5c856,649ab2945beb74277a46dc13,True,0S,Not estimated,Murphy-Herrera,Prisoptimering fas 1
+649ab2980773933f63bc50ce,649ab2945beb74277a46dc13,True,272H,Not estimated,Murphy-Herrera,Price optimization
+6602d3730b05cf58560d3ee4,6513d62eb01ba161266f63b7,True,76H,Not estimated,"Carr, Walton and Rose",AI Team Lead
+6513d640a9131905585a515b,6513d62eb01ba161266f63b7,True,2H,Not estimated,"Carr, Walton and Rose",Mentor Hackaton
+65b668d2bd0f4626444bf06e,65b668a7dfeae474a9235ad6,True,2268H,Not estimated,"Park, Elliott and Castillo",Regulatory Reporting Engineer
+65cf4bf7979df973b031dc4b,65cf4bf6d569cd704bfe5cd7,True,3H,Not estimated,Jordan-Mitchell,Data Strategy
+680b8006b884b21e998f3a9c,65eecc3f36768531547fc52e,True,129H30M,Not estimated,Joseph and Sons,ML Engineer
+65eecc5033c90b16ead59691,65eecc3f36768531547fc52e,True,2582H,Not estimated,Joseph and Sons,Nguyen-Torres
+662b4a5f24e5bf66b6a5f65e,662b4a4d24e5bf66b6a5f480,True,20H,Not estimated,"Smith, Dawson and Hernandez",AI education
+667a7035842d3958e3f89903,667a7017842d3958e3f8947d,True,951H,Not estimated,"Lee, Freeman and Jones","Lee, Freeman and Jones - Data Science / ML"
+667bd75fe0efde03340292a4,667bd75aa932d14bad6269a9,True,13H,Not estimated,"Robinson, Kaufman and Mills",KRI survey solution
+66c73f7caf3a79534feebd76,66c73f3bad27092b46167633,True,1353H,Not estimated,"Harvey, Collins and Walker",Data & Analytics Transformation
+66c86e21af3a79534f0b87db,66c86e1823ff85648d008bc7,True,7H,Not estimated,Taylor and Sons,Utbildning
+66f65d6c76257e3e51f9afc4,66f65d5b76257e3e51f9ae03,True,1116H,Not estimated,"Stokes, Harrison and Goodman",Advisor Data Mesh
+66fe75d1e316642842e5dc8c,66fe75bfcdc43032a10267d7,True,948H,Not estimated,"Ramirez, Rodriguez and Gonzalez",Data & AI support
+6715f9d290254d10ca81e784,6715f9ce898fb011477dec07,True,994H,Not estimated,"Harris, Watson and Donaldson",Data Specialist
+671fe491605d557fc53c80f3,671fe472a75c3e4ef3b541e8,True,924H,Not estimated,"Reed, Berry and Wilkins",Enterprise Peters and Sons
+677fb4341c567d719ff4f8bd,677fb4321c567d719ff4f866,True,39H,Not estimated,"Rivera, Davis and Roberts",WoW DS & Analytics team
+679b93d05d710856f30c8495,679b93c45d710856f30c8295,True,115H,Not estimated,Ward and Sons,Geo Opp. Ass.

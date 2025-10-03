@@ -1,0 +1,7 @@
+pipeline_stage_id,pipeline_stage_order,pipeline_stage,close_probability,stage_is_archived,deal_is_closed
+1102499,1,Qualification,0.2,false,false
+12008384,0,Lead,0.1,false,false
+qualifiedtobuy,3,Proposal,0.6,false,false
+appointmentscheduled,2,Exploration,0.4,false,false
+closedlost,5,Closed Lost,0.0,false,true
+closedwon,4,Closed Won,1.0,false,true

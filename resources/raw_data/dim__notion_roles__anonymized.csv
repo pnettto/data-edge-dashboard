@@ -1,0 +1,103 @@
+role_id,industry_name,role_category_name,hourly_rate,billing_type,seniority,startdate,name_anon
+68fb318f-438b-4257-95f2-3893564ebd01,,,,,K2,2023-10-01,
+b5a1a16b-99d7-4895-b927-0d0afa074c35,,,,,,,
+264b42da-30b3-8026-b4e1-f6a7c2832cc2,,Data Analyst,900.0,Direct,,2025-09-04,Terry and Sons
+0517e8f8-b88c-41fa-ae1a-57458f4571d0,,Data Engineer,1100.0,Invoicing(Right people Group),,2022-12-05,Payne-Nelson
+347c5d6b-8487-437c-8945-612a32c0b866,,,1100.0,,,2022-09-11,Payne-Nelson
+db6a818f-f08d-489d-a6aa-873e24546ba1,,Business Developer,1025.0,Billing to Emagine,K3,2024-10-14,"Harris, Watson and Donaldson"
+d822c29f-05d5-4478-82fe-d297274f2315,,Data Scientist,850.0,,K2,2024-06-17,"Lee, Freeman and Jones"
+9a5ec501-c6bb-4f18-bbd2-718878016ce8,,,,,K2,,"Hopkins, Wagner and Ho"
+b2668775-1fab-48dd-bcdf-5a699bd022d6,,,,,,,"Hopkins, Wagner and Ho"
+a08f3ed5-f52a-402a-985d-d2ba87103f11,,,,,,,"Hopkins, Wagner and Ho"
+185b42da-30b3-80a5-80e2-c0c94e9cf650,,Business Developer,1500.0,TekSystems,K3,2025-01-23,"Rivera, Davis and Roberts"
+83a0d1b8-45bd-4c77-a569-91534f76ba5e,,Analytics Engineer,,,,,Pineda-Carter
+10cb42da-30b3-8004-8e0e-d34a949f1934,,,1240.0,Self-billing,K4,2024-09-16,"Stokes, Harrison and Goodman"
+270f4331-f24e-4a60-bb19-0d336f38cc2f,,Business Developer,900.0,Direct billing,K2,2024-06-24,"Robinson, Kaufman and Mills"
+158e5abd-fc12-445d-890c-64d995ce51be,Automotive,Data Engineer,1000.0,Invoicing(Evolution),,2023-01-10,Dudley and Sons
+185b42da-30b3-801f-b838-e6cb1a78d1e8,Construction and Real Estate,Business Developer,,,K2,2025-02-05,Ward and Sons
+185b42da-30b3-80c5-b9c3-ca3ea65ff40b,Construction and Real Estate,Business Developer,,Direct,K3,2025-02-05,Ward and Sons
+264b42da-30b3-80cd-8d2f-fefa6ea8c326,Construction and Real Estate,Analytics Engineer,1400.0,DIrect,K3,2025-08-27,"Smith, Guerrero and Howell"
+249b42da-30b3-8060-bf1c-fb4307407b2f,Construction and Real Estate,Analytics Engineer,1400.0,DIrect,,2025-06-08,"Smith, Guerrero and Howell"
+12db42da-30b3-8046-bb1e-c9d95c90336d,Construction and Real Estate,Data Scientist,1500.0,Direct billing,,2024-10-28,"Ramirez, Rodriguez and Gonzalez"
+12db42da-30b3-803f-959f-d8b5ac9aa746,Construction and Real Estate,,1500.0,Direct billing,,2024-10-13,"Ramirez, Rodriguez and Gonzalez"
+12db42da-30b3-8005-869c-d26b239a9e33,Construction and Real Estate,Data Engineer,1500.0,Direct billing,,2024-10-24,"Ramirez, Rodriguez and Gonzalez"
+1ceb42da-30b3-8046-a1e3-c5c96db61c4b,Energy and Utilities,Data Engineer,1150.0,Direct,K2,2025-03-25,Joseph and Sons
+91a014ae-544b-4e2d-a35b-1bc5363ddc98,Energy and Utilities,,950.0,Billing to Altero,K2,2024-03-04,Joseph and Sons
+282f97e9-92dc-4e75-8370-ea32e16e5eaf,Energy and Utilities,Data Engineer,1000.0,Billing to Altero,K1,2024-06-16,Joseph and Sons
+1deb42da-30b3-8067-8f3e-c76fae638308,Energy and Utilities,,1150.0,,K2,2025-04-08,Joseph and Sons
+1fa8f8c9-8c99-43bb-ab02-122fbda89f2c,Energy and Utilities,Business Developer,1300.0,,K3,2022-06-01,"Gamble, Summers and Bailey"
+857e3709-f044-498d-914c-eef659e989a9,Energy and Utilities,,1250.0,,,2022-08-21,"Gamble, Summers and Bailey"
+f97beed2-edbe-43b9-8aea-d5c8f42090b3,Energy and Utilities,Business Developer,1300.0,,K3,2021-09-01,"Gamble, Summers and Bailey"
+d82a3cc7-4e24-4155-bdbc-c57b18313537,Energy and Utilities,Analytics Engineer,1200.0,,,2022-06-15,"Gamble, Summers and Bailey"
+e3adbb8b-4fc2-423c-b560-e693a0f84ce7,Financial Services,Analytics Engineer,1200.0,Self—billing,K3,2024-01-16,"Park, Elliott and Castillo"
+0b753a69-9038-4db3-a6d4-ea3c31c5d5bf,Financial Services,Data Analyst,1650.0,Direct billing(Ascend),K3,2023-04-17,"Rogers, Perry and Ramsey"
+a258b1f2-6152-4765-bd83-b5fbc8bea442,Financial Services,Data Engineer,1650.0,Direct billing(Ascend) ,K3,2023-03-06,"Rogers, Perry and Ramsey"
+11ab42da-30b3-80b5-ac96-eec9c622e60d,Financial Services,Data Architect,1080.0,Self billing,K3,2024-10-14,"Reed, Berry and Wilkins"
+ae0d8aec-82ef-484e-9883-b09229ae5c2c,Financial Services,Data Analyst,1050.0,Self-billing(ework),K2,2023-04-01,Sullivan PLC
+8819829c-c1e3-4d2d-aea9-01fb932efa07,Financial Services,Business Developer,1450.0,Self-billing(ework),,2022-10-01,Sullivan PLC
+64968604-e01c-4a6c-acca-135fb597330e,Financial Services,Business Developer,1450.0,Self-billing(ework),,2023-03-13,Sullivan PLC
+47939100-a49c-4db5-9751-92d69e7cd85f,Financial Services,Business Developer,1450.0,Self-billing(ework),K3,2022-04-01,Sullivan PLC
+d713dfbd-3f99-47be-baa9-394adb5384a2,Financial Services,Data Architect,1450.0,Self-billing(ework),K4,2022-10-01,Sullivan PLC
+81269ae0-a08b-4539-84ab-cdfa941fc807,Financial Services,Data Scientist,1300.0,Self-billing(ework),K2,2023-10-01,Sullivan PLC
+417f57d4-7b08-4abf-84fb-514b39a45284,Financial Services,Data Scientist,1050.0,,K2,2022-04-01,Sullivan PLC
+ae0f44fc-8c33-4b4f-b825-716dc23a75e0,Financial Services,Data Analyst,1050.0,Self-billing(ework),K1,2023-10-01,Sullivan PLC
+7e41c80c-e2b0-4666-bd15-81ba62f5363b,Financial Services,Data Scientist,1050.0,Self-billing(ework),K2,2022-10-01,Sullivan PLC
+50a77c0b-3b4f-46d3-b487-644ae72275db,Financial Services,Business Developer,1450.0,Self-billing(ework),,2022-10-01,Sullivan PLC
+72a4562c-6320-43de-8511-6bcd6c0eadcd,Financial Services,Business Developer,1700.0,Billing to Luminary,K3,2023-04-03,Barnes and Sons
+12db42da-30b3-802a-b47f-fd328c28da27,Financial Services,Data Architect,1420.0,"
+Billing to ",K3,2024-11-01,Barnes and Sons
+bdda97bc-b810-4a7d-b803-fe1480b92906,Financial Services,Data Architect,1420.0,Billing to ,K3,2024-01-08,Barnes and Sons
+babc12fb-9b1b-45bc-ab70-649968bb222d,Financial Services,,2000.0,Direct billing,K4,2023-09-18,Barnes and Sons
+d89381f6-baf2-4022-8df1-7fae7fa7ea79,Financial Services,Business Developer,1300.0,,K4,2020-10-01,"Rice, Strickland and Soto"
+ee3fc5d1-363e-43b1-b497-da1c096fd64e,Financial Services,Business Developer,1400.0,Direct billing (EUR/DAY),K4,2021-12-06,Robinson-Gilbert
+249b42da-30b3-8041-8aae-f30f8d6ad592,Healthcare and Pharmaceuticals,Business Developer,1500.0,Direct,,2025-05-25,"Hernandez, Walker and Holt"
+264b42da-30b3-8092-be4b-faf4e1d5bd32,Healthcare and Pharmaceuticals,Business Developer,1500.0,Direct,K3,2025-05-25,"Hernandez, Walker and Holt"
+9e4d1362-7d54-496e-9ff7-4c8bdd4d027b,Manufacturing,,1278.0,,K2,2023-11-07,Ortega Group
+4dfd5c32-dc97-43ce-bad5-f6e110a7d9ef,Manufacturing,,,,,2024-02-19,Ortega Group
+ab7d6e04-6007-4b32-b432-384d452ccd5f,Manufacturing,,,Direct billing,,2024-09-06,Ortega Group
+19851429-9a05-4b4b-a96a-baba85b0f20b,Manufacturing,Data Engineer,1450.0,Direct billing (1000 euro/day) to VEko,K2,2023-06-27,Ortega Group
+85059a4b-7cca-4b04-9e72-6d5a048b07cf,Manufacturing,Data Scientist,1600.0,Direct,K2,2024-04-05,Ortega Group
+b0e13dd3-ee7c-4e4f-83f7-c182f0ec96bf,Manufacturing,Business Developer,1500.0,,K3,2021-10-04,Ortega Group
+c1f1595e-40d0-4dd9-8d76-20876fcffd79,Manufacturing,,1200.0,,,2022-04-27,Ortega Group
+146d8d0f-9b3b-43c9-901b-26d400a5120f,Manufacturing,Data Engineer,1100.0,"Invoicing(Designplan, Veko, I-valo)",K2,2022-12-05,Ortega Group
+04b5ce10-a83a-42fd-bb80-8f57ff861af1,Manufacturing,Data Engineer,1100.0,,K2,2023-08-28,Ortega Group
+89b03d88-6ad5-45a9-970d-10e18a3ba8e3,Manufacturing,Data Engineer,1100.0,,,2021-11-22,Ortega Group
+bb2cf745-6ae6-4457-abaa-274df6c2b91d,Manufacturing,,1510.0,Direct billing,K2,2024-05-02,Ortega Group
+1c8ad62d-877d-47b1-afc2-58a0b76cb35e,Manufacturing,Data Engineer,1500.0,,K3,2021-10-04,Ortega Group
+8d8ad1d3-263a-4c02-a697-20a111d3fb36,Manufacturing,Analytics Engineer,1130.0,Invoicing,,2022-05-06,Jones-Willis
+0ac83e05-c7e4-46f9-9823-cbb12d8225e4,Manufacturing,,,Direct billing,,2024-04-15,Jones-Willis
+849de986-d3ce-40d4-9b7d-ac24ad54ddcf,Manufacturing,Data Engineer,,,,2023-03-01,Jones-Willis
+6fad142b-c2f6-4a68-b3e6-aa309dbb0bc7,Manufacturing,Data Engineer,,Direct billing,,2022-04-18,Jones-Willis
+53088e57-9ffe-4b50-9ecb-9a63b7fb75d7,Manufacturing,Data Engineer,1200.0,Direct billing,K2,2023-11-01,Jones-Willis
+505b7c80-31f6-4e70-a5fd-4251cb93f566,Manufacturing,,,Direct billing,,2024-08-01,Jones-Willis
+34a8e377-f7b3-4bed-bcf2-758476187f20,Manufacturing,Data Analyst,900.0,,,2023-07-10,Jones-Willis
+cf2b5070-a906-445c-b801-9c88b097e7f1,Public sector,Business Developer,800.0,Requisitions(Policy impact),K3,2021-08-01,"Campbell, Johnson and Smith"
+d458f95c-a92c-4bfc-8b08-3bdfbda8f3f1,Public sector,Business Developer,1100.0,Direct billing,K3,2024-04-01,"Campbell, Johnson and Smith"
+351b821e-8b01-4e91-ae37-84e6699e644d,Public sector,Business Developer,800.0,Requisitions(Policy impact),K3,2021-08-01,"Campbell, Johnson and Smith"
+f8497a42-65c8-4836-ad80-737a782c666c,Public sector,Business Developer,1100.0,Direct billing,K3,2024-04-01,"Campbell, Johnson and Smith"
+05fcf1df-1954-4eef-a895-53a2e0224f2d,Retail and Consumer Goods,Data Analyst,1100.0,,,2023-06-12,"Hill, Wilson and Matthews"
+99ba6ed3-b247-4ff0-9652-c5d5c889865f,Retail and Consumer Goods,Business Developer,1700.0,,,2023-06-12,"Hill, Wilson and Matthews"
+9e5e1c9b-0105-4fbe-be38-22d934ba914e,Retail and Consumer Goods,Data Analyst,1200.0,Direct billing,K2,2024-08-28,"Harvey, Collins and Walker"
+99c0e7d5-3fb0-4089-be24-b0b5afeefad8,Retail and Consumer Goods,,1600.0,Direct billing,K4,2024-08-19,"Harvey, Collins and Walker"
+cec74424-f754-460d-9d8b-b69c92707e31,Retail and Consumer Goods,Data Engineer,1100.0,,,2022-03-01,Gonzalez-Miller
+27f1e8c7-63ee-4d5f-8a65-4a518d784537,Retail and Consumer Goods,,1600.0,,K3,2022-02-21,Gonzalez-Miller
+b1a69747-2cd9-4575-a28e-94989bcce981,Retail and Consumer Goods,,1600.0,,K3,2022-06-01,Gonzalez-Miller
+dcb900a8-73fd-43e3-881a-2464a7cce7c7,Retail and Consumer Goods,Analytics Engineer,1100.0,Invoicing,,2022-10-17,Gonzalez-Miller
+6d926bc9-c908-42b4-8a92-dd641b0dfcbd,Tech,Business Developer,1100.0,Self Bill(Evolution),K3,2022-10-16,"Gibson, Nguyen and Graham"
+14c1d6bc-a9d4-425e-aeb9-4a5cb1eecde2,Tech,,,Direct billing,K1,2024-05-13,Anderson Ltd
+b1dbfce2-eb64-4565-a041-ed9c6e669aa6,Tech,Business Developer,1750.0,,K4,2021-12-07,Anderson Ltd
+8823a310-960b-4c1b-9696-68f681b8b0f2,Tech,Data Scientist,1000.0,Self—billing,,2023-12-08,Eaton LLC
+0d8057f1-c6ab-4d9e-b4bd-2998eea02d2b,Tech,Business Developer,1250.0,,K3,2022-06-01,Eaton LLC
+b1514fb5-215a-439a-9390-50485f6f2d03,Tech,Data Engineer,1100.0,Self-billling(Evolution),K3,2022-09-18,"Miller, Swanson and Black"
+fbebcca2-2f78-4a2c-996b-ca0e9c0b3a5d,Tech,Business Developer,2000.0,Direct billing (EUR/DAY),K3,2023-03-27,Cooper LLC
+66750286-bdc2-4928-9ae9-29ac1b7a1a77,Tech,Business Developer,1100.0,Direct billing,K2,2023-09-22,Cooper LLC
+ae583fee-6439-4238-a15a-fb3390927761,Tech,Analytics Engineer,1100.0,Direct billing,,2023-09-22,Cooper LLC
+d7658812-ee4b-470d-b277-6c2d75fd908c,Tech,,1350.0,Direct billing (EUR/DAY),K4,2023-01-23,Cooper LLC
+3de8fb70-add9-477a-b139-1a5176007b26,Tech,,2000.0,Direct billing,K4,2023-09-22,Cooper LLC
+6036a216-b3e2-4169-a7e4-103f3eefde91,Tech,Data Engineer,1100.0,Direct billing,,2023-09-22,Cooper LLC
+2bbe9108-3ff4-489c-8ad2-1614da590b0c,Tech,Data Engineer,1000.0,,,2022-01-01,"Richards, Acosta and Mccall"
+c90ee650-07ac-4725-a75d-f0b4d5f6b5e6,Tech,Data Scientist,1000.0,Self-billing(Tingent),,2022-09-01,"Richards, Acosta and Mccall"
+a53e017d-e456-49bd-89b6-fdbeec1b30b4,Tech,Business Developer,1350.0,,K4,2021-06-21,"Richards, Acosta and Mccall"
+60b9abb5-6ff3-4bcd-be3c-ec6f396305c3,Tech,Business Developer,1000.0,Direct billing,,2023-02-07,Price and Sons
+38968285-7e0f-4c8b-b473-9cbacd5f0ab4,Tech,,1700.0,Direct billing,K4,2023-02-07,Price and Sons
+a80d6f1c-0863-48a9-a49c-fc8c7a24896b,Transportation and Logistics,Data Engineer,1200.0,Self bill,,2023-07-04,"Morris, Juarez and Chavez"

@@ -1,0 +1,26 @@
+project_activity_id,project_id,phase_id,activity_name,is_active,is_complete,is_chargeable,is_locked,has_warning,is_group_budget,start_date,end_date,chargeable_date,max_hours,budget_hours,factor,cost_per_hour,price_per_hour,price_fixed,processed_at
+20,19,0,Internal,true,false,false,false,false,false,,,,0.0,0.0,0.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+24,23,0,Internal,true,false,false,false,false,false,,,,0.0,0.0,0.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+23,22,0,Internal,true,false,false,false,false,false,,,,0.0,0.0,0.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+22,21,0,Internal,true,false,false,false,false,false,,,,0.0,0.0,0.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+2,1,0,Aktivitet 1,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+11,10,0,Data & AI Support,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+25,24,0,Data & AI Support,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+21,20,0,Data Strategi Support,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+4,3,0,Fastprisuppdrag,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+6,5,0,Konsultjänster utanför EU,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+5,4,0,Konsulttjänst EU,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+10,9,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+19,18,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+9,8,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+16,15,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+14,13,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+17,16,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+8,7,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+3,2,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+18,17,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+7,6,0,Konsulttjänster,false,true,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+15,14,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+13,12,0,Konsulttjänster,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+26,25,0,Regulatory Reporting Engineer,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC
+12,11,0,Regulatory Reporting Engineer,true,false,true,false,false,false,,,,0.0,0.0,1.0,0.0,0.0,0.0,2025-09-08 05:25:58.210172 UTC

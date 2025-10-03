@@ -1,0 +1,49 @@
+client_id,category,industry_id,company_size,company_type,n_roles,n_projects,n_people,started_at,name_anon
+2f0a5150-aeeb-49f7-b11b-5307511068ff,Internal,,,,0,1,0,,"Smith, Fields and Bentley"
+2dc74fac-c75a-4770-855f-9943969f18e3,Internal,,,,0,2,0,,Ryan-Ward
+3d619f69-ee9c-41f8-ac3a-ac5cc851cf10,Internal,,,,0,3,0,,Edwards-Jenkins
+87163a01-08e8-487c-b200-6f04138c53bf,Internal,,,,0,3,0,,Avila LLC
+0a1a94ab-d574-4c92-9b69-b21df5080288,Internal,,,,0,3,0,,Adams Group
+264b42da-30b3-80be-8736-f370491dff5f,,,,,0,0,0,,Terry and Sons
+86ce6934-ae21-4066-bb96-98fd9cbf0b78,,,,,0,0,0,,Diaz and Sons
+570a153c-c922-42cc-a6c2-2687f0ea5ff5,Internal,,,,0,1,0,,Dixon and Sons
+385c6280-0e7e-4d30-9ceb-5b6c66714b2d,Internal,,,,0,3,0,,Martinez Group
+4dc44329-24ef-4120-bd2e-ed60c0156670,Internal,,,,0,11,0,,"Wagner, King and Lewis"
+7fa223a8-390d-4d99-8766-51d0c87726bb,Clients,bd0cfcaf-af99-43d4-ba60-13c50a85e0a4,>250,Public,0,1,0,,"Fernandez, Brewer and Vasquez"
+53354996-d9a0-4312-b5d5-8ecb56a13048,Clients,,,,1,1,0,2024-06-17,"Lee, Freeman and Jones"
+e484733b-a243-4358-8def-b422d77cceb2,Clients,,,,1,1,1,2024-06-24,"Robinson, Kaufman and Mills"
+f5ef0bf2-30ca-4eb4-bc73-030d8a6faed9,Internal,,,,1,4,0,,Pineda-Carter
+185b42da-30b3-8079-bbc0-fa474b9b34cc,,,,,1,1,0,2025-01-23,"Rivera, Davis and Roberts"
+10cb42da-30b3-80fb-9f9e-e1df0ed217f3,,,,,1,1,0,2024-09-16,"Stokes, Harrison and Goodman"
+254af57c-b40e-42fb-92ed-e18cb8a36d0c,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,25-249,Private,1,1,1,2024-01-16,"Park, Elliott and Castillo"
+0329ebb5-3e0d-488f-b7ef-da8165183aba,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,25-249,Private,1,1,0,2021-12-06,Robinson-Gilbert
+88371294-7ed1-499d-b8e5-3d1070b7354f,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,25-249,Private,1,0,0,2022-09-18,"Miller, Swanson and Black"
+264b42da-30b3-80bb-8943-d29e46f0163c,Clients,,25-249,Private,1,1,2,2025-09-04,Terry and Sons
+13a63062-a24e-4b96-b989-ac57809ff3e4,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,25-249,Public,1,0,0,2020-10-01,"Rice, Strickland and Soto"
+f52ee8fd-bf12-472a-85a2-01572c78912d,Clients,45fb7b87-c654-4f1b-9698-eeff65e67039,>250,Public,1,1,0,2023-01-10,Dudley and Sons
+11ab42da-30b3-80ab-b07d-fb72bc3aafc0,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,>250,Public,1,1,1,2024-10-14,"Reed, Berry and Wilkins"
+38384640-b197-4d46-b793-b9cd5dbe9a73,Clients,84316bdf-2e4f-474e-b15a-59703ff81f7b,>250,Public,1,1,0,2023-07-04,"Morris, Juarez and Chavez"
+78d6df1c-159f-47bb-9b0f-243ae706f9c8,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,>250,Public,1,1,0,2022-10-16,"Gibson, Nguyen and Graham"
+11bb42da-30b3-80f6-8dcb-f3a53720ddf4,Clients,,,,2,1,1,2024-10-14,"Harris, Watson and Donaldson"
+2b008d01-06b6-4749-ba28-02a2aa1acea4,Clients,5f255073-2c98-40c1-b458-dc7c412f16fb,,Private,2,1,0,2024-08-19,"Harvey, Collins and Walker"
+249b42da-30b3-8075-bbfe-d255bfdbc015,Clients,155ddce8-b8a9-4a71-b89a-0a3f2c48a5fa,>250,Private,2,1,0,2025-05-25,"Hernandez, Walker and Holt"
+942834c1-34c5-43cc-97b7-a8a0ef645a84,Clients,,>250,Private,2,0,0,2022-09-11,Payne-Nelson
+249b42da-30b3-80ed-b62c-eee76874c710,Clients,e29e5c7f-8323-40ac-9560-b78f22844018,>250,Private,2,1,0,2025-06-08,"Smith, Guerrero and Howell"
+185b42da-30b3-806b-b7bc-dbe985651461,Clients,e29e5c7f-8323-40ac-9560-b78f22844018,25-249,Private,2,1,0,2025-02-05,Ward and Sons
+3fd0b031-485c-4804-8400-85b3cfe26d3f,Clients,5f255073-2c98-40c1-b458-dc7c412f16fb,>250,Public,2,1,0,2023-06-12,"Hill, Wilson and Matthews"
+32ec5219-5a4b-4e85-892f-e4c2e20b1881,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,25-249,Public,2,1,0,2021-12-07,Anderson Ltd
+0a8dedb2-2836-4e29-b6fb-7f38b87c39e5,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,>250,Public,2,1,0,2023-03-06,"Rogers, Perry and Ramsey"
+8d01a8f6-2a56-4fb2-b4be-b2e816bd2d02,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,>250,Public,2,1,0,2022-06-01,Eaton LLC
+ae0ee164-868b-4149-a452-eb83e6923fc9,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,>250,Public,2,1,0,2023-02-07,Price and Sons
+5d85541a-f1f7-42f3-b424-8851bed5300f,Clients,,,,3,1,0,,"Hopkins, Wagner and Ho"
+122b42da-30b3-8022-88b5-d5212d80755f,Clients,e29e5c7f-8323-40ac-9560-b78f22844018,>250,Private,3,5,0,2024-10-13,"Ramirez, Rodriguez and Gonzalez"
+57a4b0ee-a007-4918-a944-77312f8b2306,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,>250,Public,3,0,0,2021-06-21,"Richards, Acosta and Mccall"
+4845bf38-1d33-4949-a1f3-ade9436679fc,Clients,bd0cfcaf-af99-43d4-ba60-13c50a85e0a4,25-249,Private,4,2,0,2021-09-01,"Gamble, Summers and Bailey"
+81fd4459-3cb2-4e6a-9113-5ffb5e7a6f75,Clients,5f255073-2c98-40c1-b458-dc7c412f16fb,>250,Private,4,1,0,2022-02-21,Gonzalez-Miller
+afb6524b-9701-418b-aa00-6d1a6b7969d0,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,>250,Public,4,2,0,2023-04-03,Barnes and Sons
+245f7e77-4e1d-4621-ae0d-932dc78e1f15,Clients,fa76f118-4ccc-480c-8a57-4d370952c4f1,25-249,Public,4,2,0,2021-08-01,"Campbell, Johnson and Smith"
+d6cd8164-a355-4b4a-a506-02eb9b34ba74,Clients,bd0cfcaf-af99-43d4-ba60-13c50a85e0a4,>250,Public,4,2,1,2024-03-04,Joseph and Sons
+f63533d5-5060-47e1-99bc-80a305f94471,Clients,bc16a6d1-34a7-46aa-b12d-0b014750385d,25-249,Private,6,2,5,2023-01-23,Cooper LLC
+43db11b5-8688-4831-930a-b2a5ed51e717,Clients,f99a9738-1f86-48ec-b212-28ec0ad4c8e4,25-249,Private,7,1,0,2022-04-18,Jones-Willis
+b7799cf5-ea66-4fcf-b705-630819a8ec8c,Clients,778f29ec-9e94-4438-81ac-a85c7022b22f,>250,Public,10,1,0,2022-04-01,Sullivan PLC
+0b539912-e3de-480a-8e64-1acf6c0b03b3,Clients,f99a9738-1f86-48ec-b212-28ec0ad4c8e4,>250,Private,12,6,0,2021-10-04,Ortega Group

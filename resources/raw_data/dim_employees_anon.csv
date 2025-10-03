@@ -1,0 +1,14 @@
+employee_id,employee_code,first_name,last_name,is_active,practice
+20,22,Luke,Rhinehart,true,
+21,23,Alexander,Macedon,true,
+12,18,Rachel,Lamb,true,Analytics
+2,9,Bingo,Storm,true,Analytics
+9,15,Astarion,Baldersson,true,Analytics
+5,5,Erroll,Datasson,true,Analytics
+7,16,Sila,Rofat Faircloth,true,Business
+3,20,Bertil,Grindd,true,Business
+11,3,ilya,Altman,true,Business
+4,19,Gunnar,Gunnarsson,true,Business
+10,12,Dag,Ström,true,Data
+6,4,Jana,Bjork,true,Data
+8,1,Gabriel,Lennartsson,true,Data
