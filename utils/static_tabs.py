@@ -18,5 +18,5 @@ def render_overview_tab(intro_tab_title):
     with right_col:
         st.image(
             "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2455&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            use_column_width=True,
+            use_container_width=True,
         )
