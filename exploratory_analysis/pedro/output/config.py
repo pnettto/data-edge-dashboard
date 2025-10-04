@@ -25,22 +25,6 @@ config = [
                     },
 
                     {
-                        'type': 'multi_line_forecast',
-                        'title': 'Revenue by Segment (multi-line)',
-                        'description': 'Four segments shown as separate lines over time',
-                        'df': csv_to_df('multi_line'),
-                        'x_field': 'date',
-                        'x_label': 'Date',
-                        'category_field': 'series',
-                        'y_field': 'value',
-                        'y_label': 'Revenue'
-                    },
-                ]
-            },
-
-            {
-                'columns': [
-                    {
                         'type': 'single_line_forecast',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
@@ -50,11 +34,27 @@ config = [
                         'y_field': 'value',
                         'y_label': 'Revenue'
                     },
+                ]
+            },
+
+            {
+                'columns': [
+                    {
+                        'type': 'multi_line_forecast',
+                        'title': 'Revenue by Segment',
+                        'description': 'Four segments shown as separate lines over time',
+                        'df': csv_to_df('multi_line'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'category_field': 'series',
+                        'y_field': 'value',
+                        'y_label': 'Revenue'
+                    },
                     
                     {
                         'type': 'table',
                         'title': 'Sample table',
-                        'description': 'Monthly revenue totals as bars',
+                        'description': 'Monthly revenue per segment totals as table',
                         'df': csv_to_df('multi_line'),
                     }                    
                 ]

@@ -54,20 +54,11 @@ def render_multi_line_forecast_chart(config):
     y_field = config['y_field']
     category_field = config['category_field']
 
-    base_key = id(config)
-
-    forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"ml_slider_{base_key}")
-
-    # Use spinner for simple loading message
-    with st.spinner(f"Generating forecasts..."):
-        _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config)
-
-
-def _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config):
-    """Internal function to render the actual chart content."""
+    # Ensure datetime type
     if not pd.api.types.is_datetime64_any_dtype(df[x_field]):
         df[x_field] = pd.to_datetime(df[x_field])
 
+    # Model parameters
     model_params = dict(
         yearly_seasonality=True,
         weekly_seasonality=False,
@@ -77,9 +68,20 @@ def _render_chart_content(df, x_field, y_field, category_field, forecast_periods
         interval_width=0.0,
     )
 
-    # Compute all forecasts once (cached)
-    all_forecasts = _compute_all_forecasts(df, x_field, y_field, category_field, 12, model_params)
+    # Pre-cache all forecasts with spinner
+    with st.spinner(f"Generating forecasts..."):
+        all_forecasts = _compute_all_forecasts(df, x_field, y_field, category_field, 12, model_params)
 
+    # Now render the UI elements after caching is complete
+    base_key = id(config)
+    forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"ml_slider_{base_key}")
+
+    # Render chart without additional spinner since data is already cached
+    _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config, all_forecasts)
+
+
+def _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config, all_forecasts):
+    """Internal function to render the actual chart content."""
     # Build plot data
     forecast_frames: list[pd.DataFrame] = []
     plot_frames: list[pd.DataFrame] = []
