@@ -16,7 +16,9 @@ def _compute_forecast_series(df: pd.DataFrame, x_field: str, y_field: str, perio
     return forecast[["ds", "yhat"]]
 
 
+@st.fragment
 def render_multi_line_forecast_chart(config):
+    """Render chart in isolation so it doesn't block other page elements."""
     st.subheader(config['title'])
     st.caption(config['description'])
 
@@ -27,8 +29,15 @@ def render_multi_line_forecast_chart(config):
 
     base_key = id(config)
 
-    forecast_periods = st.slider("Forecast periods", 6, 24, 12, key=f"ml_slider_{base_key}")
+    forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"ml_slider_{base_key}")
 
+    # Use spinner for simple loading message
+    with st.spinner(f"Generating forecasts..."):
+        _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config)
+
+
+def _render_chart_content(df, x_field, y_field, category_field, forecast_periods, config):
+    """Internal function to render the actual chart content."""
     if not pd.api.types.is_datetime64_any_dtype(df[x_field]):
         df[x_field] = pd.to_datetime(df[x_field])
 
