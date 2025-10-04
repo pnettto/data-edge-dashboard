@@ -31,7 +31,7 @@ def render_bar_forecast_chart(config):
     category_field = config.get('category_field')
 
     base_key = id(config)
-    forecast_periods = st.slider("Forecast periods", 6, 24, 12, key=f"bar_slider_{base_key}")
+    forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"bar_slider_{base_key}")
 
     if not pd.api.types.is_datetime64_any_dtype(df[x_field]):
         df[x_field] = pd.to_datetime(df[x_field])

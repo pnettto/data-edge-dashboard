@@ -26,7 +26,7 @@ def render_single_line_forecast_chart(config):
 
     base_key = id(config)
 
-    forecast_periods = st.slider("Forecast periods", 6, 24, 12, key=f"slider_{base_key}")
+    forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"slider_{base_key}")
 
     forecast_df = pd.DataFrame()
     connector_df = pd.DataFrame()
