@@ -176,5 +176,3 @@ def render_single_line_forecast_chart(config):
 
     # Render the final chart
     st.altair_chart(chart, use_container_width=True)
-
-    st.dataframe(plot_df)
