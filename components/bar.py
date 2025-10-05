@@ -1,112 +1,112 @@
-"""Bar chart component with Prophet-based forecasting capability"""
+"""Bar chart component for displaying categorical data"""
 
 import streamlit as st
 import altair as alt
-import pandas as pd
-from utils.forecasting.engine import infer_frequency
-from utils.forecasting.data_preparation import (
-    prepare_actual_data,
-    create_forecast_data,
-)
-from utils.chart_helpers import ensure_datetime, get_category_label
+from utils.chart_helpers import get_category_label
 
+
+# ============================================================================
+# MAIN RENDERING FUNCTION
+# ============================================================================
 
 def render_bar_chart(config):
-    """Render bar chart with actual and predicted values."""
+    """
+    Main entry point for rendering a bar chart.
     
+    Args:
+        config: Dictionary containing chart configuration:
+            - title: Chart title
+            - description: Chart description
+            - df: Source DataFrame
+            - x_field: Category column name
+            - y_field: Value column name
+            - category_field: Optional column for grouped/stacked bars
+            - x_label: Label for x-axis
+            - y_label: Label for y-axis
+            - stacked: Boolean for stacked vs grouped bars (default: False)
+    """
+    # Display chart header
     st.subheader(config['title'])
     st.caption(config['description'])
     
-    df = config['df'].copy()
+    # Extract configuration
+    df = config['df']
     x_field = config['x_field']
     y_field = config['y_field']
     category_field = config.get('category_field', None)
-    enable_forecast = config.get('forecast', False)
-
-    if enable_forecast:
-        base_key = id(config)
-        forecast_periods = st.slider("Forecast periods", 1, 12, 6, key=f"slider_{base_key}")
-
-    df = ensure_datetime(df, x_field)
-
-    if enable_forecast:
-        actual_df = prepare_actual_data(df, x_field, y_field, category_field, with_type=True)
-        forecast_df = pd.DataFrame()
-
-        if len(df) >= 2:
-            with st.spinner("Generating forecast..."):
-                if category_field is None:
-                    freq = infer_frequency(df, x_field)
-                    forecast_df = create_forecast_data(df, x_field, y_field, forecast_periods, freq, category_field)
-                else:
-                    forecast_df = create_forecast_data(df, x_field, y_field, forecast_periods, None, category_field)
-            
-            if not forecast_df.empty:
-                plot_df = pd.concat([actual_df, forecast_df], ignore_index=True)
-            else:
-                plot_df = actual_df.copy()
-        else:
-            plot_df = actual_df.copy()
-    else:
-        plot_df = prepare_actual_data(df, x_field, y_field, category_field, with_type=False)
-
-    chart = _build_bar_chart(
-        plot_df, config, x_field, y_field, category_field, enable_forecast
-    )
+    is_stacked = config.get('stacked', False)
     
+    # Build and display the chart
+    chart = _build_bar_chart(df, x_field, y_field, category_field, config, is_stacked)
     st.altair_chart(chart, use_container_width=True)
 
 
-def _build_bar_chart(
-    plot_df: pd.DataFrame,
-    config: dict,
-    x_field: str,
-    y_field: str,
-    category_field: str,
-    enable_forecast: bool
-) -> alt.Chart:
-    """Build the Altair bar chart specification."""
-    base_color = "#0b7dcfff"
-    forecast_color = "#8ec8f0ff"
-    base = alt.Chart(plot_df)
+# ============================================================================
+# CHART BUILDING
+# ============================================================================
+
+def _build_bar_chart(df, x_field, y_field, category_field, config, is_stacked):
+    """
+    Build the appropriate bar chart based on configuration.
     
-    is_multi_category = category_field is not None
-    category_label = get_category_label(config, category_field)
-
-    if enable_forecast:
-        if is_multi_category:
-            chart = _build_multi_category_forecast_chart(
-                base, x_field, y_field, category_field, category_label, config
-            )
-        else:
-            chart = _build_single_category_forecast_chart(
-                base, x_field, y_field, config, base_color, forecast_color
-            )
+    Chooses between:
+    1. Simple bar chart (no categories)
+    2. Grouped bar chart (categories side-by-side)
+    3. Stacked bar chart (categories stacked)
+    """
+    if category_field is None:
+        return _build_simple_bar_chart(df, x_field, y_field, config)
+    elif is_stacked:
+        return _build_stacked_bar_chart(df, x_field, y_field, category_field, config)
     else:
-        if is_multi_category:
-            chart = _build_multi_category_chart(
-                base, x_field, y_field, category_field, category_label, config
-            )
-        else:
-            chart = _build_single_category_chart(
-                base, x_field, y_field, config, base_color
-            )
-
-    return chart
+        return _build_grouped_bar_chart(df, x_field, y_field, category_field, config)
 
 
-def _build_single_category_chart(base, x_field, y_field, config, base_color):
-    """Build single category bar chart without forecast."""
-    return base.mark_bar(color=base_color, size=30).encode(
-        x=alt.X(f"{x_field}:T", title=config['x_label']),
+def _build_simple_bar_chart(df, x_field, y_field, config):
+    """Build a simple bar chart with a single color."""
+    base_color = "#0b7dcfff"
+    
+    return alt.Chart(df).mark_bar(color=base_color).encode(
+        x=alt.X(f"{x_field}:N", title=config['x_label']),
         y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
         tooltip=[
-            alt.Tooltip(f"{x_field}:T", title=config['x_label']),
+            alt.Tooltip(f"{x_field}:N", title=config['x_label']),
             alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
         ],
     ).properties(height=340)
 
 
+def _build_grouped_bar_chart(df, x_field, y_field, category_field, config):
+    """Build a grouped bar chart with categories displayed side-by-side."""
+    category_label = get_category_label(config, category_field)
+    
+    return alt.Chart(df).mark_bar().encode(
+        x=alt.X(f"{x_field}:N", title=config['x_label']),
+        y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+        color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
+        xOffset=f"{category_field}:N",  # Side-by-side positioning
+        tooltip=[
+            alt.Tooltip(f"{x_field}:N", title=config['x_label']),
+            alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
+            alt.Tooltip(f"{category_field}:N", title=category_label),
+        ],
+    ).properties(height=340)
+
+
+def _build_stacked_bar_chart(df, x_field, y_field, category_field, config):
+    """Build a stacked bar chart with categories stacked on top of each other."""
+    category_label = get_category_label(config, category_field)
+    
+    return alt.Chart(df).mark_bar().encode(
+        x=alt.X(f"{x_field}:N", title=config['x_label']),
+        y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+        color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
+        tooltip=[
+            alt.Tooltip(f"{x_field}:N", title=config['x_label']),
+            alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
+            alt.Tooltip(f"{category_field}:N", title=category_label),
+        ],
+    ).properties(height=340)
 def _build_multi_category_chart(base, x_field, y_field, category_field, category_label, config):
     """Build multi-category grouped bar chart without forecast."""
     return base.mark_bar(size=20).encode(
