@@ -57,17 +57,6 @@ config = [
         'tab': 'More samples',
         'items': [
             {
-                'type': 'bar_forecast',
-                'title': 'Revenue (bar)',
-                'description': 'Monthly revenue totals as bars',
-                'df': csv_to_df('bar'),
-                'x_field': 'date',
-                'x_label': 'Date',
-                'y_field': 'value',
-                'y_label': 'Revenue'
-            },
-
-            {
                 'type': 'bar',
                 'title': 'Revenue (bar)',
                 'description': 'Monthly revenue totals as bars',
@@ -75,7 +64,22 @@ config = [
                 'x_field': 'date',
                 'x_label': 'Date',
                 'y_field': 'value',
-                'y_label': 'Revenue'
+                'y_label': 'Revenue',
+                'forecast': True
+            },
+
+            {
+                'type': 'bar',
+                'title': 'Revenue (bar)',
+                'description': 'Monthly revenue totals as bars',
+                'df': csv_to_df('multi_line'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'category_field': 'region',
+                'category_label': 'Regions',
+                'y_field': 'value',
+                'y_label': 'Revenue',
+                'forecast': True
             },
 
             {
