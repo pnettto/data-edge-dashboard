@@ -60,13 +60,13 @@ def render_nav_and_content() -> None:
     tabs = st.tabs(tab_titles)
 
     # Render the intro/summary tab
-    # with tabs[0]:
-    #     render_overview_tab(intro_tab_title)
+    with tabs[0]:
+        render_overview_tab(intro_tab_title)
 
     # Render the rest of the tabs (shifted by 1 due to intro tab)
-    for tab_index, tab in enumerate(tabs[0:]):
+    for tab_index, tab in enumerate(tabs[1:]):
         with tab:
-            st.header(tab_titles[tab_index + 0])
+            st.header(tab_titles[tab_index + 1])
             items = chart_configs[tab_index]['items']
             
             for item in items:

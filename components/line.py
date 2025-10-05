@@ -1,4 +1,4 @@
-"""Single line chart component with Prophet-based forecasting"""
+"""Line chart component with Prophet-based forecasting capability"""
 
 import streamlit as st
 import altair as alt
@@ -157,7 +157,7 @@ def infer_frequency(df: pd.DataFrame, x_field: str) -> str:
 # Main Chart Rendering
 #######################
 
-def render_single_line_chart(config):
+def render_line_chart(config):
     """Render the forecast chart with actual and predicted values."""
     
     # Setup and configuration

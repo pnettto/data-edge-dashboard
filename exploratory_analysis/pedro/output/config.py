@@ -25,7 +25,7 @@ config = [
                     },
 
                     {
-                        'type': 'single_line',
+                        'type': 'line',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
                         'df': csv_to_df('single_line'),
@@ -41,7 +41,7 @@ config = [
             {
                 'columns': [
                     {
-                        'type': 'single_line',
+                        'type': 'line',
                         'title': 'Revenue by Segment',
                         'description': 'Four segments shown as separate lines over time',
                         'df': csv_to_df('multi_line'),
@@ -94,7 +94,7 @@ config = [
             {
                 'columns': [
                     {
-                        'type': 'single_line',
+                        'type': 'line',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
                         'df': csv_to_df('single_line'),
@@ -105,7 +105,7 @@ config = [
                     },
 
                     {
-                        'type': 'single_line',
+                        'type': 'line',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
                         'df': csv_to_df('single_line'),
