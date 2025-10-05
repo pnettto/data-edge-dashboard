@@ -161,7 +161,6 @@ def _build_single_category_forecast_chart(base, x_field, y_field, config, base_c
 
 def _build_multi_category_forecast_chart(base, x_field, y_field, category_field, category_label, config):
     """Build multi-category grouped bar chart with forecast."""
-    # Create a combined field for grouping actual/forecast within each category
     actual_bars = base.transform_filter(
         alt.datum.type == "Actual"
     ).transform_calculate(
