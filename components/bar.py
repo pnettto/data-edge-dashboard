@@ -3,13 +3,12 @@
 import streamlit as st
 import altair as alt
 import pandas as pd
-from .forecasting.engine import infer_frequency
-from .forecasting.data_preparation import (
+from utils.forecasting.engine import infer_frequency
+from utils.forecasting.data_preparation import (
     prepare_actual_data,
     create_forecast_data,
-    create_connector_data
 )
-from .chart_utils import ensure_datetime, get_category_label
+from utils.chart_helpers import ensure_datetime, get_category_label
 
 
 def render_bar_chart(config):

@@ -3,13 +3,13 @@
 import streamlit as st
 import altair as alt
 import pandas as pd
-from .forecasting.engine import infer_frequency
-from .forecasting.data_preparation import (
+from utils.forecasting.engine import infer_frequency
+from utils.forecasting.data_preparation import (
     prepare_actual_data,
     create_forecast_data,
     create_connector_data
 )
-from .chart_utils import should_show_points, ensure_datetime, get_category_label
+from utils.chart_helpers import should_show_points, ensure_datetime, get_category_label
 
 
 def render_line_chart(config):
