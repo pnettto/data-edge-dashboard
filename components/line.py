@@ -230,6 +230,7 @@ def render_line_chart(config):
 
     # Determine if multi-line chart
     is_multi_line = category_field is not None
+    category_label = config.get('category_label', category_field) if category_field else None
 
     # Create actual data line
     if enable_forecast:
@@ -239,11 +240,11 @@ def render_line_chart(config):
             ).mark_line(point=show_points).encode(
                 x=alt.X(f"{x_field}:T", title=config['x_label']),
                 y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
-                color=alt.Color(f"{category_field}:N", title=config.get('category_label', category_field)),
+                color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
                 tooltip=[
                     alt.Tooltip(f"{x_field}:T", title=config['x_label']),
                     alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
-                    alt.Tooltip(f"{category_field}:N", title=config.get('category_label', category_field)),
+                    alt.Tooltip(f"{category_field}:N", title=category_label),
                     alt.Tooltip("type:N", title="Type"),
                 ],
             )
@@ -253,11 +254,11 @@ def render_line_chart(config):
             ).mark_line(point=show_points, strokeDash=[5, 5]).encode(
                 x=alt.X(f"{x_field}:T", title=config['x_label']),
                 y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
-                color=alt.Color(f"{category_field}:N", title=config.get('category_label', category_field)),
+                color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
                 tooltip=[
                     alt.Tooltip(f"{x_field}:T", title=config['x_label']),
                     alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
-                    alt.Tooltip(f"{category_field}:N", title=config.get('category_label', category_field)),
+                    alt.Tooltip(f"{category_field}:N", title=category_label),
                     alt.Tooltip("type:N", title="Type"),
                 ],
             )
@@ -266,7 +267,7 @@ def render_line_chart(config):
                 connector_chart = alt.Chart(connector_df).mark_line(point=False, strokeDash=[5, 5]).encode(
                     x=alt.X(f"{x_field}:T"),
                     y=alt.Y(f"{y_field}:Q"),
-                    color=alt.Color(f"{category_field}:N", title=config.get('category_label', category_field)),
+                    color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
                 )
                 chart = (actual_line + forecast_line + connector_chart).properties(height=340)
             else:
@@ -310,11 +311,11 @@ def render_line_chart(config):
             chart = base.mark_line(point=show_points).encode(
                 x=alt.X(f"{x_field}:T", title=config['x_label']),
                 y=alt.Y(f"{y_field}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
-                color=alt.Color(f"{category_field}:N", title=config.get('category_label', category_field)),
+                color=alt.Color(f"{category_field}:N", legend=alt.Legend(title=category_label)),
                 tooltip=[
                     alt.Tooltip(f"{x_field}:T", title=config['x_label']),
                     alt.Tooltip(f"{y_field}:Q", title=config['y_label'], format=","),
-                    alt.Tooltip(f"{category_field}:N", title=config.get('category_label', category_field)),
+                    alt.Tooltip(f"{category_field}:N", title=category_label),
                 ],
             ).properties(height=340)
         else:

@@ -44,7 +44,8 @@ config = [
                 'df': csv_to_df('multi_line'),
                 'x_field': 'date',
                 'x_label': 'Date',
-                'category_field': 'series',
+                'category_field': 'region',
+                'category_label': 'Regions',
                 'y_field': 'value',
                 'y_label': 'Revenue',
                 'forecast': True
