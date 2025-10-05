@@ -210,7 +210,7 @@ def render_line_chart(config):
     #######################
 
     # Base chart settings
-    base_color = "#1f77b4"
+    base_color = "#0b7dcfff"
     base = alt.Chart(plot_df)
     
     if enable_forecast:
