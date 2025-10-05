@@ -25,14 +25,15 @@ config = [
                     },
 
                     {
-                        'type': 'single_line_forecast',
+                        'type': 'single_line',
                         'title': 'Revenue (invoice date)',
                         'description': 'Monthly revenue tracked by invoice date',
                         'df': csv_to_df('single_line'),
                         'x_field': 'date',
                         'x_label': 'Date',
                         'y_field': 'value',
-                        'y_label': 'Revenue'
+                        'y_label': 'Revenue',
+                        'forecast': False
                     },
                 ]
             },
@@ -40,7 +41,7 @@ config = [
             {
                 'columns': [
                     {
-                        'type': 'multi_line_forecast',
+                        'type': 'single_line',
                         'title': 'Revenue by Segment',
                         'description': 'Four segments shown as separate lines over time',
                         'df': csv_to_df('multi_line'),
@@ -48,7 +49,8 @@ config = [
                         'x_label': 'Date',
                         'category_field': 'series',
                         'y_field': 'value',
-                        'y_label': 'Revenue'
+                        'y_label': 'Revenue',
+                        'forecast': True
                     },
                     
                     {
