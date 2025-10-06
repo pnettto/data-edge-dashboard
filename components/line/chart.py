@@ -116,7 +116,11 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     ).mark_line(point=False, strokeDash=[5, 5]).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
-        color=alt.Color(f"{config['category_field']}:N", legend=alt.Legend(title=category_label)),
+        color=alt.Color(
+            f"{config['category_field']}:N", 
+            scale=alt.Scale(scheme="tableau20"),
+            legend=alt.Legend(title=category_label)
+        ),
     )
     
     return (actual + forecast + connector).properties(height=340)
