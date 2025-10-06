@@ -1,14 +1,26 @@
-"""Data preparation utilities for forecast visualizations"""
+"""Data preparation utilities for line charts"""
 
+from typing import Optional
 import pandas as pd
-from .engine import compute_forecast, infer_frequency
+
+
+# Constants
+POINT_THRESHOLD = 200
+
+
+def ensure_datetime(df: pd.DataFrame, x_field: str) -> pd.DataFrame:
+    """Convert x_field to datetime if not already."""
+    df = df.copy()
+    if not pd.api.types.is_datetime64_any_dtype(df[x_field]):
+        df[x_field] = pd.to_datetime(df[x_field])
+    return df
 
 
 def prepare_actual_data(
     df: pd.DataFrame,
     x_field: str,
     y_field: str,
-    category_field: str = None,
+    category_field: Optional[str] = None,
     with_type: bool = True
 ) -> pd.DataFrame:
     """Add type column to historical data for visualization."""
@@ -18,52 +30,12 @@ def prepare_actual_data(
     return df
 
 
-def create_forecast_data(
-    df: pd.DataFrame,
-    x_field: str,
-    y_field: str,
-    forecast_periods: int,
-    freq: str,
-    category_field: str = None,
-    max_periods: int = 12
-) -> pd.DataFrame:
-    """Generate forecasted data points using Prophet model."""
-    if category_field is None:
-        forecast = compute_forecast(df, x_field, y_field, max_periods, freq)
-        forecast = forecast.iloc[:forecast_periods]
-        return pd.DataFrame({
-            x_field: forecast['ds'],
-            y_field: forecast['yhat'],
-            "type": ["Forecast"] * len(forecast)
-        })
-    else:
-        all_forecasts = []
-        categories = sorted(df[category_field].unique())
-        for category in categories:
-            category_df = df[df[category_field] == category].copy()
-            if len(category_df) >= 2:
-                category_freq = infer_frequency(category_df, x_field)
-                forecast = compute_forecast(category_df, x_field, y_field, max_periods, category_freq, str(category))
-                forecast = forecast.iloc[:forecast_periods]
-                forecast_data = pd.DataFrame({
-                    x_field: forecast['ds'],
-                    y_field: forecast['yhat'],
-                    category_field: str(category),
-                    "type": ["Forecast"] * len(forecast)
-                })
-                all_forecasts.append(forecast_data)
-        
-        if all_forecasts:
-            return pd.concat(all_forecasts, ignore_index=True)
-        return pd.DataFrame()
-
-
 def create_connector_data(
     actual_df: pd.DataFrame,
     forecast_df: pd.DataFrame,
     x_field: str,
     y_field: str,
-    category_field: str = None
+    category_field: Optional[str] = None
 ) -> pd.DataFrame:
     """Create connecting points between actual and forecasted data."""
     if forecast_df.empty:
@@ -116,3 +88,18 @@ def create_connector_data(
         if all_connectors:
             return pd.concat(all_connectors, ignore_index=True)
         return pd.DataFrame()
+
+
+def should_show_points(
+    df: pd.DataFrame, 
+    category_field: Optional[str] = None, 
+    point_threshold: int = POINT_THRESHOLD
+) -> bool:
+    """Determine if individual points should be shown based on data density."""
+    if category_field is not None:
+        return all(
+            df[df[category_field] == cat].shape[0] < point_threshold
+            for cat in df[category_field].unique()
+        )
+    else:
+        return df.shape[0] < point_threshold
