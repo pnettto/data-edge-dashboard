@@ -5,7 +5,7 @@ from components.table import render_table
 
 CHART_RENDERERS = {
     # 'bar': render_bar_chart,
-    'bar': lambda _config: None,
+    'bar': lambda config: None,
     'markdown': render_markdown,
     'line': render_line_chart,
     'table': render_table,
