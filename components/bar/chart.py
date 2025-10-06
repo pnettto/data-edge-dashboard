@@ -84,7 +84,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
         y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
         color=alt.Color(
             f"{config['category_field']}:N",
-            scale=alt.Scale(scheme="tableau20"),
+            scale=alt.Scale(scheme="redyellowblue"),
             legend=alt.Legend(title=category_label)
         ),
         tooltip=[
