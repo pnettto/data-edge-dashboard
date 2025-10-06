@@ -220,12 +220,23 @@ confidence_interval = base.transform_filter(
     y2='upper:Q'
 )
 
+# Connector line between last actual and first forecast
+connector_df = pd.DataFrame({
+    'ds': [historical_df['ds'].iloc[-1], future_df['ds'].iloc[0]],
+    'y': [historical_df['y'].iloc[-1], future_forecast['yhat'].iloc[0]]
+})
+connector = alt.Chart(connector_df).mark_line(color='#888', strokeDash=[2,2], strokeWidth=2).encode(
+    x='ds:T',
+    y='y:Q'
+)
+
 chart = alt.layer(
     confidence_interval,
     fitted,
     actual,
     forecast_line,
-    forecast_points
+    forecast_points,
+    connector
 ).properties(
     height=500,
     width='container',
@@ -242,26 +253,7 @@ chart = alt.layer(
 
 st.altair_chart(chart, use_container_width=True)
 
-st.dataframe(historical_df)
-
-# Display forecast table
-st.subheader(f'{forecast_months}-Month Forecast Details')
-
-# Add actual regressor values used in forecast to table
-forecast_table = future_df[['ds', 'investment', 'ad_spend', 'sales_reps', 'marketing_campaigns']].copy()
-forecast_table['date'] = forecast_table['ds'].dt.strftime('%Y-%m-%d')
-forecast_table['predicted_revenue'] = future_forecast['yhat'].round(2)
-forecast_table['yhat_lower'] = future_forecast['yhat_lower'].round(2)
-forecast_table['yhat_upper'] = future_forecast['yhat_upper'].round(2)
-
-st.dataframe(
-    forecast_table[['date', 'predicted_revenue', 'yhat_lower', 'yhat_upper', 
-                    'investment', 'ad_spend', 'sales_reps', 'marketing_campaigns']],
-    hide_index=True
-)
-
-st.altair_chart(chart, use_container_width=True)
-
+st.subheader(f'Historical df')
 st.dataframe(historical_df)
 
 # Display forecast table
