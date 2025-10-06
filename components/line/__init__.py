@@ -13,7 +13,15 @@ def render_line_chart(config: dict) -> None:
     Main entry point for rendering a line chart with optional forecasting.
     
     Args:
-        config: Dictionary containing chart configuration
+        config (dict): Dictionary containing chart configuration with the following keys:
+            - title (str): Title of the chart.
+            - description (str): Description or caption for the chart.
+            - df (pd.DataFrame): DataFrame containing the data to plot.
+            - x_field (str): Name of the column to use for the x-axis (should be datetime or convertible).
+            - y_field (str): Name of the column to use for the y-axis.
+            - category_field (str, optional): Name of the column for categorical grouping (optional).
+            - category_label (str, optional): (chart) Title of the column for categorical grouping (optional).
+            - forecast (bool, optional): Whether to enable forecasting (default: False).
     """
     st.subheader(config['title'])
     st.caption(config['description'])

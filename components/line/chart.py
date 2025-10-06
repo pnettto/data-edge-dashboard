@@ -4,8 +4,6 @@ from typing import Optional
 import pandas as pd
 import altair as alt
 
-from .data import should_show_points
-
 
 def build_chart(plot_df: pd.DataFrame, connector_df: pd.DataFrame, config: dict) -> alt.Chart:
     """Build Altair chart based on configuration."""
@@ -160,33 +158,13 @@ def _build_multi_forecast(
     
     return chart.properties(height=340)
 
-def get_category_label(config: dict) -> Optional[str]:
-    """Get the display label for category field."""
-    return config['category_label'] if config.get('category_field') else None
-
-
-def get_base_encoding(config: dict) -> dict:
-    """Get the basic x and y axis encodings used across chart types."""
-    return {
-        'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
-        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f"))
-    }
-
-
-def get_tooltip_with_type(config: dict) -> list:
-    """Get tooltip configuration for forecast charts (single-line)."""
-    return [
-        alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-        alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
-        alt.Tooltip("type:N", title="Type"),
-    ]
-
-
-def get_tooltip_with_type_and_category(config: dict, category_label: str) -> list:
-    """Get tooltip configuration for forecast charts (multi-line)."""
-    return [
-        alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-        alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
-        alt.Tooltip(f"{config['category_field']}:N", title=category_label),
-        alt.Tooltip("type:N", title="Type"),
-    ]
+def should_show_points(df: pd.DataFrame, category_field: Optional[str] = None) -> bool:
+    """Determine if individual points should be shown based on data density."""
+    threshold = 200
+    
+    if category_field:
+        return all(
+            df[df[category_field] == cat].shape[0] < threshold
+            for cat in df[category_field].unique()
+        )
+    return df.shape[0] < threshold

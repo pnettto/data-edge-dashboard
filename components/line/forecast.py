@@ -34,11 +34,14 @@ def _forecast_single(df: pd.DataFrame, x_field: str, y_field: str, periods: int)
     # Prepare data for Prophet
     prophet_df = df[[x_field, y_field]].rename(columns={x_field: "ds", y_field: "y"})
     
-    # Infer frequency
+    # Infer frequency of the time series from the x_field column
     freq = pd.infer_freq(df[x_field].sort_values())
+    # If frequency can't be inferred and there are at least 2 rows, estimate frequency from the difference between first two sorted dates
     if freq is None and len(df) > 1:
         delta = df[x_field].sort_values().iloc[1] - df[x_field].sort_values().iloc[0]
+        # If the delta has a 'days' attribute and is at least 1 day, use that as frequency; otherwise default to daily
         freq = f"{delta.days}D" if hasattr(delta, 'days') and delta.days >= 1 else "D"
+    # If still unable to infer frequency, default to daily
     if freq is None:
         freq = "D"
     
