@@ -48,70 +48,77 @@ def generate_historical_data():
 
 
 df = generate_historical_data()
+control_variables = ['sales_reps', 'investment', 'ad_spend', 'marketing_campaigns']
 
-# Sidebar controls
-st.sidebar.header("Forecast Settings")
-variable = st.sidebar.selectbox(
-    "Select variable to control for forecast",
-    ["sales_reps", "investment", "ad_spend", "marketing_campaigns"]
-)
+# Component controls
+st.header("Forecast Settings")
+hcoll, hcolr = st.columns(2)
 
-if variable == "sales_reps":
-    slider_value = st.sidebar.slider(
-        "Number of Sales Reps for Forecast",
-        min_value=int(df['sales_reps'].min()),
-        max_value=int(df['sales_reps'].max()) + 5,
-        value=int(df['sales_reps'].iloc[-1]),
-        step=1
+with hcoll:
+    variable = st.selectbox(
+        "Select variable to control for forecast",
+        control_variables
     )
-elif variable == "investment":
-    slider_value = st.sidebar.slider(
-        "Investment Amount for Forecast",
-        min_value=int(df['investment'].min()),
-        max_value=int(df['investment'].max()) + 5000,
-        value=int(df['investment'].iloc[-1]),
-        step=500
-    )
-elif variable == "ad_spend":
-    slider_value = st.sidebar.slider(
-        "Ad Spend Amount for Forecast",
-        min_value=int(df['ad_spend'].min()),
-        max_value=int(df['ad_spend'].max()) + 2000,
-        value=int(df['ad_spend'].iloc[-1]),
-        step=100
-    )
-elif variable == "marketing_campaigns":
-    slider_value = st.sidebar.slider(
-        "Marketing Campaigns for Forecast",
-        min_value=int(df['marketing_campaigns'].min()),
-        max_value=int(df['marketing_campaigns'].max()) + 5,
-        value=int(df['marketing_campaigns'].iloc[-1]),
-        step=1
-    )
+
+with hcolr:
+    if variable == "sales_reps":
+        slider_value = st.slider(
+            "Number of Sales Reps for Forecast",
+            min_value=int(df['sales_reps'].min()),
+            max_value=int(df['sales_reps'].max()) + 5,
+            value=int(df['sales_reps'].iloc[-1]),
+            step=1
+        )
+    elif variable == "investment":
+        slider_value = st.slider(
+            "Investment Amount for Forecast",
+            min_value=int(df['investment'].min()),
+            max_value=int(df['investment'].max()) + 5000,
+            value=int(df['investment'].iloc[-1]),
+            step=500
+        )
+    elif variable == "ad_spend":
+        slider_value = st.slider(
+            "Ad Spend Amount for Forecast",
+            min_value=int(df['ad_spend'].min()),
+            max_value=int(df['ad_spend'].max()) + 2000,
+            value=int(df['ad_spend'].iloc[-1]),
+            step=100
+        )
+    elif variable == "marketing_campaigns":
+        slider_value = st.slider(
+            "Marketing Campaigns for Forecast",
+            min_value=int(df['marketing_campaigns'].min()),
+            max_value=int(df['marketing_campaigns'].max()) + 5,
+            value=int(df['marketing_campaigns'].iloc[-1]),
+            step=1
+        )
 
 # Prophet forecast with selected regressor
-prophet_df = df[['date', 'revenue', 'sales_reps', 'investment', 'ad_spend', 'marketing_campaigns']].rename(columns={'date': 'ds', 'revenue': 'y'})
+prophet_df = df[['date', 'revenue', variable]].rename(columns={'date': 'ds', 'revenue': 'y'})
 model = Prophet(yearly_seasonality=True, weekly_seasonality=False, daily_seasonality=False)
+# Take into account the historical impact of "variable" to generate the forecast
 model.add_regressor(variable)
 model.fit(prophet_df)
 
-future = model.make_future_dataframe(periods=24, freq='MS')
-for col in ['sales_reps', 'investment', 'ad_spend', 'marketing_campaigns']:
+periods_count = 24
+future = model.make_future_dataframe(periods=periods_count, freq='MS')
+for col in control_variables:
     if col == variable:
-        future[col] = list(df[col]) + [slider_value] * 24
+        future[col] = list(df[col]) + [slider_value] * periods_count
     else:
-        future[col] = list(df[col]) + [df[col].iloc[-1]] * 24
+        future[col] = list(df[col]) + [df[col].iloc[-1]] * periods_count
 
 forecast = model.predict(future)
-forecast_df = forecast[['ds', 'yhat']].tail(24).rename(columns={'ds': 'date', 'yhat': 'forecast_revenue'})
+forecast_df = forecast[['ds', 'yhat']].tail(periods_count).rename(columns={'ds': 'date', 'yhat': 'forecast_revenue'})
 
 # Combine for plotting
 plot_df = df.copy()
 plot_df['type'] = 'Actual'
-forecast_df['investment'] = future['investment'].tail(24).values
-forecast_df['ad_spend'] = future['ad_spend'].tail(24).values
-forecast_df['sales_reps'] = future['sales_reps'].tail(24).values
-forecast_df['marketing_campaigns'] = future['marketing_campaigns'].tail(24).values
+forecast_df['investment'] = future['investment'].tail(periods_count).values
+forecast_df['ad_spend'] = future['ad_spend'].tail(periods_count).values
+forecast_df['sales_reps'] = future['sales_reps'].tail(periods_count).values
+forecast_df['marketing_campaigns'] = future['marketing_campaigns'].tail(periods_count).values
 forecast_df['type'] = 'Forecast'
 forecast_df = forecast_df[['date', 'forecast_revenue', 'investment', 'ad_spend', 'sales_reps', 'marketing_campaigns', 'type']]
 plot_df = plot_df[['date', 'revenue', 'investment', 'ad_spend', 'sales_reps', 'marketing_campaigns', 'type']]
@@ -156,4 +163,8 @@ connector_line = alt.Chart(connector).mark_line(color='#ff7f0e').encode(
 
 st.altair_chart(base + dots + connector_line, use_container_width=True)
 
-st.dataframe(generate_historical_data())
+st.subheader('Combined df')
+st.dataframe(combined_df)
+
+st.subheader('Historical df')
+st.dataframe(df)
