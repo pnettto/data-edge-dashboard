@@ -19,7 +19,7 @@ def create_forecast_df(config):
     
     # Generate forecast once with maximum periods (cached across reloads)
     with st.spinner("Generating forecast..."):
-        full_forecast_df = _get_cached_forecast(
+        full_forecast_df = _generate_forecast_df(
             df, x_field, config['y_field'], MAX_FORECAST_PERIODS, category_field
         )
     
@@ -48,18 +48,9 @@ def create_forecast_df(config):
     
     return full_forecast_df.sort_values(by=x_field).head(forecast_periods)
 
-@st.cache_data(show_spinner=False)
-def _get_cached_forecast(
-    df: pd.DataFrame,
-    x_field: str,
-    y_field: str,
-    periods: int,
-    category_field: str | None = None
-) -> pd.DataFrame:
-    """Generate and cache forecast calculation."""
-    return _generate_forecast(df, x_field, y_field, periods, category_field)
 
-def _generate_forecast(
+@st.cache_data(show_spinner=False)
+def _generate_forecast_df(
     df: pd.DataFrame,
     x_field: str,
     y_field: str,
@@ -91,20 +82,24 @@ def _forecast_single(df: pd.DataFrame, x_field: str, y_field: str, periods: int)
     # Infer frequency from time series
     freq = _infer_frequency(df[x_field])
     
-    # Train Prophet model
+    # Train Prophet model with specified seasonality and changepoints
     model = Prophet(
-        yearly_seasonality=True,
-        weekly_seasonality=False,
-        daily_seasonality=False,
-        n_changepoints=10,
-        seasonality_mode="additive",
-        interval_width=0.0,
+        yearly_seasonality=True,      # Enable yearly seasonality
+        weekly_seasonality=False,     # Disable weekly seasonality
+        daily_seasonality=False,      # Disable daily seasonality
+        n_changepoints=10,            # Number of changepoints for trend flexibility
+        seasonality_mode="additive",  # Use additive seasonality
+        interval_width=0.0,           # No uncertainty interval
     )
-    model.fit(prophet_df)
+    model.fit(prophet_df)             # Fit model to historical data
     
-    # Generate forecast
-    future = model.make_future_dataframe(periods=periods, freq=freq, include_history=False)
-    forecast = model.predict(future)
+    # Generate future dates and predict values
+    future = model.make_future_dataframe(
+        periods=periods,              # Number of periods to forecast
+        freq=freq,                    # Frequency inferred from data
+        include_history=False         # Only forecast future, exclude history
+    )
+    forecast = model.predict(future)  # Predict future values
     
     return pd.DataFrame({
         x_field: forecast['ds'],

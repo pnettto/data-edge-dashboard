@@ -49,8 +49,3 @@ def render_line_chart(config: dict) -> None:
 
 
 __all__ = ['render_line_chart']
-    chart = build_chart(plot_df, config)
-    st.altair_chart(chart, use_container_width=True)
-
-
-__all__ = ['render_line_chart']
