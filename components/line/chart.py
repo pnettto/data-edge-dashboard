@@ -147,8 +147,53 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
 
 def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: bool = False) -> alt.Chart:
     """
-    Build a differential area (green when first > second, red otherwise) between two categories.
-    Inserts interpolated crossover points so adjacent colored areas meet without gaps.
+    Orchestrates building the differential (Surplus/Deficit) area layer.
+    """
+    category_field = config['category_field']
+    x_field = config['x_field']
+    y_field = config['y_field']
+    baseline, other = highlight_cats
+
+    pivot_df, to_datetime = _prepare_diff_area_base(
+        df=df,
+        config=config,
+        highlight_cats=highlight_cats,
+        forecast=forecast
+    )
+    if pivot_df is None:
+        return None
+
+    pivot_df, to_datetime = _insert_crossover_points(
+        pivot_df=pivot_df,
+        x_field=x_field,
+        baseline=baseline,
+        other=other,
+        to_datetime=to_datetime
+    )
+
+    pivot_df = _finalize_diff_area_df(
+        pivot_df=pivot_df,
+        baseline=baseline,
+        other=other
+    )
+
+    return _encode_diff_area(
+        pivot_df=pivot_df,
+        config=config,
+        baseline=baseline,
+        other=other,
+        to_datetime=to_datetime
+    )
+
+
+# ---------------------------
+# Differential area helpers
+# ---------------------------
+
+def _prepare_diff_area_base(df: pd.DataFrame, config: dict, highlight_cats, forecast: bool):
+    """
+    Filter, pivot and compute initial diff state.
+    Returns (pivot_df, to_datetime_flag) or (None, None).
     """
     category_field = config['category_field']
     x_field = config['x_field']
@@ -157,13 +202,10 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
 
     base_df = df.copy()
     if forecast and "type" in base_df.columns:
-        # Shade only the actual (historical) segment to avoid duplicated forecast overlays
         base_df = base_df[base_df['type'] == "Actual"]
 
-    # Keep only the two categories we care about
     base_df = base_df[base_df[category_field].isin(highlight_cats)]
 
-    # Pivot so each category is a column; require both present (dropna)
     pivot_df = (
         base_df
         .pivot(index=x_field, columns=category_field, values=y_field)
@@ -171,22 +213,24 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
         .reset_index()
     )
     if pivot_df.empty:
-        return None  # Nothing to shade
+        return None, None
 
-    # Initial diff & sign
     pivot_df['diff'] = pivot_df[baseline] - pivot_df[other]
     pivot_df['is_positive'] = pivot_df['diff'] >= 0
 
-    # --- Insert crossover (intersection) points to avoid visual gaps ---
-    # We look between consecutive rows where is_positive changes and
-    # linearly interpolate the exact point where the two series cross.
-    if pd.api.types.is_datetime64_any_dtype(pivot_df[x_field]):
-        # Work with int nanoseconds for interpolation
+    to_datetime = pd.api.types.is_datetime64_any_dtype(pivot_df[x_field])
+    return pivot_df, to_datetime
+
+
+def _insert_crossover_points(pivot_df: pd.DataFrame, x_field: str, baseline: str, other: str, to_datetime: bool):
+    """
+    Insert interpolated crossover points so adjacent positive/negative
+    areas meet without gaps.
+    """
+    if to_datetime:
         x_numeric = pivot_df[x_field].view('int64').to_list()
-        to_datetime = True
     else:
         x_numeric = pivot_df[x_field].astype(float).to_list()
-        to_datetime = False
 
     b_vals = pivot_df[baseline].to_list()
     o_vals = pivot_df[other].to_list()
@@ -195,45 +239,55 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
     new_rows = []
     for i in range(len(pivot_df) - 1):
         if is_pos[i] != is_pos[i + 1]:
-            # Solve for f in: b_i + f*(b_{i+1}-b_i) = o_i + f*(o_{i+1}-o_i)
             db = b_vals[i + 1] - b_vals[i]
             do = o_vals[i + 1] - o_vals[i]
             denom = (db - do)
             if denom == 0:
-                continue  # Parallel between points; skip
+                continue
             f = (o_vals[i] - b_vals[i]) / denom
             if not (0 < f < 1):
-                continue  # Crossing outside the segment; skip
+                continue
             x_cross_num = x_numeric[i] + f * (x_numeric[i + 1] - x_numeric[i])
-            y_cross = b_vals[i] + f * db  # same as o line at crossing
+            y_cross = b_vals[i] + f * db
             x_cross = pd.to_datetime(int(x_cross_num)) if to_datetime else x_cross_num
-            # Two rows: one ending previous group, one starting next group
             new_rows.append({
                 x_field: x_cross,
                 baseline: y_cross,
                 other: y_cross,
                 'diff': 0.0,
-                'is_positive': is_pos[i]  # belongs to previous segment
+                'is_positive': is_pos[i]
             })
             new_rows.append({
                 x_field: x_cross,
                 baseline: y_cross,
                 other: y_cross,
                 'diff': 0.0,
-                'is_positive': is_pos[i + 1]  # belongs to next segment
+                'is_positive': is_pos[i + 1]
             })
 
     if new_rows:
         pivot_df = pd.concat([pivot_df, pd.DataFrame(new_rows)], ignore_index=True)
         pivot_df = pivot_df.sort_values(x_field, kind='mergesort').reset_index(drop=True)
 
-    # Recompute group ids after inserting crossover rows
+    return pivot_df, to_datetime
+
+
+def _finalize_diff_area_df(pivot_df: pd.DataFrame, baseline: str, other: str) -> pd.DataFrame:
+    """
+    After crossover insertion, recompute grouping and bounds.
+    """
     pivot_df['group_id'] = (pivot_df['is_positive'] != pivot_df['is_positive'].shift()).cumsum()
-    # Map boolean to labeled categories
     pivot_df['diff_label'] = pivot_df['is_positive'].map({True: 'Surplus', False: 'Deficit'})
-    # Bounds
     pivot_df['upper'] = pivot_df[[baseline, other]].max(axis=1)
     pivot_df['lower'] = pivot_df[[baseline, other]].min(axis=1)
+    return pivot_df
+
+
+def _encode_diff_area(pivot_df: pd.DataFrame, config: dict, baseline: str, other: str, to_datetime: bool):
+    """
+    Encode the Altair differential area chart.
+    """
+    x_field = config['x_field']
     area = alt.Chart(pivot_df).mark_area().encode(
         x=f"{x_field}:T" if to_datetime else alt.X(f"{x_field}:Q"),
         y="upper:Q",
