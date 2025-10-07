@@ -70,22 +70,10 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     if 'category_area_highlight' in config:
         highlight_cats = config['category_area_highlight']
         if len(highlight_cats) == 2:
-            area_df = df[df[config['category_field']].isin(highlight_cats)]
-            area_df = area_df.pivot(
-                index=config['x_field'], 
-                columns=config['category_field'], 
-                values=config['y_field']
-            ).reset_index()
-
-            area_chart = alt.Chart(area_df).mark_area(
-                opacity=0.3,
-                color='lightgray'
-            ).encode(
-                x=f"{config['x_field']}:T",
-                y=f"{highlight_cats[0]}:Q",
-                y2=f"{highlight_cats[1]}:Q"
-            )
-            return (area_chart + line_chart).properties(height=340)
+            area_chart = _build_diff_area(df, config, highlight_cats, forecast=False)
+            if area_chart is not None:
+                # Independent color scales: area uses diff sign, lines use categories
+                return (area_chart + line_chart).resolve_scale(color='independent').properties(height=340)
 
     return line_chart.properties(height=340)
 
@@ -149,21 +137,67 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     if 'category_area_highlight' in config:
         highlight_cats = config['category_area_highlight']
         if len(highlight_cats) == 2:
-            area_df = df[df[config['category_field']].isin(highlight_cats)]
-            area_df = area_df.pivot_table(
-                index=[config['x_field'], 'type'],
-                columns=config['category_field'],
-                values=config['y_field']
-            ).reset_index()
-
-            area_chart = alt.Chart(area_df).mark_area(
-                opacity=0.3,
-                color='lightgray'
-            ).encode(
-                x=f"{config['x_field']}:T",
-                y=f"{highlight_cats[0]}:Q",
-                y2=f"{highlight_cats[1]}:Q"
-            )
-            chart = area_chart + chart
+            # Differential area only over Actual segment for clarity
+            area_chart = _build_diff_area(df, config, highlight_cats, forecast=True)
+            if area_chart is not None:
+                chart = (area_chart + chart).resolve_scale(color='independent')
 
     return chart.properties(height=340)
+
+
+def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: bool = False) -> alt.Chart:
+    """
+    Build a differential area (green when first > second, red otherwise) between two categories.
+    The first category in highlight_cats is treated as the baseline.
+    """
+    category_field = config['category_field']
+    x_field = config['x_field']
+    y_field = config['y_field']
+    baseline, other = highlight_cats
+
+    base_df = df.copy()
+    if forecast and "type" in base_df.columns:
+        # Shade only the actual (historical) segment to avoid duplicated forecast overlays
+        base_df = base_df[base_df['type'] == "Actual"]
+
+    # Keep only the two categories we care about
+    base_df = base_df[base_df[category_field].isin(highlight_cats)]
+
+    # Pivot so each category is a column; require both present (dropna)
+    pivot_df = (
+        base_df
+        .pivot(index=x_field, columns=category_field, values=y_field)
+        .dropna()
+        .reset_index()
+    )
+    if pivot_df.empty:
+        return None  # Nothing to shade
+
+    # Compute difference and segment groups where sign changes
+    pivot_df['diff'] = pivot_df[baseline] - pivot_df[other]
+    pivot_df['is_positive'] = pivot_df['diff'] >= 0
+    pivot_df['group_id'] = (pivot_df['is_positive'] != pivot_df['is_positive'].shift()).cumsum()
+
+    # Upper / lower bounds for the filled area
+    pivot_df['upper'] = pivot_df[[baseline, other]].max(axis=1)
+    pivot_df['lower'] = pivot_df[[baseline, other]].min(axis=1)
+
+    # Build area chart with segmented groups (detail) and color by sign
+    area = alt.Chart(pivot_df).mark_area().encode(
+        x=f"{x_field}:T",
+        y="upper:Q",
+        y2="lower:Q",
+        detail="group_id:N",
+        color=alt.Color(
+            "is_positive:N",
+            scale=alt.Scale(domain=[True, False], range=["#2e7d3280", "#c6282880"]),
+            legend=None
+        ),
+        tooltip=[
+            alt.Tooltip(f"{x_field}:T", title=config['x_label']),
+            alt.Tooltip(f"{baseline}:Q", title=baseline, format=","),
+            alt.Tooltip(f"{other}:Q", title=other, format=","),
+            alt.Tooltip("is_positive:N", title=f"{baseline} above {other}?")
+        ]
+    )
+    return area
