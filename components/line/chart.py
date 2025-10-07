@@ -148,7 +148,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
 def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: bool = False) -> alt.Chart:
     """
     Build a differential area (green when first > second, red otherwise) between two categories.
-    The first category in highlight_cats is treated as the baseline.
+    Inserts interpolated crossover points so adjacent colored areas meet without gaps.
     """
     category_field = config['category_field']
     x_field = config['x_field']
@@ -173,18 +173,69 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
     if pivot_df.empty:
         return None  # Nothing to shade
 
-    # Compute difference and segment groups where sign changes
+    # Initial diff & sign
     pivot_df['diff'] = pivot_df[baseline] - pivot_df[other]
     pivot_df['is_positive'] = pivot_df['diff'] >= 0
+
+    # --- Insert crossover (intersection) points to avoid visual gaps ---
+    # We look between consecutive rows where is_positive changes and
+    # linearly interpolate the exact point where the two series cross.
+    if pd.api.types.is_datetime64_any_dtype(pivot_df[x_field]):
+        # Work with int nanoseconds for interpolation
+        x_numeric = pivot_df[x_field].view('int64').to_list()
+        to_datetime = True
+    else:
+        x_numeric = pivot_df[x_field].astype(float).to_list()
+        to_datetime = False
+
+    b_vals = pivot_df[baseline].to_list()
+    o_vals = pivot_df[other].to_list()
+    is_pos = pivot_df['is_positive'].to_list()
+
+    new_rows = []
+    for i in range(len(pivot_df) - 1):
+        if is_pos[i] != is_pos[i + 1]:
+            # Solve for f in: b_i + f*(b_{i+1}-b_i) = o_i + f*(o_{i+1}-o_i)
+            db = b_vals[i + 1] - b_vals[i]
+            do = o_vals[i + 1] - o_vals[i]
+            denom = (db - do)
+            if denom == 0:
+                continue  # Parallel between points; skip
+            f = (o_vals[i] - b_vals[i]) / denom
+            if not (0 < f < 1):
+                continue  # Crossing outside the segment; skip
+            x_cross_num = x_numeric[i] + f * (x_numeric[i + 1] - x_numeric[i])
+            y_cross = b_vals[i] + f * db  # same as o line at crossing
+            x_cross = pd.to_datetime(int(x_cross_num)) if to_datetime else x_cross_num
+            # Two rows: one ending previous group, one starting next group
+            new_rows.append({
+                x_field: x_cross,
+                baseline: y_cross,
+                other: y_cross,
+                'diff': 0.0,
+                'is_positive': is_pos[i]  # belongs to previous segment
+            })
+            new_rows.append({
+                x_field: x_cross,
+                baseline: y_cross,
+                other: y_cross,
+                'diff': 0.0,
+                'is_positive': is_pos[i + 1]  # belongs to next segment
+            })
+
+    if new_rows:
+        pivot_df = pd.concat([pivot_df, pd.DataFrame(new_rows)], ignore_index=True)
+        pivot_df = pivot_df.sort_values(x_field, kind='mergesort').reset_index(drop=True)
+
+    # Recompute group ids after inserting crossover rows
     pivot_df['group_id'] = (pivot_df['is_positive'] != pivot_df['is_positive'].shift()).cumsum()
 
-    # Upper / lower bounds for the filled area
+    # Bounds
     pivot_df['upper'] = pivot_df[[baseline, other]].max(axis=1)
     pivot_df['lower'] = pivot_df[[baseline, other]].min(axis=1)
 
-    # Build area chart with segmented groups (detail) and color by sign
     area = alt.Chart(pivot_df).mark_area().encode(
-        x=f"{x_field}:T",
+        x=f"{x_field}:T" if to_datetime else alt.X(f"{x_field}:Q"),
         y="upper:Q",
         y2="lower:Q",
         detail="group_id:N",
@@ -194,7 +245,7 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
             legend=None
         ),
         tooltip=[
-            alt.Tooltip(f"{x_field}:T", title=config['x_label']),
+            alt.Tooltip(f"{x_field}:T", title=config['x_label']) if to_datetime else alt.Tooltip(f"{x_field}:Q", title=config['x_label']),
             alt.Tooltip(f"{baseline}:Q", title=baseline, format=","),
             alt.Tooltip(f"{other}:Q", title=other, format=","),
             alt.Tooltip("is_positive:N", title=f"{baseline} above {other}?")
