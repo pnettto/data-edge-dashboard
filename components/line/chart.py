@@ -60,22 +60,86 @@ def _build_single_line(df: pd.DataFrame, config: dict) -> alt.Chart:
 
 
 def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
-    """Multi-line chart without forecast."""
-    encoding = _get_base_encoding(config, include_category=True)
-    
-    line_chart = alt.Chart(df).mark_line(
-        point=True
-    ).encode(**encoding)
+    """Multi-line chart without forecast + interactive toggling."""
+    category_field = config['category_field']
+    highlight_cats = config.get('category_area_highlight', [])
+    all_categories = sorted(df[category_field].unique())
+    has_highlight_pair = len(highlight_cats) == 2
 
-    if 'category_area_highlight' in config:
-        highlight_cats = config['category_area_highlight']
-        if len(highlight_cats) == 2:
-            area_chart = _build_diff_area(df, config, highlight_cats, forecast=False)
-            if area_chart is not None:
-                # Independent color scales: area uses diff sign, lines use categories
-                return (area_chart + line_chart).resolve_scale(color='independent').properties(height=340)
+    # Selection (legend) applies only to non-highlight categories (or all if no highlight pair)
+    selectable_categories = [c for c in all_categories if (not has_highlight_pair or c not in highlight_cats)]
+    selection = None
+    if selectable_categories:
+        selection = alt.selection_point(
+            fields=[category_field],
+            bind='legend',
+            toggle='true',
+            empty='all'
+        )
 
-    return line_chart.properties(height=340)
+    # Area (if highlight pair)
+    area_chart = None
+    if has_highlight_pair:
+        area_chart = _build_diff_area(df, config, highlight_cats, forecast=False)
+
+    # Highlight lines (always visible, no legend entries)
+    highlight_layer = None
+    if has_highlight_pair:
+        highlight_df = df[df[category_field].isin(highlight_cats)]
+        highlight_layer = alt.Chart(highlight_df).mark_line(point=True).encode(
+            x=alt.X(f"{config['x_field']}:T", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+            color=alt.Color(
+                f"{category_field}:N",
+                scale=alt.Scale(domain=all_categories),
+                legend=None  # keep legend clean for toggle categories
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+                alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
+            ]
+        )
+
+    # Other (toggle) lines
+    other_df = df if not has_highlight_pair else df[~df[category_field].isin(highlight_cats)]
+    other_layer = alt.Chart(other_df).mark_line(point=True)
+    other_encoding = {
+        'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
+        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+        'color': alt.Color(
+            f"{category_field}:N",
+            scale=alt.Scale(domain=all_categories),
+            legend=alt.Legend(title=config.get('category_label') or category_field)
+        ),
+        'tooltip': [
+            alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
+            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+            alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
+        ]
+    }
+    if selection:
+        other_encoding['opacity'] = alt.condition(
+            selection,
+            alt.value(1),
+            alt.value(0) if selectable_categories else alt.value(1)  # was 0.15
+        )
+        other_layer = other_layer.add_params(selection)
+
+    other_layer = other_layer.encode(**other_encoding)
+
+    layers = []
+    if area_chart is not None:
+        layers.append(area_chart)
+    if highlight_layer is not None:
+        layers.append(highlight_layer)
+    layers.append(other_layer)
+
+    chart = alt.layer(*layers)
+    if area_chart is not None:
+        chart = chart.resolve_scale(color='independent')  # diff area vs line colors
+
+    return chart.properties(height=340)
 
 
 def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
@@ -105,42 +169,100 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
 
 
 def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
-    """Multi-line chart with forecast."""
-    base = alt.Chart(df)
-    encoding = _get_base_encoding(config, include_type=True, include_category=True)
-    
-    # Actual lines (solid, color-coded)
-    actual = base.transform_filter(
-        alt.datum.type == "Actual"
-    ).mark_line(point=True).encode(**encoding)
-    
-    # Forecast lines (dashed, color-coded)
-    forecast = base.transform_filter(
-        alt.datum.type == "Forecast"
-    ).mark_line(point=True, strokeDash=[5, 5]).encode(**encoding)
-    
-    # Connector lines (dashed, color-coded, no points, minimal encoding)
-    category_label = config.get('category_label') or config['category_field']
-    connector = base.transform_filter(
-        alt.datum.type == "Connector"
-    ).mark_line(point=False, strokeDash=[5, 5]).encode(
+    """Multi-line forecast chart + interactive toggling for non-highlight categories."""
+    category_field = config['category_field']
+    highlight_cats = config.get('category_area_highlight', [])
+    has_highlight_pair = len(highlight_cats) == 2
+    all_categories = sorted(df[category_field].unique())
+    selectable_categories = [c for c in all_categories if (not has_highlight_pair or c not in highlight_cats)]
+
+    selection = None
+    if selectable_categories:
+        selection = alt.selection_point(
+            fields=[category_field],
+            bind='legend',
+            toggle='true',
+            empty='all'
+        )
+
+    # Area only for Actual data
+    area_chart = None
+    if has_highlight_pair:
+        area_chart = _build_diff_area(df, config, highlight_cats, forecast=True)
+
+    def _line_layer(sub_df, type_value, dash=None, legend=True):
+        mark = alt.Chart(sub_df[sub_df['type'] == type_value]).mark_line(
+            point=True,
+            strokeDash=dash
+        )
+        enc = {
+            'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
+            'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+            'color': alt.Color(
+                f"{category_field}:N",
+                scale=alt.Scale(domain=all_categories),
+                legend=alt.Legend(title=config.get('category_label') or category_field) if legend else None
+            ),
+            'tooltip': [
+                alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+                alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
+                alt.Tooltip("type:N", title="Type")
+            ]
+        }
+        if selection and legend:
+            enc['opacity'] = alt.condition(selection, alt.value(1), alt.value(0))  # was 0.15
+            mark = mark.add_params(selection)
+        return mark.encode(**enc)
+
+    # Split highlight vs others
+    highlight_df = df[df[category_field].isin(highlight_cats)] if has_highlight_pair else pd.DataFrame(columns=df.columns)
+    other_df = df if not has_highlight_pair else df[~df[category_field].isin(highlight_cats)]
+
+    layers = []
+
+    if area_chart is not None:
+        layers.append(area_chart)
+
+    # Highlight layers (always full opacity, no legend)
+    if has_highlight_pair and not highlight_df.empty:
+        layers.append(_line_layer(highlight_df, "Actual", legend=False))
+        layers.append(_line_layer(highlight_df, "Forecast", dash=[5, 5], legend=False))
+        connector = alt.Chart(highlight_df[highlight_df['type'] == "Connector"]).mark_line(
+            point=False, strokeDash=[5, 5]
+        ).encode(
+            x=alt.X(f"{config['x_field']}:T"),
+            y=alt.Y(f"{config['y_field']}:Q"),
+            color=alt.Color(
+                f"{category_field}:N",
+                scale=alt.Scale(domain=all_categories),
+                legend=None
+            )
+        )
+        layers.append(connector)
+
+    # Toggle-enabled layers
+    layers.append(_line_layer(other_df, "Actual", legend=True))
+    layers.append(_line_layer(other_df, "Forecast", dash=[5, 5], legend=True))
+    connector_other = alt.Chart(other_df[other_df['type'] == "Connector"]).mark_line(
+        point=False, strokeDash=[5, 5]
+    ).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
         color=alt.Color(
-            f"{config['category_field']}:N", 
-            legend=alt.Legend(title=category_label)
+            f"{category_field}:N",
+            scale=alt.Scale(domain=all_categories),
+            legend=None  # connector doesn't need duplicate legend
         ),
+        opacity=alt.condition(selection, alt.value(1), alt.value(0)) if selection else alt.value(1)  # was 0.15
     )
-    
-    chart = (actual + forecast + connector)
+    if selection:
+        connector_other = connector_other.add_params(selection)
+    layers.append(connector_other)
 
-    if 'category_area_highlight' in config:
-        highlight_cats = config['category_area_highlight']
-        if len(highlight_cats) == 2:
-            # Differential area only over Actual segment for clarity
-            area_chart = _build_diff_area(df, config, highlight_cats, forecast=True)
-            if area_chart is not None:
-                chart = (area_chart + chart).resolve_scale(color='independent')
+    chart = alt.layer(*layers)
+    if area_chart is not None:
+        chart = chart.resolve_scale(color='independent')
 
     return chart.properties(height=340)
 
