@@ -15,7 +15,7 @@ config = [
                 'x_label': 'Date',
                 'category_field': 'region',
                 'category_label': 'Regions',
-                'category_area_highlight': ['West', 'North'],
+                'category_area_highlight': ['North', 'West'],
                 'y_field': 'value',
                 'y_label': 'Revenue',
                 # 'forecast': True

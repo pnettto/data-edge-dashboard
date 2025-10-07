@@ -229,26 +229,26 @@ def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: b
 
     # Recompute group ids after inserting crossover rows
     pivot_df['group_id'] = (pivot_df['is_positive'] != pivot_df['is_positive'].shift()).cumsum()
-
+    # Map boolean to labeled categories
+    pivot_df['diff_label'] = pivot_df['is_positive'].map({True: 'Surplus', False: 'Deficit'})
     # Bounds
     pivot_df['upper'] = pivot_df[[baseline, other]].max(axis=1)
     pivot_df['lower'] = pivot_df[[baseline, other]].min(axis=1)
-
     area = alt.Chart(pivot_df).mark_area().encode(
         x=f"{x_field}:T" if to_datetime else alt.X(f"{x_field}:Q"),
         y="upper:Q",
         y2="lower:Q",
         detail="group_id:N",
         color=alt.Color(
-            "is_positive:N",
-            scale=alt.Scale(domain=[True, False], range=["#2e7d3280", "#c6282880"]),
-            legend=None
+            "diff_label:N",
+            scale=alt.Scale(domain=["Surplus", "Deficit"], range=["#a5d6a780", "#ef9a9a80"]),
+            legend=alt.Legend(title="Difference")
         ),
         tooltip=[
             alt.Tooltip(f"{x_field}:T", title=config['x_label']) if to_datetime else alt.Tooltip(f"{x_field}:Q", title=config['x_label']),
             alt.Tooltip(f"{baseline}:Q", title=baseline, format=","),
             alt.Tooltip(f"{other}:Q", title=other, format=","),
-            alt.Tooltip("is_positive:N", title=f"{baseline} above {other}?")
+            alt.Tooltip("diff_label:N", title="Status")
         ]
     )
     return area
