@@ -63,9 +63,31 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Multi-line chart without forecast."""
     encoding = _get_base_encoding(config, include_category=True)
     
-    return alt.Chart(df).mark_line(
+    line_chart = alt.Chart(df).mark_line(
         point=True
-    ).encode(**encoding).properties(height=340)
+    ).encode(**encoding)
+
+    if 'category_area_highlight' in config:
+        highlight_cats = config['category_area_highlight']
+        if len(highlight_cats) == 2:
+            area_df = df[df[config['category_field']].isin(highlight_cats)]
+            area_df = area_df.pivot(
+                index=config['x_field'], 
+                columns=config['category_field'], 
+                values=config['y_field']
+            ).reset_index()
+
+            area_chart = alt.Chart(area_df).mark_area(
+                opacity=0.3,
+                color='lightgray'
+            ).encode(
+                x=f"{config['x_field']}:T",
+                y=f"{highlight_cats[0]}:Q",
+                y2=f"{highlight_cats[1]}:Q"
+            )
+            return (area_chart + line_chart).properties(height=340)
+
+    return line_chart.properties(height=340)
 
 
 def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
@@ -118,9 +140,30 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
         y=alt.Y(f"{config['y_field']}:Q"),
         color=alt.Color(
             f"{config['category_field']}:N", 
-            scale=alt.Scale(scheme="redyellowblue"),
             legend=alt.Legend(title=category_label)
         ),
     )
     
-    return (actual + forecast + connector).properties(height=340)
+    chart = (actual + forecast + connector)
+
+    if 'category_area_highlight' in config:
+        highlight_cats = config['category_area_highlight']
+        if len(highlight_cats) == 2:
+            area_df = df[df[config['category_field']].isin(highlight_cats)]
+            area_df = area_df.pivot_table(
+                index=[config['x_field'], 'type'],
+                columns=config['category_field'],
+                values=config['y_field']
+            ).reset_index()
+
+            area_chart = alt.Chart(area_df).mark_area(
+                opacity=0.3,
+                color='lightgray'
+            ).encode(
+                x=f"{config['x_field']}:T",
+                y=f"{highlight_cats[0]}:Q",
+                y2=f"{highlight_cats[1]}:Q"
+            )
+            chart = area_chart + chart
+
+    return chart.properties(height=340)
