@@ -4,7 +4,7 @@ import pandas as pd
 import altair as alt
 
 # Bar chart styling
-BAR_COLOR_SCHEME = "dark2"
+BAR_COLOR_SCHEME = "tableau20"
 BAR_SINGLE_COLOR = "#0b7dcfff"
 BAR_FORECAST_OPACITY = 0.5
 
@@ -37,6 +37,32 @@ def _get_x_encoding_type(df: pd.DataFrame, x_field: str) -> str:
         return "N"  # Nominal
 
 
+def _is_time_or_sequential(df: pd.DataFrame, x_field: str) -> bool:
+    """Check if x-axis data should be treated as time-series or sequential (not categorical)."""
+    # Check if it's datetime
+    if pd.api.types.is_datetime64_any_dtype(df[x_field]):
+        return True
+    
+    # Check if it's numeric
+    if pd.api.types.is_numeric_dtype(df[x_field]):
+        return True
+    
+    # Check if string values look like dates
+    if df[x_field].dtype == object:
+        sample = df[x_field].dropna().astype(str).head(5)
+        for val in sample:
+            # Check for common date patterns
+            if any(pattern in val for pattern in ['-', '/', 'Q', '20', '19']):
+                # Try to parse as date
+                try:
+                    pd.to_datetime(val)
+                    return True
+                except:
+                    pass
+    
+    return False
+
+
 def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
     """Build Altair bar chart based on configuration."""
     has_forecast = config.get('forecast', False) and "type" in plot_df.columns
@@ -65,24 +91,43 @@ def _build_single_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
     x_type = _get_x_encoding_type(df, config['x_field'])
     orientation = config.get('orientation', 'vertical')
     
+    # Use color scheme only for truly categorical data (not time-series or sequential)
+    is_categorical_only = not _is_time_or_sequential(df, config['x_field'])
+    
+    color_encoding = alt.Color(
+        f"{config['x_field']}:N",
+        scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+        legend=None
+    ) if is_categorical_only else None
+    
     if orientation == 'horizontal':
-        bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(
-            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            tooltip=[
+        encoding = {
+            'x': alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            'y': alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            'tooltip': [
                 alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
                 alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
             ]
-        )
+        }
+        if color_encoding:
+            encoding['color'] = color_encoding
+            bars = alt.Chart(df).mark_bar().encode(**encoding)
+        else:
+            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(**encoding)
     else:
-        bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(
-            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-            tooltip=[
+        encoding = {
+            'x': alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            'tooltip': [
                 alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
                 alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
             ]
-        )
+        }
+        if color_encoding:
+            encoding['color'] = color_encoding
+            bars = alt.Chart(df).mark_bar().encode(**encoding)
+        else:
+            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(**encoding)
     
     chart = bars
     

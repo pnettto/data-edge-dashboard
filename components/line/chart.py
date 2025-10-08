@@ -4,7 +4,7 @@ import pandas as pd
 import altair as alt
 
 # Line chart styling
-LINE_COLOR_SCHEME = "dark2"
+LINE_COLOR_SCHEME = "tableau20"
 LINE_STROKE_WIDTH = 3
 LINE_SINGLE_COLOR = "#0b7dcfff"
 
