@@ -10,15 +10,26 @@ config = [
         'items': [
             {
                 'type': 'line',
-                'title': 'Revenue (invoice date, net)',
+                'title': 'Revenue',
                 'description': 'Monthly revenue summed by invoice date',
                 'df': csv_to_df('revenue_monthly'),
                 'x_field': 'date',
                 'x_label': 'Month',
                 'y_field': 'revenue',
-                'y_label': 'Revenue'
+                'y_label': 'Revenue (SEK)',
+                'trendline': True
+            },
+            {
+                'type': 'line',
+                'title': 'Cash-in (final pay date, total)',
+                'description': 'Monthly cash flow summed by final pay date',
+                'df': csv_to_df('cash_in_monthly'),
+                'x_field': 'date',
+                'x_label': 'Month',
+                'y_field': 'cash',
+                'y_label': 'Cash-in (SEK)',
+                'trendline': True
             }
         ]
     }
 ]
-
