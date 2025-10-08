@@ -103,6 +103,13 @@ def _infer_frequency(date_series: pd.Series) -> str:
     """Infer frequency from a datetime series, defaulting to daily."""
     sorted_dates = date_series.sort_values()
     
+    # Ensure dates are datetime type before frequency inference
+    if not pd.api.types.is_datetime64_any_dtype(sorted_dates):
+        try:
+            sorted_dates = pd.to_datetime(sorted_dates)
+        except Exception:
+            return "D"  # Default to daily if conversion fails
+    
     # Try pandas built-in inference
     freq = pd.infer_freq(sorted_dates)
     if freq:
