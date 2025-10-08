@@ -3,6 +3,8 @@
 import pandas as pd
 import altair as alt
 
+LINE_COLOR_SCHEME = "pastel2"
+
 
 def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
     """Build Altair chart based on configuration."""
@@ -91,7 +93,7 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
             color=alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=None  # keep legend clean for toggle categories
             ),
             tooltip=[
@@ -109,7 +111,7 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
         'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
         'color': alt.Color(
             f"{category_field}:N",
-            scale=alt.Scale(domain=all_categories),
+            scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
             legend=alt.Legend(title=config.get('category_label') or category_field)
         ),
         'tooltip': [
@@ -200,7 +202,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
             'color': alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=alt.Legend(title=config.get('category_label') or category_field) if legend else None
             ),
             'tooltip': [
@@ -235,7 +237,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             y=alt.Y(f"{config['y_field']}:Q"),
             color=alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=None
             )
         )
@@ -251,7 +253,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
         y=alt.Y(f"{config['y_field']}:Q"),
         color=alt.Color(
             f"{category_field}:N",
-            scale=alt.Scale(domain=all_categories),
+            scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
             legend=None  # connector doesn't need duplicate legend
         ),
         opacity=alt.condition(selection, alt.value(1), alt.value(0)) if selection else alt.value(1)  # was 0.15
