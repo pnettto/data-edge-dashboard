@@ -38,6 +38,9 @@ def create_forecast_df(config):
     # Convert x-axis to datetime for forecasting
     df[x_field] = _convert_to_datetime(df[x_field])
     
+    # Normalize historical dates to date-only (remove time component)
+    df[x_field] = df[x_field].dt.date
+    
     # Generate forecast once with maximum periods (cached across reloads)
     with st.spinner("Generating forecast..."):
         full_forecast_df = _generate_forecast_df(
@@ -123,7 +126,7 @@ def _forecast_single(df: pd.DataFrame, x_field: str, y_field: str, periods: int)
     forecast = model.predict(future)
     
     return pd.DataFrame({
-        x_field: forecast['ds'],
+        x_field: forecast['ds'].dt.date,
         y_field: forecast['yhat'],
         "type": "Forecast"
     })

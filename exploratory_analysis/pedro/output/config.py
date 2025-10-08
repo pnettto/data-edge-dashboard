@@ -93,7 +93,7 @@ config = [
                 'x_label': 'Date',
                 'y_field': 'value',
                 'y_label': 'Revenue',
-                # 'forecast': True
+                'forecast': True
             },
 
             {
