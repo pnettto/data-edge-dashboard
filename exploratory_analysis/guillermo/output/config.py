@@ -4,7 +4,7 @@ def csv_to_df(f): return pd.read_csv(__file__.replace('config.py', f'{f}.csv'))
 
 config = [
     {
-        'tab': 'Sample charts',
+        'tab': 'Guillermo',
         'items': [
              {
                 'type': 'line',
