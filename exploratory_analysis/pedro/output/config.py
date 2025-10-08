@@ -95,6 +95,7 @@ config = [
                         'x_label': 'Quarter',
                         'y_field': 'avg_effort_per_project',
                         'y_label': 'Avg Effort',
+                        'trendline': True,
                         # 'forecast': True
                     },
                     {
@@ -106,7 +107,8 @@ config = [
                         'x_label': 'Date',
                         'y_field': 'value',
                         'y_label': 'Revenue',
-                        'forecast': True
+                        'trendline': True,
+                        # 'forecast': True
                     },
                 ]
             },
@@ -135,7 +137,7 @@ config = [
                         'x_field': 'date',
                         'x_label': 'Date',
                         'y_field': 'value',
-                        'y_label': 'Revenue'
+                        'y_label': 'Revenue',
                     },
 
                     {

@@ -33,14 +33,53 @@ def _build_single_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Single bar chart without forecast."""
     x_type = _get_x_encoding_type(df, config['x_field'])
     
-    return alt.Chart(df).mark_bar(color="#0b7dcfff").encode(
+    bars = alt.Chart(df).mark_bar(color="#0b7dcfff").encode(
         x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
         y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
         tooltip=[
             alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
             alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
         ]
-    ).properties(height=340)
+    )
+    
+    chart = bars
+    
+    # Add trendline if requested
+    if config.get('trendline', False):
+        trendline = _create_trendline(df, config, x_type)
+        chart = bars + trendline
+    
+    return chart.properties(height=340)
+
+
+def _create_trendline(df: pd.DataFrame, config: dict, x_type: str) -> alt.Chart:
+    """Create a trendline layer using linear regression."""
+    import numpy as np
+    
+    # Prepare data for regression
+    df_sorted = df.sort_values(by=config['x_field']).reset_index(drop=True)
+    x_numeric = np.arange(len(df_sorted))
+    y_values = df_sorted[config['y_field']].values
+    
+    # Calculate linear regression
+    coefficients = np.polyfit(x_numeric, y_values, 1)
+    slope, intercept = coefficients[0], coefficients[1]
+    
+    # Create trendline points at start and end
+    trendline_data = pd.DataFrame({
+        config['x_field']: [df_sorted[config['x_field']].iloc[0], df_sorted[config['x_field']].iloc[-1]],
+        config['y_field']: [intercept, slope * (len(df_sorted) - 1) + intercept]
+    })
+    
+    return alt.Chart(trendline_data).mark_line(
+        color='#FF6B6B',
+        strokeDash=[5, 5],
+        size=3,
+        opacity=0.8
+    ).encode(
+        x=alt.X(f"{config['x_field']}:{x_type}"),
+        y=alt.Y(f"{config['y_field']}:Q")
+    )
 
 
 def _build_multi_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
