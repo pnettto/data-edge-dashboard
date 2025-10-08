@@ -11,9 +11,9 @@ from utils.overview import config as overview_config
 from exploratory_analysis.pedro.output.config import config as pedro_config
 from exploratory_analysis.guillermo.output.config import config as guillermo_config
 from exploratory_analysis.osei.output.config import config as osei_config
-# from exploratory_analysis.waldean.output.config import config as waldean_config
+from exploratory_analysis.waldean.output.config import config as waldean_config
 
-all_configs = overview_config + guillermo_config + osei_config + pedro_config # + waldean_config
+all_configs = overview_config + waldean_config + osei_config + guillermo_config + pedro_config
 
 # Merge tabs with same name
 merged = defaultdict(list)
