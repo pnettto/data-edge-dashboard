@@ -21,7 +21,7 @@ config = [
             },
             {
                 'type': 'line',
-                'title': 'Cash-in (final pay date, total)',
+                'title': 'Cash-in (Monthly)',
                 'description': 'Monthly cash flow summed by final pay date',
                 'df': csv_to_df('cash_in_monthly'),
                 'x_field': 'date',
