@@ -21,6 +21,7 @@ def render_line_chart(config: dict) -> None:
             - category_field (str, optional): Name of the column for categorical grouping (optional).
             - category_label (str, optional): (chart) Title of the column for categorical grouping (optional).
             - forecast (bool, optional): Whether to enable forecasting (default: False).
+            - trendline (bool, optional): Whether to show a trendline for single line charts (default: False).
     """
     st.subheader(config['title'])
     st.caption(config['description'])

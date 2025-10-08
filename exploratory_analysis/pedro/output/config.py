@@ -101,20 +101,31 @@ config = [
                     },
                     {
                         'type': 'line',
-                        'title': 'Revenue by Segment',
-                        'description': 'Four segments shown as separate lines over time',
-                        'df': csv_to_df('multi_line'),
+                        'title': 'Revenue (invoice date)',
+                        'description': 'Monthly revenue tracked by invoice date',
+                        'df': csv_to_df('single_line'),
                         'x_field': 'date',
                         'x_label': 'Date',
-                        'category_field': 'region',
-                        'category_label': 'Regions',
-                        'category_area_highlight': ['North', 'South'],
                         'y_field': 'value',
                         'y_label': 'Revenue',
-                        # 'forecast': True
+                        'trendline': True,
                     },
                 ]
-            }
+            },
+            {
+                'type': 'line',
+                'title': 'Revenue by Segment',
+                'description': 'Four segments shown as separate lines over time',
+                'df': csv_to_df('multi_line'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'category_field': 'region',
+                'category_label': 'Regions',
+                'category_area_highlight': ['North', 'South'],
+                'y_field': 'value',
+                'y_label': 'Revenue',
+                # 'forecast': True
+            },
         ]
     },
 

@@ -30,6 +30,12 @@ REFERENCE_LINE_COLOR = "#FF6B6B"
 REFERENCE_LINE_DASH = [8, 4]
 REFERENCE_LINE_WIDTH = 2
 
+# Trendline styling
+TRENDLINE_COLOR = "#FF6B6B"
+TRENDLINE_DASH = [5, 5]
+TRENDLINE_WIDTH = 3
+TRENDLINE_OPACITY = 0.8
+
 # Tooltip formatting
 TOOLTIP_NUMBER_FORMAT = ","
 TOOLTIP_AXIS_FORMAT = ",.0f"
@@ -94,11 +100,53 @@ def _build_single_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     
     point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
     
-    return alt.Chart(df).mark_line(
+    line = alt.Chart(df).mark_line(
         point=point_config, 
         color=LINE_SINGLE_COLOR,
         strokeWidth=LINE_STROKE_WIDTH
-    ).encode(**encoding).properties(height=CHART_HEIGHT)
+    ).encode(**encoding)
+    
+    chart = line
+    
+    # Add trendline if requested
+    if config.get('trendline', False):
+        trendline = _create_trendline(df, config)
+        chart = line + trendline
+    
+    return chart.properties(height=CHART_HEIGHT)
+
+
+def _create_trendline(df: pd.DataFrame, config: dict) -> alt.Chart:
+    """Create a trendline layer using linear regression."""
+    import numpy as np
+    
+    # Prepare data for regression
+    df_sorted = df.sort_values(by=config['x_field']).reset_index(drop=True)
+    x_numeric = np.arange(len(df_sorted))
+    y_values = df_sorted[config['y_field']].values
+    
+    # Calculate linear regression
+    coefficients = np.polyfit(x_numeric, y_values, 1)
+    slope, intercept = coefficients[0], coefficients[1]
+    
+    # Create trendline points at start and end
+    trendline_data = pd.DataFrame({
+        config['x_field']: [df_sorted[config['x_field']].iloc[0], df_sorted[config['x_field']].iloc[-1]],
+        config['y_field']: [intercept, slope * (len(df_sorted) - 1) + intercept]
+    })
+    
+    # Determine x encoding type
+    x_type = "T" if pd.api.types.is_datetime64_any_dtype(df_sorted[config['x_field']]) else "Q"
+    
+    return alt.Chart(trendline_data).mark_line(
+        color=TRENDLINE_COLOR,
+        strokeDash=TRENDLINE_DASH,
+        size=TRENDLINE_WIDTH,
+        opacity=TRENDLINE_OPACITY
+    ).encode(
+        x=alt.X(f"{config['x_field']}:{x_type}"),
+        y=alt.Y(f"{config['y_field']}:Q")
+    )
 
 
 def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
