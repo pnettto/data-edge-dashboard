@@ -9,8 +9,8 @@ MAX_FORECAST_PERIODS = 24
 DEFAULT_FORECAST_PERIODS = 12
 FORECAST_OPTIONS = [6, 12, 18, 24]
 
-def create_forecast_df(config):
-    """Handle forecasting"""
+def create_forecast_df(config, forecast_periods: int = DEFAULT_FORECAST_PERIODS):
+    """Generate (and slice) forecast dataframe. UI selection is handled by caller."""
     if not config.get('forecast', False):
         return pd.DataFrame()
 
@@ -27,17 +27,7 @@ def create_forecast_df(config):
     if full_forecast_df.empty:
         return pd.DataFrame()
     
-    # Show selectbox to select forecast periods in a narrow column aligned to the right
-    col1, col2 = st.columns([3, 1])
-    with col2:
-        forecast_periods = st.selectbox(
-            "Forecast periods", 
-            options=FORECAST_OPTIONS,
-            index=FORECAST_OPTIONS.index(DEFAULT_FORECAST_PERIODS),
-            key=f"selectbox_{id(config)}"
-        )
-    
-    # Slice forecast based on selected periods
+    # Slice forecast based on provided forecast_periods (no internal UI)
     if category_field:
         # Slice each category separately
         sliced_forecasts = [
@@ -112,6 +102,13 @@ def _forecast_single(df: pd.DataFrame, x_field: str, y_field: str, periods: int)
 def _infer_frequency(date_series: pd.Series) -> str:
     """Infer frequency from a datetime series, defaulting to daily."""
     sorted_dates = date_series.sort_values()
+    
+    # Ensure dates are datetime type before frequency inference
+    if not pd.api.types.is_datetime64_any_dtype(sorted_dates):
+        try:
+            sorted_dates = pd.to_datetime(sorted_dates)
+        except Exception:
+            return "D"  # Default to daily if conversion fails
     
     # Try pandas built-in inference
     freq = pd.infer_freq(sorted_dates)

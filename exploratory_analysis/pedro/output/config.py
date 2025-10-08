@@ -505,6 +505,65 @@ config = [
                     },
                 ],
             },
+
+            {
+                'columns': [
+                    {
+                        'type': 'markdown',
+                        'title': 'Markdown Example',
+                        'content': """
+                        You can use markdown to display formatted text, lists, links, images, and more.
+
+                        - **Bold** and *italic* text
+                        - [Links](https://www.example.com)
+                        - Inline code: `print("Hello World")`
+                        """
+                    },
+                    {
+                        'type': 'markdown',
+                        'title': 'Config',
+                        'content': """
+                        ```
+                        {
+                            'type': 'markdown',
+                            'title': 'Markdown Example',
+                            'content': \"\"\"
+                            You can use markdown to display formatted text, lists, links, images, and more.
+
+                            - **Bold** and *italic* text
+                            - [Links](https://www.example.com)
+                            - Inline code: `print("Hello World")`
+                            \"\"\"
+                        },
+                        ```
+                        """
+                    },
+                ]
+            },
+            {
+                'columns': [
+                    {
+                        'type': 'table',
+                        'title': 'Table Example',
+                        'description': 'Display tabular data with sorting and formatting',
+                        'df': csv_to_df('quarterly_effort'),
+                    },
+                    {
+                        'type': 'markdown',
+                        'title': 'Config',
+                        'content': """
+                        ```
+                        {
+                            'type': 'table',
+                            'title': 'Table Example',
+                            'description': 'Display tabular data with sorting and formatting',
+                            'df': your_df,
+                        }
+                        ```
+                        """
+                    },
+                ]
+            },
         ]
     },
 ]
