@@ -47,15 +47,13 @@ config = [
 
             {
                 'type': 'bar',
-                'title': 'Utilization by Seniority',
+                'title': 'Revenue (bar)',
                 'description': 'Monthly revenue totals as bars',
                 'df': csv_to_df('utilization_by_seniority'),
-                'x_field': 'logged_based_utilization',
-                'x_label': 'Utilization',
-                'category_field': 'region',
-                'category_label': 'Regions',
-                'y_field': 'seniority',
-                'y_label': 'Seniority',
+                'x_field': 'seniority',
+                'x_label': 'Seniority',            
+                'y_field': 'logged_based_utilization',
+                'y_label': 'Utilization',
                 # 'forecast': True
             },
             {
