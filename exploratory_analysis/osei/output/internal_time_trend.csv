@@ -1,0 +1,136 @@
+month,category,hours
+2020-08-01,Vacation/Leave,88.0
+2020-10-01,General Internal,8.0
+2020-11-01,General Internal,16.0
+2020-12-01,General Internal,4.0
+2020-12-01,Vacation/Leave,96.0
+2021-01-01,General Internal,8.0
+2021-01-01,Vacation/Leave,136.0
+2021-02-01,General Internal,22.0
+2021-02-01,Vacation/Leave,88.0
+2021-03-01,General Internal,40.0
+2021-03-01,Vacation/Leave,72.0
+2021-04-01,General Internal,16.0
+2021-04-01,Vacation/Leave,216.0
+2021-05-01,General Internal,12.0
+2021-05-01,Vacation/Leave,200.0
+2021-06-01,Vacation/Leave,188.0
+2021-07-01,General Internal,21.0
+2021-07-01,Vacation/Leave,544.0
+2021-08-01,General Internal,6.0
+2021-08-01,Vacation/Leave,455.0
+2021-09-01,General Internal,81.0
+2021-09-01,Vacation/Leave,48.0
+2021-10-01,General Internal,42.0
+2021-11-01,General Internal,18.0
+2021-11-01,Vacation/Leave,176.0
+2021-12-01,General Internal,142.0
+2021-12-01,Sick Leave,15.0
+2021-12-01,Vacation/Leave,256.0
+2022-01-01,General Internal,140.98333333333335
+2022-01-01,Vacation/Leave,197.0
+2022-02-01,General Internal,98.0
+2022-02-01,Vacation/Leave,175.0
+2022-03-01,General Internal,130.5
+2022-03-01,Vacation/Leave,224.0
+2022-04-01,General Internal,45.6
+2022-04-01,Vacation/Leave,168.0
+2022-05-01,General Internal,231.0
+2022-05-01,Vacation/Leave,48.0
+2022-06-01,General Internal,296.4
+2022-06-01,Sick Leave,7.199999999999999
+2022-06-01,Vacation/Leave,127.0
+2022-07-01,General Internal,147.4
+2022-07-01,Vacation/Leave,511.0
+2022-08-01,General Internal,141.0
+2022-08-01,Vacation/Leave,307.0
+2022-09-01,General Internal,206.0
+2022-09-01,Vacation/Leave,22.0
+2022-10-01,General Internal,216.0
+2022-10-01,Sick Leave,24.0
+2022-10-01,Vacation/Leave,8.0
+2022-11-01,General Internal,231.0
+2022-11-01,Sick Leave,24.0
+2022-11-01,Vacation/Leave,40.0
+2022-12-01,General Internal,310.0
+2022-12-01,Vacation/Leave,216.0
+2023-01-01,General Internal,306.0
+2023-01-01,Sick Leave,32.0
+2023-01-01,Vacation/Leave,100.0
+2023-02-01,General Internal,330.0
+2023-02-01,Sick Leave,8.0
+2023-02-01,Vacation/Leave,8.0
+2023-03-01,General Internal,345.0
+2023-03-01,Vacation/Leave,52.0
+2023-04-01,General Internal,228.25
+2023-04-01,Vacation/Leave,211.0
+2023-05-01,General Internal,340.0
+2023-05-01,Sick Leave,22.0
+2023-05-01,Vacation/Leave,54.0
+2023-06-01,General Internal,242.25
+2023-06-01,Vacation/Leave,286.0
+2023-07-01,General Internal,100.5
+2023-07-01,Vacation/Leave,792.0
+2023-08-01,General Internal,353.5
+2023-08-01,Vacation/Leave,536.0
+2023-09-01,General Internal,695.75
+2023-09-01,Sick Leave,16.0
+2023-09-01,Vacation/Leave,37.0
+2023-10-01,General Internal,387.5
+2023-10-01,Sick Leave,58.0
+2023-11-01,General Internal,409.0
+2023-11-01,Sick Leave,16.0
+2023-12-01,General Internal,439.0
+2023-12-01,Sick Leave,40.0
+2023-12-01,Vacation/Leave,308.0
+2024-01-01,General Internal,720.0
+2024-01-01,Sick Leave,80.0
+2024-01-01,Vacation/Leave,200.0
+2024-02-01,General Internal,443.0
+2024-02-01,Sick Leave,32.0
+2024-02-01,Training/Development,36.0
+2024-02-01,Vacation/Leave,128.0
+2024-03-01,General Internal,531.0
+2024-03-01,Training/Development,16.0
+2024-03-01,Vacation/Leave,168.0
+2024-04-01,General Internal,798.0
+2024-04-01,Sick Leave,24.0
+2024-04-01,Vacation/Leave,256.0
+2024-05-01,General Internal,880.0
+2024-05-01,Vacation/Leave,204.0
+2024-06-01,General Internal,565.0
+2024-06-01,Sick Leave,7.0
+2024-06-01,Vacation/Leave,311.0
+2024-07-01,General Internal,214.0
+2024-07-01,Vacation/Leave,1212.0
+2024-08-01,General Internal,513.0
+2024-08-01,Sick Leave,36.0
+2024-08-01,Vacation/Leave,712.0
+2024-09-01,General Internal,695.0
+2024-09-01,Vacation/Leave,48.0
+2024-10-01,General Internal,305.0
+2024-10-01,Sick Leave,10.0
+2024-10-01,Vacation/Leave,104.0
+2024-11-01,General Internal,261.0
+2024-11-01,Sick Leave,48.0
+2024-11-01,Vacation/Leave,228.0
+2024-12-01,General Internal,214.0
+2024-12-01,Vacation/Leave,392.0
+2025-01-01,General Internal,147.0
+2025-01-01,Sick Leave,92.0
+2025-01-01,Vacation/Leave,304.0
+2025-02-01,General Internal,98.0
+2025-02-01,Sick Leave,56.0
+2025-02-01,Vacation/Leave,336.0
+2025-03-01,General Internal,174.0
+2025-03-01,Vacation/Leave,312.0
+2025-04-01,General Internal,96.5
+2025-04-01,Sick Leave,32.0
+2025-04-01,Vacation/Leave,234.0
+2025-05-01,Vacation/Leave,160.0
+2025-06-01,Vacation/Leave,160.0
+2025-07-01,Vacation/Leave,184.0
+2025-08-01,Vacation/Leave,168.0
+2025-09-01,Vacation/Leave,176.0
+2025-10-01,Vacation/Leave,184.0
+2025-11-01,Vacation/Leave,160.0

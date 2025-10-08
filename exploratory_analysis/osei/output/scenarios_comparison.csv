@@ -1,0 +1,6 @@
+scenario,new_utilization,hours_saved
+Cut General Internal by 30%,0.8552162642805855,4038.3399999999997
+Cut General Internal 30% + Training 20%,0.8552803797278462,4048.74
+Aggressive Efficiency,0.8719098717649953,6746.166666666667
+Optimize Controllable Time,0.8635951257464209,5397.453333333334
+20% Reduction Across Board,0.846981662571087,2702.626666666667
