@@ -26,20 +26,6 @@ config = [
                 'columns': [
                     {
                         'type': 'markdown',
-                        'title': 'Utilization Overview',
-                        'content': f"""
-                        **Current State:**
-                        - **Current Utilization:** {current_util:.1%}
-                        - **Target Utilization:** {target_util:.1%}
-                        - **Gap to Target:** {util_gap:.1%}
-                        
-                        **Opportunity:**
-                        - **Hours needed to reach target:** {hours_needed:,.0f} hours
-                        - **Revenue opportunity:** ${revenue_opp:,.0f}
-                        """
-                    },
-                    {
-                        'type': 'markdown',
                         'content': f"""
                         **What is Utilization?**
                         
@@ -51,7 +37,21 @@ config = [
                         - Low utilization = Wasted capacity and missed opportunities
                         - Optimal range: 80-95% (above 95% risks burnout)
                         """
-                    }
+                    },
+                    {
+                        'type': 'markdown',
+                        'content': f"""
+                        **Current State:**
+                        
+                        - **Current Utilization:** {current_util:.1%}
+                        - **Target Utilization:** {target_util:.1%}
+                        - **Gap to Target:** {util_gap:.1%}
+                        
+                        **Opportunity:**
+                        - **Hours needed to reach target:** {hours_needed:,.0f} hours
+                        - **Revenue opportunity:** ${revenue_opp:,.0f}
+                        """
+                    },
                 ]
             },
             
