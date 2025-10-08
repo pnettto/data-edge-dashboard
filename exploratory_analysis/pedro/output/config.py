@@ -85,15 +85,30 @@ config = [
         'tab': 'More samples',
         'items': [
             {
-                'type': 'bar',
-                'title': 'Revenue (bar)',
-                'description': 'Monthly revenue totals as bars',
-                'df': csv_to_df('bar'),
-                'x_field': 'date',
-                'x_label': 'Date',
-                'y_field': 'value',
-                'y_label': 'Revenue',
-                'forecast': True
+                'columns': [
+                    {
+                        'type': 'bar',
+                        'title': 'Quarterly effort',
+                        'description': 'Quarterly effort as bars',
+                        'df': csv_to_df('quarterly_effort'),
+                        'x_field': 'completion_quarter_str',
+                        'x_label': 'Quarter',
+                        'y_field': 'avg_effort_per_project',
+                        'y_label': 'Avg Effort',
+                        # 'forecast': True
+                    },
+                    {
+                        'type': 'bar',
+                        'title': 'Revenue (bar)',
+                        'description': 'Monthly revenue totals as bars',
+                        'df': csv_to_df('bar'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        'forecast': True
+                    },
+                ]
             },
 
             {
