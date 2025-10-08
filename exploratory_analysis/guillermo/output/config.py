@@ -10,12 +10,26 @@ config = [
                 'type': 'line',
                 'title': 'Workload vs. Capacity Over Time',
                 'description': 'Comparison of potential capacity, defined work, and recorded work hours.',
-                'df': csv_to_df('df_combined'),
+                'df': csv_to_df('df_capacity_metrics'),
                 'x_field': 'month',
                 'x_label': 'Month',
                 'category_field': 'metric_type',
                 'category_label': 'Metric',
                 'category_area_highlight': ['recorded_logged_hours', 'defined_role_hours'],
+                'y_field': 'hours',
+                'y_label': 'Total Hours per Month',
+            },
+            
+            {
+                'type': 'line',
+                'title': 'Workload vs. Capacity Over Time',
+                'description': 'Comparison of potential capacity, defined work, and recorded work hours.',
+                'df': csv_to_df('df_billable_metrics'),
+                'x_field': 'month',
+                'x_label': 'Month',
+                'category_field': 'metric_type',
+                'category_label': 'Metric',
+                
                 'y_field': 'hours',
                 'y_label': 'Total Hours per Month',
             },
@@ -42,6 +56,30 @@ config = [
                 'y_label': 'Utilization',
                 'category_field': 'seniority',
                 'category_label': 'Seniority'
+            },
+           {
+                'type': 'line',
+                'title': 'Evolution of Work In Progress',
+                'description': 'Amount of active projects each month',
+                'df': csv_to_df('headcount_vs_effort'),
+                'x_field': 'quarter_x',
+                'x_label': 'Quarter',
+                'y_field': 'avg_effort_per_project',
+                'y_label': 'Avg Effort per Project',
+                #'trendline': True
+                
+            },
+            {
+                'type': 'line',
+                'title': 'Evolution of Work In Progress',
+                'description': 'Amount of active projects each month',
+                'df': csv_to_df('monthly_wip_load'),
+                'x_field': 'month',
+                'x_label': 'Month',
+                'y_field': 'wip_project_count',
+                'y_label': 'Project Count',
+                'trendline': True
+                
             },
 
         ]
