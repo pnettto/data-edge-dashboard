@@ -144,7 +144,6 @@ config = [
                         'y_field': 'avg_effort_per_project',
                         'y_label': 'Avg Effort',
                         'trendline': True,
-                        # 'forecast': True
                     },
                     {
                         'type': 'bar',
@@ -155,9 +154,34 @@ config = [
                         'x_label': 'Date',
                         'y_field': 'value',
                         'y_label': 'Revenue',
-                        'trendline': True,
                         'orientation': 'horizontal',
-                        # 'forecast': True
+                    },
+                ]
+            },
+
+            {
+                'columns': [
+                    {
+                        'type': 'bar',
+                        'title': 'Revenue with Y-axis Target',
+                        'description': 'Bar chart with horizontal reference line',
+                        'df': csv_to_df('bar'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        'reference_line': ('y', 7500, 'Revenue Target')
+                    },
+                    {
+                        'type': 'bar',
+                        'title': 'Revenue with X-axis Marker',
+                        'description': 'Bar chart with vertical reference line',
+                        'df': csv_to_df('bar'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        'reference_line': ('x', '2024-05-01', 'Fiscal Year Start')
                     },
                 ]
             },
