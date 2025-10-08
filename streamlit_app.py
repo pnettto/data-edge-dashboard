@@ -13,7 +13,7 @@ from exploratory_analysis.guillermo.output.config import config as guillermo_con
 from exploratory_analysis.osei.output.config import config as osei_config
 # from exploratory_analysis.waldean.output.config import config as waldean_config
 
-all_configs = overview_config + pedro_config + guillermo_config + osei_config # + waldean_config
+all_configs = overview_config + guillermo_config + osei_config + pedro_config # + waldean_config
 
 # Merge tabs with same name
 merged = defaultdict(list)
