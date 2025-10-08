@@ -7,6 +7,7 @@ import altair as alt
 LINE_COLOR_SCHEME = "tableau20"
 LINE_STROKE_WIDTH = 3
 LINE_SINGLE_COLOR = "#0b7dcfff"
+LINE_INTERPOLATE = "monotone"  # Makes lines smoother and more rounded
 
 # Point styling (invisible but interactive)
 POINT_SIZE = 100
@@ -103,7 +104,8 @@ def _build_single_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     line = alt.Chart(df).mark_line(
         point=point_config, 
         color=LINE_SINGLE_COLOR,
-        strokeWidth=LINE_STROKE_WIDTH
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
     ).encode(**encoding)
     
     chart = line
@@ -178,13 +180,17 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     highlight_layer = None
     if has_highlight_pair:
         highlight_df = df[df[category_field].isin(highlight_cats)]
-        highlight_layer = alt.Chart(highlight_df).mark_line(point=point_config, strokeWidth=LINE_STROKE_WIDTH).encode(
+        highlight_layer = alt.Chart(highlight_df).mark_line(
+            point=point_config, 
+            strokeWidth=LINE_STROKE_WIDTH,
+            interpolate=LINE_INTERPOLATE
+        ).encode(
             x=alt.X(f"{config['x_field']}:T", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             color=alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
-                legend=None  # keep legend clean for toggle categories
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),
+                legend=None
             ),
             tooltip=[
                 alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
@@ -195,7 +201,11 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
 
     # Other (toggle) lines
     other_df = df if not has_highlight_pair else df[~df[category_field].isin(highlight_cats)]
-    other_layer = alt.Chart(other_df).mark_line(point=point_config, strokeWidth=LINE_STROKE_WIDTH)
+    other_layer = alt.Chart(other_df).mark_line(
+        point=point_config, 
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
+    )
     other_encoding = {
         'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
         'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
@@ -244,17 +254,34 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     # Actual line (solid)
     actual = base.transform_filter(
         alt.datum.type == "Actual"
-    ).mark_line(point=point_config, color=LINE_SINGLE_COLOR, strokeWidth=LINE_STROKE_WIDTH).encode(**encoding)
+    ).mark_line(
+        point=point_config, 
+        color=LINE_SINGLE_COLOR, 
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
+    ).encode(**encoding)
     
     # Forecast line (dashed)
     forecast = base.transform_filter(
         alt.datum.type == "Forecast"
-    ).mark_line(point=point_config, color=LINE_SINGLE_COLOR, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH).encode(**encoding)
+    ).mark_line(
+        point=point_config, 
+        color=LINE_SINGLE_COLOR, 
+        strokeDash=FORECAST_DASH, 
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
+    ).encode(**encoding)
     
     # Connector line (dashed, no points, minimal encoding)
     connector = base.transform_filter(
         alt.datum.type == "Connector"
-    ).mark_line(point=CONNECTOR_SHOW_POINTS, color=LINE_SINGLE_COLOR, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH).encode(
+    ).mark_line(
+        point=CONNECTOR_SHOW_POINTS, 
+        color=LINE_SINGLE_COLOR, 
+        strokeDash=FORECAST_DASH, 
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
+    ).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
     )
@@ -289,7 +316,8 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     def _line_layer(sub_df, type_value, dash=None, legend=True):
         mark_kwargs = {
             'point': point_config,
-            'strokeWidth': LINE_STROKE_WIDTH
+            'strokeWidth': LINE_STROKE_WIDTH,
+            'interpolate': LINE_INTERPOLATE
         }
         if dash is not None:
             mark_kwargs['strokeDash'] = dash
@@ -345,7 +373,10 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     layers.append(_line_layer(other_df, "Actual", legend=True))
     layers.append(_line_layer(other_df, "Forecast", dash=FORECAST_DASH, legend=True))
     connector_other = alt.Chart(other_df[other_df['type'] == "Connector"]).mark_line(
-        point=CONNECTOR_SHOW_POINTS, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH
+        point=CONNECTOR_SHOW_POINTS, 
+        strokeDash=FORECAST_DASH, 
+        strokeWidth=LINE_STROKE_WIDTH,
+        interpolate=LINE_INTERPOLATE
     ).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
