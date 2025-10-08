@@ -3,6 +3,37 @@
 import pandas as pd
 import altair as alt
 
+# Line chart styling
+LINE_COLOR_SCHEME = "dark2"
+LINE_STROKE_WIDTH = 3
+LINE_SINGLE_COLOR = "#0b7dcfff"
+
+# Point styling (invisible but interactive)
+POINT_SIZE = 100
+POINT_VISIBLE = False  # Set to True to show points
+POINT_FILL = 'transparent'
+POINT_STROKE = 'transparent'
+
+# Area chart styling (surplus/deficit)
+AREA_SURPLUS_COLOR = "#66c2a580"
+AREA_DEFICIT_COLOR = "#fc8d6280"
+
+# Chart dimensions
+CHART_HEIGHT = 340
+
+# Forecast styling
+FORECAST_DASH = [5, 5]
+CONNECTOR_SHOW_POINTS = False
+
+# Reference line styling
+REFERENCE_LINE_COLOR = "#FF6B6B"
+REFERENCE_LINE_DASH = [8, 4]
+REFERENCE_LINE_WIDTH = 2
+
+# Tooltip formatting
+TOOLTIP_NUMBER_FORMAT = ","
+TOOLTIP_AXIS_FORMAT = ",.0f"
+
 
 def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
     """Build Altair chart based on configuration."""
@@ -10,13 +41,21 @@ def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
     has_categories = config.get('category_field') is not None
     
     if has_forecast and has_categories:
-        return _build_multi_forecast(plot_df, config)
+        chart = _build_multi_forecast(plot_df, config)
     elif has_forecast:
-        return _build_single_forecast(plot_df, config)
+        chart = _build_single_forecast(plot_df, config)
     elif has_categories:
-        return _build_multi_line(plot_df, config)
+        chart = _build_multi_line(plot_df, config)
     else:
-        return _build_single_line(plot_df, config)
+        chart = _build_single_line(plot_df, config)
+    
+    # Add reference line if configured
+    if config.get('reference_line'):
+        ref_line = _build_reference_line(plot_df, config)
+        if ref_line:
+            chart = chart + ref_line
+    
+    return chart
 
 
 def _get_base_encoding(config: dict, include_type: bool = False, include_category: bool = False) -> dict:
@@ -25,7 +64,7 @@ def _get_base_encoding(config: dict, include_type: bool = False, include_categor
     
     tooltip = [
         alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-        alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+        alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
     ]
     
     if include_category and config.get('category_field'):
@@ -36,7 +75,7 @@ def _get_base_encoding(config: dict, include_type: bool = False, include_categor
     
     encoding = {
         'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
-        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
         'tooltip': tooltip,
     }
     
@@ -53,10 +92,13 @@ def _build_single_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Single line chart without forecast."""
     encoding = _get_base_encoding(config)
     
+    point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
+    
     return alt.Chart(df).mark_line(
-        point=True, 
-        color="#0b7dcfff"
-    ).encode(**encoding).properties(height=340)
+        point=point_config, 
+        color=LINE_SINGLE_COLOR,
+        strokeWidth=LINE_STROKE_WIDTH
+    ).encode(**encoding).properties(height=CHART_HEIGHT)
 
 
 def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
@@ -82,39 +124,41 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     if has_highlight_pair:
         area_chart = _build_diff_area(df, config, highlight_cats, forecast=False)
 
+    point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
+
     # Highlight lines (always visible, no legend entries)
     highlight_layer = None
     if has_highlight_pair:
         highlight_df = df[df[category_field].isin(highlight_cats)]
-        highlight_layer = alt.Chart(highlight_df).mark_line(point=True).encode(
+        highlight_layer = alt.Chart(highlight_df).mark_line(point=point_config, strokeWidth=LINE_STROKE_WIDTH).encode(
             x=alt.X(f"{config['x_field']}:T", title=config['x_label']),
-            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             color=alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=None  # keep legend clean for toggle categories
             ),
             tooltip=[
                 alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
                 alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
             ]
         )
 
     # Other (toggle) lines
     other_df = df if not has_highlight_pair else df[~df[category_field].isin(highlight_cats)]
-    other_layer = alt.Chart(other_df).mark_line(point=True)
+    other_layer = alt.Chart(other_df).mark_line(point=point_config, strokeWidth=LINE_STROKE_WIDTH)
     other_encoding = {
         'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
-        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+        'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
         'color': alt.Color(
             f"{category_field}:N",
-            scale=alt.Scale(domain=all_categories),
+            scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
             legend=alt.Legend(title=config.get('category_label') or category_field)
         ),
         'tooltip': [
             alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
             alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
         ]
     }
@@ -139,7 +183,7 @@ def _build_multi_line(df: pd.DataFrame, config: dict) -> alt.Chart:
     if area_chart is not None:
         chart = chart.resolve_scale(color='independent')  # diff area vs line colors
 
-    return chart.properties(height=340)
+    return chart.properties(height=CHART_HEIGHT)
 
 
 def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
@@ -147,25 +191,27 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     base = alt.Chart(df)
     encoding = _get_base_encoding(config, include_type=True)
     
+    point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
+    
     # Actual line (solid)
     actual = base.transform_filter(
         alt.datum.type == "Actual"
-    ).mark_line(point=True, color="#0b7dcfff").encode(**encoding)
+    ).mark_line(point=point_config, color=LINE_SINGLE_COLOR, strokeWidth=LINE_STROKE_WIDTH).encode(**encoding)
     
     # Forecast line (dashed)
     forecast = base.transform_filter(
         alt.datum.type == "Forecast"
-    ).mark_line(point=True, color="#0b7dcfff", strokeDash=[5, 5]).encode(**encoding)
+    ).mark_line(point=point_config, color=LINE_SINGLE_COLOR, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH).encode(**encoding)
     
     # Connector line (dashed, no points, minimal encoding)
     connector = base.transform_filter(
         alt.datum.type == "Connector"
-    ).mark_line(point=False, color="#0b7dcfff", strokeDash=[5, 5]).encode(
+    ).mark_line(point=CONNECTOR_SHOW_POINTS, color=LINE_SINGLE_COLOR, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
     )
     
-    return (actual + forecast + connector).properties(height=340)
+    return (actual + forecast + connector).properties(height=CHART_HEIGHT)
 
 
 def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
@@ -190,22 +236,25 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     if has_highlight_pair:
         area_chart = _build_diff_area(df, config, highlight_cats, forecast=True)
 
+    point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
+
     def _line_layer(sub_df, type_value, dash=None, legend=True):
         mark = alt.Chart(sub_df[sub_df['type'] == type_value]).mark_line(
-            point=True,
-            strokeDash=dash
+            point=point_config,
+            strokeDash=dash,
+            strokeWidth=LINE_STROKE_WIDTH
         )
         enc = {
             'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
-            'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=",.0f")),
+            'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             'color': alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=alt.Legend(title=config.get('category_label') or category_field) if legend else None
             ),
             'tooltip': [
                 alt.Tooltip(f"{config['x_field']}:T", title=config['x_label']),
-                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=","),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
                 alt.Tooltip(f"{category_field}:N", title=config.get('category_label') or category_field),
                 alt.Tooltip("type:N", title="Type")
             ]
@@ -227,15 +276,15 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     # Highlight layers (always full opacity, no legend)
     if has_highlight_pair and not highlight_df.empty:
         layers.append(_line_layer(highlight_df, "Actual", legend=False))
-        layers.append(_line_layer(highlight_df, "Forecast", dash=[5, 5], legend=False))
+        layers.append(_line_layer(highlight_df, "Forecast", dash=FORECAST_DASH, legend=False))
         connector = alt.Chart(highlight_df[highlight_df['type'] == "Connector"]).mark_line(
-            point=False, strokeDash=[5, 5]
+            point=CONNECTOR_SHOW_POINTS, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH
         ).encode(
             x=alt.X(f"{config['x_field']}:T"),
             y=alt.Y(f"{config['y_field']}:Q"),
             color=alt.Color(
                 f"{category_field}:N",
-                scale=alt.Scale(domain=all_categories),
+                scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
                 legend=None
             )
         )
@@ -243,15 +292,15 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
 
     # Toggle-enabled layers
     layers.append(_line_layer(other_df, "Actual", legend=True))
-    layers.append(_line_layer(other_df, "Forecast", dash=[5, 5], legend=True))
+    layers.append(_line_layer(other_df, "Forecast", dash=FORECAST_DASH, legend=True))
     connector_other = alt.Chart(other_df[other_df['type'] == "Connector"]).mark_line(
-        point=False, strokeDash=[5, 5]
+        point=CONNECTOR_SHOW_POINTS, strokeDash=FORECAST_DASH, strokeWidth=LINE_STROKE_WIDTH
     ).encode(
         x=alt.X(f"{config['x_field']}:T"),
         y=alt.Y(f"{config['y_field']}:Q"),
         color=alt.Color(
             f"{category_field}:N",
-            scale=alt.Scale(domain=all_categories),
+            scale=alt.Scale(domain=all_categories, scheme=LINE_COLOR_SCHEME),  # or "tableau10", "set2", etc.
             legend=None  # connector doesn't need duplicate legend
         ),
         opacity=alt.condition(selection, alt.value(1), alt.value(0)) if selection else alt.value(1)  # was 0.15
@@ -264,7 +313,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     if area_chart is not None:
         chart = chart.resolve_scale(color='independent')
 
-    return chart.properties(height=340)
+    return chart.properties(height=CHART_HEIGHT)
 
 
 def _build_diff_area(df: pd.DataFrame, config: dict, highlight_cats, forecast: bool = False) -> alt.Chart:
@@ -427,14 +476,78 @@ def _encode_diff_area(pivot_df: pd.DataFrame, config: dict, baseline: str, other
         detail="group_id:N",
         color=alt.Color(
             "diff_label:N",
-            scale=alt.Scale(domain=["Surplus", "Deficit"], range=["#a5d6a780", "#ef9a9a80"]),
+            scale=alt.Scale(domain=["Surplus", "Deficit"], range=[AREA_SURPLUS_COLOR, AREA_DEFICIT_COLOR]),
             legend=alt.Legend(title="Difference")
         ),
         tooltip=[
             alt.Tooltip(f"{x_field}:T", title=config['x_label']) if to_datetime else alt.Tooltip(f"{x_field}:Q", title=config['x_label']),
-            alt.Tooltip(f"{baseline}:Q", title=baseline, format=","),
-            alt.Tooltip(f"{other}:Q", title=other, format=","),
+            alt.Tooltip(f"{baseline}:Q", title=baseline, format=TOOLTIP_NUMBER_FORMAT),
+            alt.Tooltip(f"{other}:Q", title=other, format=TOOLTIP_NUMBER_FORMAT),
             alt.Tooltip("diff_label:N", title="Status")
         ]
     )
     return area
+
+
+def _build_reference_line(df: pd.DataFrame, config: dict) -> alt.Chart:
+    """
+    Build a reference line (horizontal or vertical dashed line).
+    
+    Args:
+        df: DataFrame (used for domain inference)
+        config: Chart configuration with 'reference_line' as tuple (axis, value, label?)
+               where axis is 'x' or 'y', value is the reference value, and label is optional
+    
+    Returns:
+        Altair Chart with reference line or None if invalid configuration
+    """
+    reference_line = config.get('reference_line')
+    if not reference_line or len(reference_line) < 2:
+        return None
+    
+    axis = reference_line[0]
+    value = reference_line[1]
+    label = reference_line[2] if len(reference_line) > 2 else "Target"
+    
+    if axis.lower() == 'y':
+        # Horizontal reference line
+        ref_df = pd.DataFrame({config['y_field']: [value]})
+        return alt.Chart(ref_df).mark_rule(
+            strokeDash=REFERENCE_LINE_DASH,
+            color=REFERENCE_LINE_COLOR,
+            strokeWidth=REFERENCE_LINE_WIDTH
+        ).encode(
+            y=alt.Y(f"{config['y_field']}:Q"),
+            tooltip=[alt.Tooltip(f"{config['y_field']}:Q", title=label, format=TOOLTIP_NUMBER_FORMAT)]
+        )
+    
+    elif axis.lower() == 'x':
+        # Vertical reference line
+        x_field = config['x_field']
+        
+        # Handle datetime conversion if needed
+        x_value = value
+        if pd.api.types.is_datetime64_any_dtype(df[x_field]):
+            if not isinstance(value, pd.Timestamp):
+                x_value = pd.to_datetime(value)
+            ref_df = pd.DataFrame({x_field: [x_value]})
+            return alt.Chart(ref_df).mark_rule(
+                strokeDash=REFERENCE_LINE_DASH,
+                color=REFERENCE_LINE_COLOR,
+                strokeWidth=REFERENCE_LINE_WIDTH
+            ).encode(
+                x=alt.X(f"{x_field}:T"),
+                tooltip=[alt.Tooltip(f"{x_field}:T", title=label)]
+            )
+        else:
+            ref_df = pd.DataFrame({x_field: [x_value]})
+            return alt.Chart(ref_df).mark_rule(
+                strokeDash=REFERENCE_LINE_DASH,
+                color=REFERENCE_LINE_COLOR,
+                strokeWidth=REFERENCE_LINE_WIDTH
+            ).encode(
+                x=alt.X(f"{x_field}:Q"),
+                tooltip=[alt.Tooltip(f"{x_field}:Q", title=label)]
+            )
+    
+    return None
