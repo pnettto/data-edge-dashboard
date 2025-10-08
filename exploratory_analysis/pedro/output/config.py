@@ -20,19 +20,40 @@ config = [
                 'y_label': 'Revenue',
                 # 'forecast': True
             },
+
             {
-                'type': 'line',
-                'title': 'Revenue by Segment',
-                'description': 'Four segments shown as separate lines over time',
-                'df': csv_to_df('multi_line'),
-                'x_field': 'date',
-                'x_label': 'Date',
-                'category_field': 'region',
-                'category_label': 'Regions',
-                'y_field': 'value',
-                'y_label': 'Revenue',
-                # 'forecast': True
+                'columns': [
+                    {
+                        'type': 'line',
+                        'title': 'Revenue by Segment',
+                        'description': 'Four segments shown as separate lines over time',
+                        'df': csv_to_df('multi_line'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'category_field': 'region',
+                        'category_label': 'Regions',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        # 'forecast': True
+                    },
+                     {
+                        'type': 'markdown',
+                        'title': 'Revenue Forecasting Overview',
+                        'content': """
+                        Revenue forecasting combines historical data analysis with market trends to predict future income streams. 
+
+                        **Key Components:**
+                        - Historical sales patterns and seasonality
+                        - Market conditions and competitive landscape
+                        - Product pipeline and pricing strategies
+
+                        Accurate forecasts enable better resource allocation, budgeting decisions, and strategic planning. 
+                        Regular model updates ensure predictions remain aligned with changing business conditions.
+                        """
+                    },
+                ]
             },
+            
             {
                 'columns': [
                     {
@@ -60,7 +81,7 @@ config = [
                         'x_label': 'Date',
                         'y_field': 'value',
                         'y_label': 'Revenue',
-                        'reference_line': ('x', '2024-01-01', 'Fiscal Year Start')
+                        'reference_line': ('x', '2024-05-01', 'Fiscal Year Start')
                     },
                 ]
             },
