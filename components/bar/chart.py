@@ -7,6 +7,7 @@ import altair as alt
 BAR_COLOR_SCHEME = "tableau20"
 BAR_SINGLE_COLOR = "#0b7dcfff"
 BAR_FORECAST_OPACITY = 0.5
+BAR_CORNER_RADIUS = 4  # Rounded corners for smoother appearance
 
 # Trendline styling
 TRENDLINE_COLOR = "#ffd600ff"
@@ -111,9 +112,9 @@ def _build_single_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
         }
         if color_encoding:
             encoding['color'] = color_encoding
-            bars = alt.Chart(df).mark_bar().encode(**encoding)
+            bars = alt.Chart(df).mark_bar(cornerRadiusEnd=BAR_CORNER_RADIUS).encode(**encoding)
         else:
-            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(**encoding)
+            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR, cornerRadiusEnd=BAR_CORNER_RADIUS).encode(**encoding)
     else:
         encoding = {
             'x': alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
@@ -125,9 +126,9 @@ def _build_single_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
         }
         if color_encoding:
             encoding['color'] = color_encoding
-            bars = alt.Chart(df).mark_bar().encode(**encoding)
+            bars = alt.Chart(df).mark_bar(cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(**encoding)
         else:
-            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(**encoding)
+            bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR, cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(**encoding)
     
     chart = bars
     
@@ -176,7 +177,7 @@ def _build_multi_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
     orientation = config.get('orientation', 'vertical')
     
     if orientation == 'horizontal':
-        return alt.Chart(df).mark_bar().encode(
+        return alt.Chart(df).mark_bar(cornerRadiusEnd=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
             color=alt.Color(
@@ -191,7 +192,7 @@ def _build_multi_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         ).properties(height=CHART_HEIGHT)
     else:
-        return alt.Chart(df).mark_bar().encode(
+        return alt.Chart(df).mark_bar(cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             color=alt.Color(
@@ -214,7 +215,7 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     base = alt.Chart(df)
     
     if orientation == 'horizontal':
-        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR).encode(
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR, cornerRadiusEnd=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
             tooltip=[
@@ -224,7 +225,7 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
         
-        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY).encode(
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY, cornerRadiusEnd=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
             tooltip=[
@@ -234,7 +235,7 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
     else:
-        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR).encode(
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR, cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             tooltip=[
@@ -244,7 +245,7 @@ def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
         
-        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY).encode(
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY, cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             tooltip=[
@@ -265,7 +266,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     base = alt.Chart(df)
     
     if orientation == 'horizontal':
-        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar().encode(
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(cornerRadiusEnd=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
             color=alt.Color(
@@ -281,7 +282,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
         
-        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY).encode(
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY, cornerRadiusEnd=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
             color=alt.Color(
@@ -297,7 +298,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
     else:
-        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar().encode(
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             color=alt.Color(
@@ -313,7 +314,7 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
             ]
         )
         
-        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY).encode(
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY, cornerRadiusTopLeft=BAR_CORNER_RADIUS, cornerRadiusTopRight=BAR_CORNER_RADIUS).encode(
             x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
             y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
             color=alt.Color(

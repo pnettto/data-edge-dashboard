@@ -5,8 +5,9 @@ import streamlit as st
 import pandas as pd
 from prophet import Prophet
 
-MAX_FORECAST_PERIODS = 12
-DEFAULT_FORECAST_PERIODS = 6
+MAX_FORECAST_PERIODS = 24
+DEFAULT_FORECAST_PERIODS = 12
+FORECAST_OPTIONS = [6, 12, 18, 24]
 
 def create_forecast_df(config):
     """Handle forecasting"""
@@ -26,14 +27,15 @@ def create_forecast_df(config):
     if full_forecast_df.empty:
         return pd.DataFrame()
     
-    # Show slider to select forecast periods
-    forecast_periods = st.slider(
-        "Forecast periods", 
-        1, 
-        MAX_FORECAST_PERIODS, 
-        DEFAULT_FORECAST_PERIODS, 
-        key=f"slider_{id(config)}"
-    )
+    # Show selectbox to select forecast periods in a narrow column aligned to the right
+    col1, col2 = st.columns([3, 1])
+    with col2:
+        forecast_periods = st.selectbox(
+            "Forecast periods", 
+            options=FORECAST_OPTIONS,
+            index=FORECAST_OPTIONS.index(DEFAULT_FORECAST_PERIODS),
+            key=f"selectbox_{id(config)}"
+        )
     
     # Slice forecast based on selected periods
     if category_field:
