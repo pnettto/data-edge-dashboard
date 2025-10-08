@@ -4,7 +4,7 @@ def csv_to_df(f): return pd.read_csv(__file__.replace('config.py', f'{f}.csv'))
 
 config = [
     {
-        'tab': 'Sample charts',
+        'tab': 'Line charts',
         'items': [
             {
                 'type': 'line',
@@ -59,30 +59,46 @@ config = [
                         'x_field': 'date',
                         'x_label': 'Date',
                         'y_field': 'value',
-                        'y_label': 'Revenue'
+                        'y_label': 'Revenue',
+                        'reference_line': ('x', '2024-01-01', 'Fiscal Year Start')
                     },
                 ]
             },
 
             {
-                'type': 'line',
-                'title': 'Revenue by Segment',
-                'description': 'Four segments shown as separate lines over time',
-                'df': csv_to_df('multi_line'),
-                'x_field': 'date',
-                'x_label': 'Date',
-                'category_field': 'region',
-                'category_label': 'Regions',
-                'category_area_highlight': ['North', 'South'],
-                'y_field': 'value',
-                'y_label': 'Revenue',
-                # 'forecast': True
-            },
+                'columns': [
+                    {
+                        'type': 'line',
+                        'title': 'Revenue (invoice date)',
+                        'description': 'Monthly revenue tracked by invoice date',
+                        'df': csv_to_df('single_line'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        'reference_line': ('y', 7500, 'Revenue Target')
+                    },
+                    {
+                        'type': 'line',
+                        'title': 'Revenue by Segment',
+                        'description': 'Four segments shown as separate lines over time',
+                        'df': csv_to_df('multi_line'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'category_field': 'region',
+                        'category_label': 'Regions',
+                        'category_area_highlight': ['North', 'South'],
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        # 'forecast': True
+                    },
+                ]
+            }
         ]
     },
 
     {
-        'tab': 'More samples',
+        'tab': 'Bar charts',
         'items': [
             {
                 'columns': [
@@ -127,32 +143,6 @@ config = [
                 'y_label': 'Revenue',
                 # 'forecast': True
             },
-
-            {
-                'columns': [
-                    {
-                        'type': 'line',
-                        'title': 'Revenue (invoice date)',
-                        'description': 'Monthly revenue tracked by invoice date',
-                        'df': csv_to_df('single_line'),
-                        'x_field': 'date',
-                        'x_label': 'Date',
-                        'y_field': 'value',
-                        'y_label': 'Revenue',
-                    },
-
-                    {
-                        'type': 'line',
-                        'title': 'Revenue (invoice date)',
-                        'description': 'Monthly revenue tracked by invoice date',
-                        'df': csv_to_df('single_line'),
-                        'x_field': 'date',
-                        'x_label': 'Date',
-                        'y_field': 'value',
-                        'y_label': 'Revenue'
-                    },
-                ]
-            }
         ]
     }
 ]

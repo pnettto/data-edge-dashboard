@@ -25,24 +25,37 @@ CHART_HEIGHT = 340
 FORECAST_DASH = [5, 5]
 CONNECTOR_SHOW_POINTS = False
 
+# Reference line styling
+REFERENCE_LINE_COLOR = "#FF6B6B"
+REFERENCE_LINE_DASH = [8, 4]
+REFERENCE_LINE_WIDTH = 2
+
 # Tooltip formatting
 TOOLTIP_NUMBER_FORMAT = ","
 TOOLTIP_AXIS_FORMAT = ",.0f"
 
 
 def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
-    """Build Altair chart bas.ed on configuration."""
+    """Build Altair chart based on configuration."""
     has_forecast = config.get('forecast', False) and "type" in plot_df.columns
     has_categories = config.get('category_field') is not None
     
     if has_forecast and has_categories:
-        return _build_multi_forecast(plot_df, config)
+        chart = _build_multi_forecast(plot_df, config)
     elif has_forecast:
-        return _build_single_forecast(plot_df, config)
+        chart = _build_single_forecast(plot_df, config)
     elif has_categories:
-        return _build_multi_line(plot_df, config)
+        chart = _build_multi_line(plot_df, config)
     else:
-        return _build_single_line(plot_df, config)
+        chart = _build_single_line(plot_df, config)
+    
+    # Add reference line if configured
+    if config.get('reference_line'):
+        ref_line = _build_reference_line(plot_df, config)
+        if ref_line:
+            chart = chart + ref_line
+    
+    return chart
 
 
 def _get_base_encoding(config: dict, include_type: bool = False, include_category: bool = False) -> dict:
@@ -474,3 +487,67 @@ def _encode_diff_area(pivot_df: pd.DataFrame, config: dict, baseline: str, other
         ]
     )
     return area
+
+
+def _build_reference_line(df: pd.DataFrame, config: dict) -> alt.Chart:
+    """
+    Build a reference line (horizontal or vertical dashed line).
+    
+    Args:
+        df: DataFrame (used for domain inference)
+        config: Chart configuration with 'reference_line' as tuple (axis, value, label?)
+               where axis is 'x' or 'y', value is the reference value, and label is optional
+    
+    Returns:
+        Altair Chart with reference line or None if invalid configuration
+    """
+    reference_line = config.get('reference_line')
+    if not reference_line or len(reference_line) < 2:
+        return None
+    
+    axis = reference_line[0]
+    value = reference_line[1]
+    label = reference_line[2] if len(reference_line) > 2 else "Target"
+    
+    if axis.lower() == 'y':
+        # Horizontal reference line
+        ref_df = pd.DataFrame({config['y_field']: [value]})
+        return alt.Chart(ref_df).mark_rule(
+            strokeDash=REFERENCE_LINE_DASH,
+            color=REFERENCE_LINE_COLOR,
+            strokeWidth=REFERENCE_LINE_WIDTH
+        ).encode(
+            y=alt.Y(f"{config['y_field']}:Q"),
+            tooltip=[alt.Tooltip(f"{config['y_field']}:Q", title=label, format=TOOLTIP_NUMBER_FORMAT)]
+        )
+    
+    elif axis.lower() == 'x':
+        # Vertical reference line
+        x_field = config['x_field']
+        
+        # Handle datetime conversion if needed
+        x_value = value
+        if pd.api.types.is_datetime64_any_dtype(df[x_field]):
+            if not isinstance(value, pd.Timestamp):
+                x_value = pd.to_datetime(value)
+            ref_df = pd.DataFrame({x_field: [x_value]})
+            return alt.Chart(ref_df).mark_rule(
+                strokeDash=REFERENCE_LINE_DASH,
+                color=REFERENCE_LINE_COLOR,
+                strokeWidth=REFERENCE_LINE_WIDTH
+            ).encode(
+                x=alt.X(f"{x_field}:T"),
+                tooltip=[alt.Tooltip(f"{x_field}:T", title=label)]
+            )
+        else:
+            ref_df = pd.DataFrame({x_field: [x_value]})
+            return alt.Chart(ref_df).mark_rule(
+                strokeDash=REFERENCE_LINE_DASH,
+                color=REFERENCE_LINE_COLOR,
+                strokeWidth=REFERENCE_LINE_WIDTH
+            ).encode(
+                x=alt.X(f"{x_field}:Q"),
+                tooltip=[alt.Tooltip(f"{x_field}:Q", title=label)]
+            )
+    
+    return None
