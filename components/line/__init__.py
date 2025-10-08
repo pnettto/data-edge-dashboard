@@ -30,9 +30,10 @@ def render_line_chart(config: dict) -> None:
     y_field = config['y_field']
     category_field = config.get('category_field')
 
-    # Convert x-axis to datetime
-    if not pd.api.types.is_datetime64_any_dtype(actual_df[x_field]):
-        actual_df[x_field] = pd.to_datetime(actual_df[x_field])
+    # Convert x-axis to datetime only if forecast is enabled
+    if config.get('forecast', False):
+        if not pd.api.types.is_datetime64_any_dtype(actual_df[x_field]):
+            actual_df[x_field] = pd.to_datetime(actual_df[x_field])
 
     actual_df["type"] = "Actual"
 
