@@ -349,10 +349,20 @@ def _insert_crossover_points(pivot_df: pd.DataFrame, x_field: str, baseline: str
     Insert interpolated crossover points so adjacent positive/negative
     areas meet without gaps.
     """
+    # Determine if we need datetime conversion
+    needs_datetime_conversion = False
     if to_datetime:
         x_numeric = pivot_df[x_field].view('int64').to_list()
     else:
-        x_numeric = pivot_df[x_field].astype(float).to_list()
+        # Check if x_field is numeric, if not try to convert to datetime first
+        if pd.api.types.is_numeric_dtype(pivot_df[x_field]):
+            x_numeric = pivot_df[x_field].astype(float).to_list()
+        else:
+            # Likely datetime strings - convert to datetime then to numeric
+            pivot_df[x_field] = pd.to_datetime(pivot_df[x_field])
+            x_numeric = pivot_df[x_field].view('int64').to_list()
+            to_datetime = True
+            needs_datetime_conversion = True
 
     b_vals = pivot_df[baseline].to_list()
     o_vals = pivot_df[other].to_list()

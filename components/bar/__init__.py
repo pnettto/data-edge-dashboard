@@ -16,7 +16,7 @@ def render_bar_chart(config: dict) -> None:
             - title (str): Title of the chart.
             - description (str): Description or caption for the chart.
             - df (pd.DataFrame): DataFrame containing the data to plot.
-            - x_field (str): Name of the column to use for the x-axis (should be datetime or convertible).
+            - x_field (str): Name of the column to use for the x-axis.
             - y_field (str): Name of the column to use for the y-axis.
             - category_field (str, optional): Name of the column for categorical grouping (optional).
             - category_label (str, optional): Title of the column for categorical grouping (optional).
@@ -26,14 +26,6 @@ def render_bar_chart(config: dict) -> None:
     st.caption(config['description'])
 
     actual_df = config['df'].copy()
-    x_field = config['x_field']
-    category_field = config.get('category_field')
-
-    # Convert x-axis to datetime only if forecast is enabled
-    if config.get('forecast', False):
-        if not pd.api.types.is_datetime64_any_dtype(actual_df[x_field]):
-            actual_df[x_field] = pd.to_datetime(actual_df[x_field])
-
     actual_df["type"] = "Actual"
 
     # Generate forecast
