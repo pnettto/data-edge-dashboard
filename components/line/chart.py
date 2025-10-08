@@ -287,11 +287,14 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     point_config = alt.OverlayMarkDef(size=POINT_SIZE, filled=False, fill=POINT_FILL, stroke=POINT_STROKE) if not POINT_VISIBLE else True
 
     def _line_layer(sub_df, type_value, dash=None, legend=True):
-        mark = alt.Chart(sub_df[sub_df['type'] == type_value]).mark_line(
-            point=point_config,
-            strokeDash=dash,
-            strokeWidth=LINE_STROKE_WIDTH
-        )
+        mark_kwargs = {
+            'point': point_config,
+            'strokeWidth': LINE_STROKE_WIDTH
+        }
+        if dash is not None:
+            mark_kwargs['strokeDash'] = dash
+            
+        mark = alt.Chart(sub_df[sub_df['type'] == type_value]).mark_line(**mark_kwargs)
         enc = {
             'x': alt.X(f"{config['x_field']}:T", title=config['x_label']),
             'y': alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
