@@ -108,6 +108,7 @@ config = [
                         'y_field': 'value',
                         'y_label': 'Revenue',
                         'trendline': True,
+                        'orientation': 'horizontal',
                         # 'forecast': True
                     },
                 ]

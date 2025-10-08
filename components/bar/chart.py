@@ -50,20 +50,31 @@ def build_chart(plot_df: pd.DataFrame, config: dict) -> alt.Chart:
 def _build_single_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Single bar chart without forecast."""
     x_type = _get_x_encoding_type(df, config['x_field'])
+    orientation = config.get('orientation', 'vertical')
     
-    bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-        ]
-    )
+    if orientation == 'horizontal':
+        bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+            ]
+        )
+    else:
+        bars = alt.Chart(df).mark_bar(color=BAR_SINGLE_COLOR).encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+            ]
+        )
     
     chart = bars
     
-    # Add trendline if requested
-    if config.get('trendline', False):
+    # Add trendline if requested (only for vertical orientation)
+    if config.get('trendline', False) and orientation == 'vertical':
         trendline = _create_trendline(df, config, x_type)
         chart = bars + trendline
     
@@ -104,47 +115,86 @@ def _build_multi_bar(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Multi-bar chart without forecast."""
     category_label = config.get('category_label', config.get('category_field', ''))
     x_type = _get_x_encoding_type(df, config['x_field'])
+    orientation = config.get('orientation', 'vertical')
     
-    return alt.Chart(df).mark_bar().encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        color=alt.Color(
-            f"{config['category_field']}:N",
-            scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
-            legend=alt.Legend(title=category_label)
-        ),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-            alt.Tooltip(f"{config['category_field']}:N", title=category_label),
-        ]
-    ).properties(height=CHART_HEIGHT)
+    if orientation == 'horizontal':
+        return alt.Chart(df).mark_bar().encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=alt.Legend(title=category_label)
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+            ]
+        ).properties(height=CHART_HEIGHT)
+    else:
+        return alt.Chart(df).mark_bar().encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=alt.Legend(title=category_label)
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+            ]
+        ).properties(height=CHART_HEIGHT)
 
 
 def _build_single_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Single bar chart with forecast."""
     x_type = _get_x_encoding_type(df, config['x_field'])
+    orientation = config.get('orientation', 'vertical')
     base = alt.Chart(df)
     
-    actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR).encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-            alt.Tooltip("type:N", title="Type"),
-        ]
-    )
-    
-    forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY).encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-            alt.Tooltip("type:N", title="Type"),
-        ]
-    )
+    if orientation == 'horizontal':
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR).encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+        
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY).encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+    else:
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar(color=BAR_SINGLE_COLOR).encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+        
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(color=BAR_SINGLE_COLOR, opacity=BAR_FORECAST_OPACITY).encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
     
     return (actual + forecast).properties(height=CHART_HEIGHT)
 
@@ -153,38 +203,72 @@ def _build_multi_forecast(df: pd.DataFrame, config: dict) -> alt.Chart:
     """Multi-bar chart with forecast."""
     category_label = config.get('category_label', config.get('category_field', ''))
     x_type = _get_x_encoding_type(df, config['x_field'])
+    orientation = config.get('orientation', 'vertical')
     base = alt.Chart(df)
     
-    actual = base.transform_filter(alt.datum.type == "Actual").mark_bar().encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        color=alt.Color(
-            f"{config['category_field']}:N",
-            scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
-            legend=alt.Legend(title=category_label)
-        ),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-            alt.Tooltip(f"{config['category_field']}:N", title=category_label),
-            alt.Tooltip("type:N", title="Type"),
-        ]
-    )
-    
-    forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY).encode(
-        x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
-        y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
-        color=alt.Color(
-            f"{config['category_field']}:N",
-            scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
-            legend=None
-        ),
-        tooltip=[
-            alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
-            alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
-            alt.Tooltip(f"{config['category_field']}:N", title=category_label),
-            alt.Tooltip("type:N", title="Type"),
-        ]
-    )
+    if orientation == 'horizontal':
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar().encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=alt.Legend(title=category_label)
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+        
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY).encode(
+            x=alt.X(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            y=alt.Y(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=None
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+    else:
+        actual = base.transform_filter(alt.datum.type == "Actual").mark_bar().encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=alt.Legend(title=category_label)
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
+        
+        forecast = base.transform_filter(alt.datum.type == "Forecast").mark_bar(opacity=BAR_FORECAST_OPACITY).encode(
+            x=alt.X(f"{config['x_field']}:{x_type}", title=config['x_label']),
+            y=alt.Y(f"{config['y_field']}:Q", title=config['y_label'], axis=alt.Axis(format=TOOLTIP_AXIS_FORMAT)),
+            color=alt.Color(
+                f"{config['category_field']}:N",
+                scale=alt.Scale(scheme=BAR_COLOR_SCHEME),
+                legend=None
+            ),
+            tooltip=[
+                alt.Tooltip(f"{config['x_field']}:{x_type}", title=config['x_label']),
+                alt.Tooltip(f"{config['y_field']}:Q", title=config['y_label'], format=TOOLTIP_NUMBER_FORMAT),
+                alt.Tooltip(f"{config['category_field']}:N", title=category_label),
+                alt.Tooltip("type:N", title="Type"),
+            ]
+        )
     
     return (actual + forecast).properties(height=CHART_HEIGHT)

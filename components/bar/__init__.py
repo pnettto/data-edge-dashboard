@@ -22,6 +22,7 @@ def render_bar_chart(config: dict) -> None:
             - category_label (str, optional): Title of the column for categorical grouping (optional).
             - forecast (bool, optional): Whether to enable forecasting (default: False).
             - trendline (bool, optional): Whether to show a trendline for single bar charts (default: False).
+            - orientation (str, optional): Bar orientation - 'vertical' or 'horizontal' (default: 'vertical').
     """
     st.subheader(config['title'])
     st.caption(config['description'])
