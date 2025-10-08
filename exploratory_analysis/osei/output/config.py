@@ -6,7 +6,7 @@ def csv_to_df(f):
     # Get the directory where this config.py file is located
     config_dir = os.path.dirname(os.path.abspath(__file__))
     # Look for CSV in outputs/ subfolder
-    csv_path = os.path.join(config_dir, 'outputs', f'{f}.csv')
+    csv_path = os.path.join(config_dir, '', f'{f}.csv')
     return pd.read_csv(csv_path)
 
 # Read KPIs for markdown
@@ -23,30 +23,36 @@ config = [
         'items': [
             # 1. KPI Summary Markdown
             {
-                'type': 'markdown',
-                'title': 'Utilization Overview',
-                'content': f"""
-                **Current State:**
-                - **Current Utilization:** {current_util:.1%}
-                - **Target Utilization:** {target_util:.1%}
-                - **Gap to Target:** {util_gap:.1%}
-                
-                **Opportunity:**
-                - **Hours needed to reach target:** {hours_needed:,.0f} hours
-                - **Revenue opportunity:** ${revenue_opp:,.0f}
-                
-                ---
-                
-                **What is Utilization?**
-                
-                Utilization measures the percentage of total workforce hours spent on client-facing work. 
-                Our target is 80%, meaning 20% for internal activities (training, admin, vacation, etc.).
-                
-                **Why it matters:**
-                - Higher utilization = More revenue without hiring
-                - Low utilization = Wasted capacity and missed opportunities
-                - Optimal range: 80-95% (above 95% risks burnout)
-                """
+                'columns': [
+                    {
+                        'type': 'markdown',
+                        'title': 'Utilization Overview',
+                        'content': f"""
+                        **Current State:**
+                        - **Current Utilization:** {current_util:.1%}
+                        - **Target Utilization:** {target_util:.1%}
+                        - **Gap to Target:** {util_gap:.1%}
+                        
+                        **Opportunity:**
+                        - **Hours needed to reach target:** {hours_needed:,.0f} hours
+                        - **Revenue opportunity:** ${revenue_opp:,.0f}
+                        """
+                    },
+                    {
+                        'type': 'markdown',
+                        'content': f"""
+                        **What is Utilization?**
+                        
+                        Utilization measures the percentage of total workforce hours spent on client-facing work. 
+                        Our target is 80%, meaning 20% for internal activities (training, admin, vacation, etc.).
+                        
+                        **Why it matters:**
+                        - Higher utilization = More revenue without hiring
+                        - Low utilization = Wasted capacity and missed opportunities
+                        - Optimal range: 80-95% (above 95% risks burnout)
+                        """
+                    }
+                ]
             },
             
             # 2. Monthly Utilization Trend
@@ -125,18 +131,6 @@ config = [
                         'y_label': 'Hours',
                     },
                 ]
-            },
-            
-            # 8. Scenario Analysis
-            {
-                'type': 'bar',
-                'title': 'Utilization Scenarios: Path to 80% Target',
-                'description': 'What happens if we reduce internal time?',
-                'df': csv_to_df('scenarios_comparison'),
-                'x_field': 'scenario',
-                'x_label': 'Scenario',
-                'y_field': 'new_utilization',
-                'y_label': 'Projected Utilization %',
             },
         ]
     }
