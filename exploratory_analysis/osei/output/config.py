@@ -5,8 +5,8 @@ import os
 def csv_to_df(f):
     # Get the directory where this config.py file is located
     config_dir = os.path.dirname(os.path.abspath(__file__))
-    # Look for CSV in outputs/ subfolder
-    csv_path = os.path.join(config_dir, '', f'{f}.csv')
+    # Look for CSV in output/ subfolder
+    csv_path = os.path.join(config_dir, '', f'{f}.csv')  
     return pd.read_csv(csv_path)
 
 # Read KPIs for markdown
@@ -29,7 +29,7 @@ config = [
                         'content': f"""
                         **What is Utilization?**
                         
-                        Utilization measures the percentage of total workforce hours spent on client-facing work. 
+                        Utilization measures the percentage of total workforce hours spent on billable work. 
                         Our target is 80%, meaning 20% for internal activities (training, admin, vacation, etc.).
                         
                         **Why it matters:**
@@ -59,7 +59,7 @@ config = [
             {
                 'type': 'line',
                 'title': 'Monthly Utilization Trend',
-                'description': 'Client-facing utilization over time (target: 80%)',
+                'description': 'Utilization over time (target: 80%)',
                 'df': csv_to_df('monthly_utilization'),
                 'x_field': 'month',
                 'x_label': 'Month',
@@ -70,13 +70,15 @@ config = [
             # 3. Employee Distribution by Category
             {
                 'type': 'bar',
-                'title': 'Employee Distribution by Utilization Category',
-                'description': 'How many employees fall into each utilization range',
-                'df': csv_to_df('employee_util_categories'),
-                'x_field': 'category',
-                'x_label': 'Utilization Category',
-                'y_field': 'count',
-                'y_label': 'Number of Employees',
+    'title': 'Employee Distribution by Utilization Category',
+    'description': 'How many employees fall into each utilization range',
+    'df': csv_to_df('employee_util_categories'),
+    'x_field': 'category',
+    'x_label': 'Utilization Category',
+    'y_field': 'count',
+    'y_label': 'Number of Employees',
+    'sort_order': None,  # Preserve CSV order (already sorted descending)
+    'label_angle': -90,  # Rotate labels 90 degrees
             },
             
             # 4-5. Role Analysis (Side by Side)
