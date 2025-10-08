@@ -19,7 +19,7 @@ AREA_SURPLUS_COLOR = "#66c2a580"
 AREA_DEFICIT_COLOR = "#fc8d6280"
 
 # Chart dimensions
-CHART_HEIGHT = 340
+CHART_HEIGHT = 400
 
 # Forecast styling
 FORECAST_DASH = [5, 5]

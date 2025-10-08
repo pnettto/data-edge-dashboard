@@ -18,7 +18,6 @@ config = [
                 'category_area_highlight': ['North', 'West'],
                 'y_field': 'value',
                 'y_label': 'Revenue',
-                'forecast': True
             },
 
             {
@@ -34,7 +33,6 @@ config = [
                         'category_label': 'Regions',
                         'y_field': 'value',
                         'y_label': 'Revenue',
-                        # 'forecast': True
                     },
                      {
                         'type': 'markdown',
@@ -124,7 +122,6 @@ config = [
                 'category_area_highlight': ['North', 'South'],
                 'y_field': 'value',
                 'y_label': 'Revenue',
-                # 'forecast': True
             },
         ]
     },
@@ -197,7 +194,6 @@ config = [
                 'category_label': 'Regions',
                 'y_field': 'value',
                 'y_label': 'Revenue',
-                # 'forecast': True
             },
         ]
     },
@@ -205,19 +201,6 @@ config = [
     {
         'tab': 'Area charts',
         'items': [
-            {
-                'type': 'area',
-                'title': 'Revenue by Product (Stacked)',
-                'description': 'Stacked area chart showing revenue contribution by product over time',
-                'df': csv_to_df('stacked_area'),
-                'x_field': 'date',
-                'x_label': 'Date',
-                'category_field': 'category',
-                'category_label': 'Product',
-                'y_field': 'value',
-                'y_label': 'Revenue',
-            },
-
             {
                 'columns': [
                     {
@@ -262,6 +245,7 @@ config = [
                 'category_label': 'Region',
                 'y_field': 'value',
                 'y_label': 'Revenue',
+                'forecast': True
             },
         ]
     }

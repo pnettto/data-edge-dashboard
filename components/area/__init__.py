@@ -1,15 +1,14 @@
-"""Stacked area chart component with Prophet-based forecasting capability"""
+"""Stacked area chart component"""
 
 import streamlit as st
 import pandas as pd
 
 from .chart import build_chart
-from .forecast import create_forecast_df, create_connector_df
 
 
 def render_area_chart(config: dict) -> None:
     """
-    Main entry point for rendering a stacked area chart with optional forecasting.
+    Main entry point for rendering a stacked area chart.
 
     Args:
         config (dict): Dictionary containing chart configuration with the following keys:
@@ -20,14 +19,12 @@ def render_area_chart(config: dict) -> None:
             - y_field (str): Name of the column to use for the y-axis.
             - category_field (str): Name of the column for categorical grouping (required for stacking).
             - category_label (str, optional): Title of the column for categorical grouping.
-            - forecast (bool, optional): Whether to enable forecasting (default: False).
     """
     st.subheader(config['title'])
     st.caption(config['description'])
 
     actual_df = config['df'].copy()
     x_field = config['x_field']
-    y_field = config['y_field']
     category_field = config.get('category_field')
 
     if not category_field:
@@ -41,17 +38,8 @@ def render_area_chart(config: dict) -> None:
         except (ValueError, TypeError):
             pass
 
-    actual_df["type"] = "Actual"
-
-    # Generate forecast and connectors
-    forecast_df = create_forecast_df(config)
-    connector_df = create_connector_df(actual_df, forecast_df, x_field, y_field, category_field)
-
-    # Combine all data for plotting
-    plot_df = pd.concat([actual_df, forecast_df, connector_df], ignore_index=True)
-
     # Build and display chart
-    chart = build_chart(plot_df, config)
+    chart = build_chart(actual_df, config)
     st.altair_chart(chart, use_container_width=True)
 
 

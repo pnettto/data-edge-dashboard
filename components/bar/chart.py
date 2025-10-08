@@ -20,7 +20,7 @@ REFERENCE_LINE_DASH = [8, 4]
 REFERENCE_LINE_WIDTH = 2
 
 # Chart dimensions
-CHART_HEIGHT = 340
+CHART_HEIGHT = 400
 
 # Tooltip formatting
 TOOLTIP_NUMBER_FORMAT = ","

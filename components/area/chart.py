@@ -32,24 +32,13 @@ def build_chart(df: pd.DataFrame, config: dict) -> alt.Chart:
             title=category_label,
             scale=alt.Scale(scheme='tableau20'),
             legend=alt.Legend(orient='bottom')
-        ),
-        opacity=alt.condition(
-            alt.datum.type == 'Forecast',
-            alt.value(0.5),
-            alt.value(1.0)
         )
     )
 
     # Stacked area chart
-    area = base.mark_area().encode(
-        strokeDash=alt.condition(
-            alt.datum.type == 'Connector',
-            alt.value([5, 5]),
-            alt.value([0])
-        )
-    )
+    area = base.mark_area()
 
-    # Combine layers
+    # Start with area chart
     chart = area
 
     # Add reference line if specified
@@ -75,4 +64,4 @@ def build_chart(df: pd.DataFrame, config: dict) -> alt.Chart:
         
         chart = chart + ref_line
 
-    return chart.properties(height=400).interactive()
+    return chart.properties(height=400)
