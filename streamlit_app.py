@@ -22,7 +22,7 @@ for config in all_configs:
 
 chart_configs = [{'tab': tab, 'items': items} for tab, items in merged.items()]
 
-APP_TITLE = "Data Edge Dashboard"
+APP_TITLE = ":material/query_stats: Data Edge Dashboard"
 
 def configure_page() -> None:
     """Set Streamlit page-wide configuration and base styles."""
@@ -37,10 +37,6 @@ def configure_page() -> None:
     /* Gap between columns */
     [data-testid="stHorizontalBlock"] {
         gap: 2rem;
-    }
-    /* Nav font size */
-    [data-testid="stMarkdownContainer"] p {
-        font-size: 1rem;
     }
     </style>
     """, unsafe_allow_html=True)
