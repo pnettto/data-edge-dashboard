@@ -200,5 +200,69 @@ config = [
                 # 'forecast': True
             },
         ]
+    },
+
+    {
+        'tab': 'Area charts',
+        'items': [
+            {
+                'type': 'area',
+                'title': 'Revenue by Product (Stacked)',
+                'description': 'Stacked area chart showing revenue contribution by product over time',
+                'df': csv_to_df('stacked_area'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'category_field': 'category',
+                'category_label': 'Product',
+                'y_field': 'value',
+                'y_label': 'Revenue',
+            },
+
+            {
+                'columns': [
+                    {
+                        'type': 'area',
+                        'title': 'Revenue by Product with Target',
+                        'description': 'Stacked area with reference line',
+                        'df': csv_to_df('stacked_area'),
+                        'x_field': 'date',
+                        'x_label': 'Date',
+                        'category_field': 'category',
+                        'category_label': 'Product',
+                        'y_field': 'value',
+                        'y_label': 'Revenue',
+                        'reference_line': ('y', 4000, 'Total Revenue Target')
+                    },
+                    {
+                        'type': 'markdown',
+                        'title': 'Stacked Area Charts',
+                        'content': """
+                        Stacked area charts show the evolution of multiple categories over time, 
+                        making it easy to see both individual trends and the total.
+
+                        **Use cases:**
+                        - Product revenue composition
+                        - Resource allocation over time
+                        - Market share evolution
+
+                        The total height represents the sum of all categories at each point in time.
+                        """
+                    },
+                ]
+            },
+
+            {
+                'type': 'area',
+                'title': 'Revenue by Region (Stacked)',
+                'description': 'Regional revenue contribution over time',
+                'df': csv_to_df('multi_line'),
+                'x_field': 'date',
+                'x_label': 'Date',
+                'category_field': 'region',
+                'category_label': 'Region',
+                'y_field': 'value',
+                'y_label': 'Revenue',
+            },
+        ]
     }
 ]

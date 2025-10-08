@@ -119,7 +119,7 @@ config = [
                         'y_label': 'Total Hours',
                     },
                     {
-                        'type': 'line',
+                        'type': 'area',
                         'title': 'Internal Time Trend',
                         'description': 'Internal hours by category over time',
                         'df': csv_to_df('internal_time_trend'),
