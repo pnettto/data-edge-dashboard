@@ -93,6 +93,32 @@ config = [
                         """
                     }
                 ]
+            },
+
+            # Row 5: Prophet Forecasting (Image on Left)
+            {
+                'columns': [
+                    {
+                        'type': 'markdown',
+                        'title': 'Prophet Forecasting Model',
+                        'content': """
+                        Our dashboard leverages Facebook's Prophet—a powerful forecasting tool designed for business time series data.
+
+                        **Why Prophet:**
+                        - Handles missing data and outliers automatically
+                        - Captures daily, weekly, and yearly seasonality patterns
+                        - Works well with historical trends and seasonal effects
+                        
+                        **Implementation:**
+                        - Forecasts up to 24 months ahead
+                        - Adapts to business metrics with different patterns
+                        """
+                    },
+                    {
+                        'type': 'markdown',
+                        'content': '![Forecasting Analytics](https://images.unsplash.com/photo-1557071661-3015d8b09ed2?w=800&h=500&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+                    }
+                ]
             }
         ]
     },
