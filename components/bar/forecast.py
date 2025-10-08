@@ -27,8 +27,8 @@ def _convert_to_datetime(series: pd.Series) -> pd.Series:
         return pd.to_datetime(series, infer_datetime_format=True)
 
 
-def create_forecast_df(config):
-    """Handle forecasting"""
+def create_forecast_df(config, forecast_periods: int = DEFAULT_FORECAST_PERIODS):
+    """Generate (and slice) forecast dataframe. UI selection handled by caller."""
     if not config.get('forecast', False):
         return pd.DataFrame()
 
@@ -51,17 +51,6 @@ def create_forecast_df(config):
     if full_forecast_df.empty:
         return pd.DataFrame()
     
-    # Show selectbox to select forecast periods in a narrow column aligned to the right
-    col1, col2 = st.columns([3, 1])
-    with col2:
-        forecast_periods = st.selectbox(
-            "Forecast periods", 
-            options=FORECAST_OPTIONS,
-            index=FORECAST_OPTIONS.index(DEFAULT_FORECAST_PERIODS),
-            key=f"selectbox_{id(config)}"
-        )
-    
-    # Slice forecast based on selected periods
     if category_field:
         # Slice each category separately
         sliced_forecasts = [

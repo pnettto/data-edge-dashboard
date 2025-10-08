@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 
 from .chart import build_chart
-from .forecast import create_forecast_df
+from .forecast import create_forecast_df, DEFAULT_FORECAST_PERIODS, FORECAST_OPTIONS
 
 
 def render_bar_chart(config: dict) -> None:
@@ -27,11 +27,41 @@ def render_bar_chart(config: dict) -> None:
     st.subheader(config['title'])
     st.caption(config['description'])
 
+    # Generate unique key for this chart instance
+    chart_key = f"bar_chart_{id(config)}"
+    forecast_enabled_key = f"{chart_key}_forecast_enabled"
+    forecast_periods_key = f"{chart_key}_forecast_periods"
+    
+    # Initialize session state for forecast enablement
+    if forecast_enabled_key not in st.session_state:
+        st.session_state[forecast_enabled_key] = config.get('forecast', False)
+
+    if not st.session_state[forecast_enabled_key]:
+        col1, col2 = st.columns([3, 1])
+        with col2:
+            if st.checkbox("Forecast", key=f"{chart_key}_checkbox"):
+                st.session_state[forecast_enabled_key] = True
+                st.rerun()
+    else:
+        col1, col2 = st.columns([3, 1])
+        with col2:
+            forecast_periods = st.selectbox(
+                "Forecast periods",
+                options=FORECAST_OPTIONS,
+                index=FORECAST_OPTIONS.index(DEFAULT_FORECAST_PERIODS),
+                key=forecast_periods_key
+            )
+
     actual_df = config['df'].copy()
     actual_df["type"] = "Actual"
 
-    # Generate forecast
-    forecast_df = create_forecast_df(config)
+    # Generate forecast if enabled
+    forecast_df = pd.DataFrame()
+    if st.session_state[forecast_enabled_key]:
+        # Update config to enable forecast
+        config['forecast'] = True
+        periods = st.session_state.get(forecast_periods_key, DEFAULT_FORECAST_PERIODS)
+        forecast_df = create_forecast_df(config, forecast_periods=periods)
 
     # Combine all data for plotting
     plot_df = pd.concat([actual_df, forecast_df], ignore_index=True)

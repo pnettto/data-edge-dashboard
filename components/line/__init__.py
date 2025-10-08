@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 
 from .chart import build_chart
-from .forecast import create_forecast_df, create_connector_df
+from .forecast import create_forecast_df, create_connector_df, DEFAULT_FORECAST_PERIODS, FORECAST_OPTIONS
 
 
 def render_line_chart(config: dict) -> None:
@@ -26,6 +26,32 @@ def render_line_chart(config: dict) -> None:
     st.subheader(config['title'])
     st.caption(config['description'])
 
+    # Generate unique key for this chart instance
+    chart_key = f"line_chart_{id(config)}"
+    forecast_enabled_key = f"{chart_key}_forecast_enabled"
+    forecast_periods_key = f"{chart_key}_forecast_periods"
+    
+    # Initialize session state for forecast enablement
+    if forecast_enabled_key not in st.session_state:
+        st.session_state[forecast_enabled_key] = config.get('forecast', False)
+
+    if not st.session_state[forecast_enabled_key]:
+        # Right-aligned discreet checkbox
+        col1, col2 = st.columns([3, 1])
+        with col2:
+            if st.checkbox("Forecast", key=f"{chart_key}_checkbox"):
+                st.session_state[forecast_enabled_key] = True
+                st.rerun()
+    else:
+        col1, col2 = st.columns([3, 1])
+        with col2:
+            forecast_periods = st.selectbox(
+                "Forecast periods",
+                options=FORECAST_OPTIONS,
+                index=FORECAST_OPTIONS.index(DEFAULT_FORECAST_PERIODS),
+                key=forecast_periods_key
+            )
+    
     actual_df = config['df'].copy()
     x_field = config['x_field']
     y_field = config['y_field']
@@ -40,9 +66,14 @@ def render_line_chart(config: dict) -> None:
 
     actual_df["type"] = "Actual"
 
-    # Generate forecast and connectors
-    forecast_df = create_forecast_df(config)
-    connector_df = create_connector_df(actual_df, forecast_df, x_field, y_field, category_field)
+    # Generate forecast if enabled
+    forecast_df = pd.DataFrame()
+    connector_df = pd.DataFrame()
+    if st.session_state[forecast_enabled_key]:
+        config['forecast'] = True
+        periods = st.session_state.get(forecast_periods_key, DEFAULT_FORECAST_PERIODS)
+        forecast_df = create_forecast_df(config, forecast_periods=periods)
+        connector_df = create_connector_df(actual_df, forecast_df, x_field, y_field, category_field)
 
     # Combine all data for plotting
     plot_df = pd.concat([actual_df, forecast_df, connector_df], ignore_index=True)
