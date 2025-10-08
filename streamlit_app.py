@@ -5,15 +5,15 @@ Entry point for the Data Edge Dashboard (Streamlit).
 import streamlit as st
 from collections import defaultdict
 
-from utils.static_tabs import render_overview_tab
 from utils.chart_loader import render_chart
 
+from utils.overview import config as overview_config
 from exploratory_analysis.pedro.output.config import config as pedro_config
 from exploratory_analysis.guillermo.output.config import config as guillermo_config
-# from exploratory_analysis.osei.output.config import config as osei_config
+from exploratory_analysis.osei.output.config import config as osei_config
 # from exploratory_analysis.waldean.output.config import config as waldean_config
 
-all_configs = pedro_config + guillermo_config # + osei_config + waldean_config
+all_configs = overview_config + pedro_config + guillermo_config + osei_config # + waldean_config
 
 # Merge tabs with same name
 merged = defaultdict(list)
@@ -22,7 +22,7 @@ for config in all_configs:
 
 chart_configs = [{'tab': tab, 'items': items} for tab, items in merged.items()]
 
-APP_TITLE = "Data Edge Dashboard"
+APP_TITLE = ":material/query_stats: Data Edge Dashboard"
 
 def configure_page() -> None:
     """Set Streamlit page-wide configuration and base styles."""
@@ -38,10 +38,6 @@ def configure_page() -> None:
     [data-testid="stHorizontalBlock"] {
         gap: 2rem;
     }
-    /* Nav font size */
-    [data-testid="stMarkdownContainer"] p {
-        font-size: 1rem;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -55,18 +51,13 @@ def render_header() -> None:
 def render_nav_and_content() -> None:
     """Render navigation tabs and chart content, with a standalone summary/intro tab."""
     # Create a summary/intro tab as the first tab
-    intro_tab_title = "Overview"
-    tab_titles = [intro_tab_title] + [config['tab'] for config in chart_configs]
+    tab_titles = [config['tab'] for config in chart_configs]
     tabs = st.tabs(tab_titles)
 
     # Render the intro/summary tab
-    with tabs[0]:
-        render_overview_tab(intro_tab_title)
-
-    # Render the rest of the tabs (shifted by 1 due to intro tab)
-    for tab_index, tab in enumerate(tabs[1:]):
+    for tab_index, tab in enumerate(tabs):
         with tab:
-            st.header(tab_titles[tab_index + 1])
+            st.header(tab_titles[tab_index])
             items = chart_configs[tab_index]['items']
             
             for item in items:
@@ -80,6 +71,9 @@ def render_nav_and_content() -> None:
                 else:
                     # Single chart
                     render_chart(item)
+            
+                # Add a spacer between charts/sections
+                st.markdown('<div style="height:5rem;"></div>', unsafe_allow_html=True)
 
 def main() -> None:
     configure_page()

@@ -8,6 +8,24 @@ from prophet import Prophet
 MAX_FORECAST_PERIODS = 12
 DEFAULT_FORECAST_PERIODS = 6
 
+
+def _convert_to_datetime(series: pd.Series) -> pd.Series:
+    """Convert series to datetime, handling various formats."""
+    if pd.api.types.is_datetime64_any_dtype(series):
+        return series
+    
+    # Try to parse as quarter strings (e.g., "2021Q1")
+    if series.astype(str).str.match(r'^\d{4}Q[1-4]$').any():
+        return pd.PeriodIndex(series, freq='Q').to_timestamp()
+    
+    # Try standard datetime conversion
+    try:
+        return pd.to_datetime(series)
+    except Exception:
+        # If all else fails, try to infer
+        return pd.to_datetime(series, infer_datetime_format=True)
+
+
 def create_forecast_df(config):
     """Handle forecasting"""
     if not config.get('forecast', False):
@@ -16,6 +34,12 @@ def create_forecast_df(config):
     df = config['df'].copy()
     x_field = config['x_field']
     category_field = config.get('category_field')
+    
+    # Convert x-axis to datetime for forecasting
+    df[x_field] = _convert_to_datetime(df[x_field])
+    
+    # Normalize historical dates to date-only (remove time component)
+    df[x_field] = df[x_field].dt.date
     
     # Generate forecast once with maximum periods (cached across reloads)
     with st.spinner("Generating forecast..."):
@@ -102,7 +126,7 @@ def _forecast_single(df: pd.DataFrame, x_field: str, y_field: str, periods: int)
     forecast = model.predict(future)
     
     return pd.DataFrame({
-        x_field: forecast['ds'],
+        x_field: forecast['ds'].dt.date,
         y_field: forecast['yhat'],
         "type": "Forecast"
     })
@@ -119,7 +143,15 @@ def _infer_frequency(date_series: pd.Series) -> str:
     # Estimate from first two dates
     if len(sorted_dates) > 1:
         delta = sorted_dates.iloc[1] - sorted_dates.iloc[0]
-        if hasattr(delta, 'days') and delta.days >= 1:
-            return f"{delta.days}D"
+        if hasattr(delta, 'days'):
+            days = delta.days
+            # Detect quarterly (approximately 90 days)
+            if 80 <= days <= 100:
+                return "QS"  # Quarter start
+            # Detect monthly (approximately 30 days)
+            elif 28 <= days <= 31:
+                return "MS"  # Month start
+            elif days >= 1:
+                return f"{days}D"
     
     return "D"  # Default to daily

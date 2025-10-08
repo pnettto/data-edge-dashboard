@@ -21,6 +21,7 @@ def render_line_chart(config: dict) -> None:
             - category_field (str, optional): Name of the column for categorical grouping (optional).
             - category_label (str, optional): (chart) Title of the column for categorical grouping (optional).
             - forecast (bool, optional): Whether to enable forecasting (default: False).
+            - trendline (bool, optional): Whether to show a trendline for single line charts (default: False).
     """
     st.subheader(config['title'])
     st.caption(config['description'])
@@ -30,9 +31,12 @@ def render_line_chart(config: dict) -> None:
     y_field = config['y_field']
     category_field = config.get('category_field')
 
-    # Convert x-axis to datetime
+    # Convert x-axis to datetime if needed (for forecasting or reference lines)
     if not pd.api.types.is_datetime64_any_dtype(actual_df[x_field]):
-        actual_df[x_field] = pd.to_datetime(actual_df[x_field])
+        try:
+            actual_df[x_field] = pd.to_datetime(actual_df[x_field])
+        except (ValueError, TypeError):
+            pass  # Keep original type if conversion fails
 
     actual_df["type"] = "Actual"
 
