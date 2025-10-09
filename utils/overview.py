@@ -32,7 +32,7 @@ config = [
                     },
                     {
                         'type': 'image',
-                        'src': _data_uri_for_image('resources/screenshots/process.png'),
+                        'src': _data_uri_for_image('resources/screenshots/process.jpg'),
                     }
                 ]
             },
