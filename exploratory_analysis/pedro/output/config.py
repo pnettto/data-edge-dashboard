@@ -54,7 +54,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Simple Line Chart with Forecast',
@@ -65,8 +65,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'forecast': True,
-                        },
-                        
+                        }
                         ```
 
                         **Prophet** is an open-source forecasting library developed by Meta (Facebook) for time series data. It is designed to handle missing data, outliers, and seasonal effects with minimal configuration.
@@ -97,7 +96,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Multi-line with Area Highlight',
@@ -110,7 +109,7 @@ config = [
                             'category_area_highlight': ['North', 'West'],
                             'y_field': 'value',
                             'y_label': 'Revenue',
-                        },
+                        }
                         ```
                         """
                     },
@@ -136,7 +135,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Multi-line Chart',
@@ -148,7 +147,7 @@ config = [
                             'category_label': 'Regions',
                             'y_field': 'value',
                             'y_label': 'Revenue',
-                        },
+                        }
                         ```
                         """
                     },
@@ -172,7 +171,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Line Chart with X-axis Reference Line',
@@ -183,7 +182,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'reference_line': ('x', '2024-05-01', 'Fiscal Year Start')
-                        },
+                        }
                         ```
                         """
                     },
@@ -207,7 +206,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Line Chart with Y-axis Reference Line',
@@ -218,7 +217,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'reference_line': ('y', 7500, 'Revenue Target')
-                        },
+                        }
                         ```
                         """
                     },
@@ -241,7 +240,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'line',
                             'title': 'Line Chart with Trendline',
@@ -252,7 +251,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'trendline': True,
-                        },
+                        }
                         ```
                         """
                     },
@@ -276,7 +275,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Single Bar Chart with Forecast',
@@ -287,7 +286,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'forecast': True,
-                        },
+                        }
                         ```
                         """
                     },
@@ -311,7 +310,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with Trendline',
@@ -322,7 +321,7 @@ config = [
                             'y_field': 'avg_effort_per_project',
                             'y_label': 'Avg Effort',
                             'trendline': True,
-                        },
+                        }
                         ```
                         """
                     },
@@ -345,7 +344,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Horizontal Bar Chart',
@@ -356,7 +355,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'orientation': 'horizontal',
-                        },
+                        }
                         ```
                         """
                     },
@@ -380,7 +379,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with Y-axis Reference Line',
@@ -391,7 +390,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'reference_line': ('y', 7500, 'Revenue Target')
-                        },
+                        }
                         ```
                         """
                     },
@@ -414,7 +413,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with X-axis Reference Line',
@@ -425,7 +424,7 @@ config = [
                             'y_field': 'value',
                             'y_label': 'Revenue',
                             'reference_line': ('x', '2024-05-01', 'Fiscal Year Start')
-                        },
+                        }
                         ```
                         """
                     },
@@ -450,7 +449,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'bar',
                             'title': 'Grouped Bar Chart',
@@ -462,7 +461,7 @@ config = [
                             'category_label': 'Regions',
                             'y_field': 'value',
                             'y_label': 'Revenue',
-                        },
+                        }
                         ```
                         """
                     },
@@ -487,7 +486,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'area',
                             'title': 'Stacked Area Chart with Forecast',
@@ -499,7 +498,7 @@ config = [
                             'category_label': 'Region',
                             'y_field': 'value',
                             'y_label': 'Revenue',
-                        },
+                        }
                         ```
                         """
                     },
@@ -523,7 +522,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'markdown',
                             'title': 'Markdown Example',
@@ -534,7 +533,7 @@ config = [
                             - [Links](https://www.example.com)
                             - Inline code: `print("Hello World")`
                             \"\"\"
-                        },
+                        }
                         ```
                         """
                     },
@@ -552,7 +551,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```
+                        ```python
                         {
                             'type': 'table',
                             'title': 'Table Example',
