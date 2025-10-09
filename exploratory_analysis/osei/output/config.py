@@ -2,12 +2,15 @@ import pandas as pd
 import os
 
 # Helper function to read CSVs from outputs folder
+
+
 def csv_to_df(f):
     # Get the directory where this config.py file is located
     config_dir = os.path.dirname(os.path.abspath(__file__))
     # Look for CSV in output/ subfolder
-    csv_path = os.path.join(config_dir, '', f'{f}.csv')  
+    csv_path = os.path.join(config_dir, '', f'{f}.csv')
     return pd.read_csv(csv_path)
+
 
 # Read KPIs for markdown
 kpis = csv_to_df('utilization_kpis')
@@ -54,7 +57,7 @@ config = [
                     },
                 ]
             },
-            
+
             # 2. Monthly Utilization Trend
             {
                 'type': 'line',
@@ -66,21 +69,20 @@ config = [
                 'y_field': 'utilization',
                 'y_label': 'Utilization %',
             },
-            
+
             # 3. Employee Distribution by Category
             {
                 'type': 'bar',
-    'title': 'Employee Distribution by Utilization Category',
-    'description': 'How many employees fall into each utilization range',
-    'df': csv_to_df('employee_util_categories'),
-    'x_field': 'category',
-    'x_label': 'Utilization Category',
-    'y_field': 'count',
-    'y_label': 'Number of Employees',
-    'sort_order': None,  # Preserve CSV order (already sorted descending)
-    'label_angle': -90,  # Rotate labels 90 degrees
+                'title': 'Employee Distribution by Utilization Category',
+                'description': 'How many employees fall into each utilization range',
+                'df': csv_to_df('employee_util_categories'),
+                'x_field': 'category',
+                'x_label': 'Utilization Category',
+                'y_field': 'count',
+                'y_label': 'Number of Employees',
+                'rotate_labels': True,
             },
-            
+
             # 4-5. Role Analysis (Side by Side)
             {
                 'columns': [
@@ -106,7 +108,7 @@ config = [
                     },
                 ]
             },
-            
+
             # 6-7. Internal Time Analysis (Side by Side)
             {
                 'columns': [
