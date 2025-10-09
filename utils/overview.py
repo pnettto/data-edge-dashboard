@@ -68,7 +68,7 @@ config = [
                         'type': 'markdown',
                         'title': 'The Dashboard',
                         'content': """
-                        We created a modern dashboard that combines standard business indicators with innovative forecasting features.
+                        We created a modern dashboard that combines useful business indicators with innovative forecasting features.
 
                         **Features:**
                         - Built with Streamlit and Prophet forecasting—Prophet makes it easy to generate accurate forecasts, even with complex seasonal trends
