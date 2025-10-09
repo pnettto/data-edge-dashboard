@@ -53,14 +53,14 @@ config = [
                 'columns': [
                     {
                         'type': 'markdown',
-                        'title': 'Strategy',
+                        'title': 'Our strategy',
                         'content': """
-                        Although we mainly focused on established practices for business dashboards, part of our dashboard offers a strategic foundation for advanced insights.
-
+                        Our approach went beyond standard business intelligence to perform a comprehensive Operational Reconstruction. We built a custom simulation model to fuse disparate data sources into a single, coherent timeline of the company's history where no unified data previously existed.
+                        
                         **Strategic Foundation:**
-                        - Grounded in multiple statistical analysis techniques
-                        - Analytical insights inform visualizations and forecasts
-                        - Collaborative approach translates data patterns into business intelligence
+                        - Data Fusion & Simulation: Synthesized disconnected HR, role, and time-tracking data into a unified historical model, creating a single, verifiable source of truth for all subsequent analysis.
+                        - Growth & Efficiency Analysis: Modeled the company's evolution by tracking key performance indicators for operational efficiency, and workload over time.
+                        - Strategic Time Allocation Insights: Translated the reconstructed timeline into a clear analysis of how the company utilizes its most valuable resource—people's time—revealing critical patterns in billable vs. non-billable work.
                         """
                     },
                     {
