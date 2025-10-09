@@ -79,7 +79,7 @@ config = [
                         'df': csv_to_df('overall_logged_utilization_timeline'),
                         'x_field': 'month',
                         'x_label': 'Month',
-                        'y_field': 'logged_based_utilization',
+                        'y_field': 'utilization',
                         'y_label': 'Utilization',
                         'trendline': True,
                         'reference_line': ('y', 80, 'Target Utilization')
