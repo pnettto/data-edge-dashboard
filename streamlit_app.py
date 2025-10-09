@@ -27,7 +27,7 @@ APP_TITLE = ":material/query_stats: Data Edge Dashboard"
 def configure_page() -> None:
     """Set Streamlit page-wide configuration and base styles."""
     st.set_page_config(
-        page_title=APP_TITLE,
+        page_title='Data Edge Dashboard',
         page_icon="📊",
         layout="wide"
     )
