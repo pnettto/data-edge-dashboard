@@ -48,7 +48,7 @@ config = [
                         'type': 'markdown',
                         'title': 'The Research',
                         'content': """
-                        **How data can inform Data Edge's strategy and performance?**                        
+                        **How can data inform Data Edge's strategy and performance?**                        
                         - Challenges: 
                             - Anonymized, incomplete, and multi-source data
                             - Defining research line
