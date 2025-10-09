@@ -53,7 +53,7 @@ config = [
                             - Anonymized, incomplete, and multi-source data
                             - Defining research line
                         - Main investigation topics: 
-                            - Utilization across roles and seniority
+                            - Employee utilization across roles and seniority
                             - Resource planning and growth
                             - Operational and strategic decision-making
                         """
