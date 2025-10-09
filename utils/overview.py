@@ -31,8 +31,8 @@ config = [
                         """
                     },
                     {
-                        'type': 'markdown',
-                        'content': f"![The process]({_data_uri_for_image('resources/screenshots/process.jpg')})"
+                        'type': 'image',
+                        'src': _data_uri_for_image('resources/screenshots/process.jpg'),
                     }
                 ]
             },
@@ -41,8 +41,8 @@ config = [
             {
                 'columns': [
                     {
-                        'type': 'markdown',
-                        'content': f"![The research]({_data_uri_for_image('resources/screenshots/research.png')})"
+                        'type': 'image',
+                        'src': _data_uri_for_image('resources/screenshots/research.png'),
                     },
                     {
                         'type': 'markdown',
@@ -78,8 +78,8 @@ config = [
                         """
                     },
                     {
-                        'type': 'markdown',
-                        'content': f"![Modern Dashboard]({_data_uri_for_image('resources/screenshots/dashboard.png')})"
+                        'type': 'image',
+                        'src': _data_uri_for_image('resources/screenshots/dashboard.png'),
                     },
                 ]
             },
