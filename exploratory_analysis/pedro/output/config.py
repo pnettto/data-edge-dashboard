@@ -54,7 +54,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ```javascript
                         {
                             'type': 'line',
                             'title': 'Simple Line Chart with Forecast',
@@ -96,7 +96,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'line',
                             'title': 'Multi-line with Area Highlight',
@@ -135,7 +135,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'line',
                             'title': 'Multi-line Chart',
@@ -171,7 +171,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'line',
                             'title': 'Line Chart with X-axis Reference Line',
@@ -206,7 +206,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'line',
                             'title': 'Line Chart with Y-axis Reference Line',
@@ -240,7 +240,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'line',
                             'title': 'Line Chart with Trendline',
@@ -275,7 +275,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Single Bar Chart with Forecast',
@@ -310,7 +310,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with Trendline',
@@ -344,7 +344,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Horizontal Bar Chart',
@@ -379,7 +379,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with Y-axis Reference Line',
@@ -413,7 +413,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Bar Chart with X-axis Reference Line',
@@ -449,7 +449,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'bar',
                             'title': 'Grouped Bar Chart',
@@ -486,7 +486,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'area',
                             'title': 'Stacked Area Chart with Forecast',
@@ -522,7 +522,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'markdown',
                             'title': 'Markdown Example',
@@ -551,7 +551,7 @@ config = [
                         'type': 'markdown',
                         'title': 'Config',
                         'content': """
-                        ```python
+                        ``````javascript
                         {
                             'type': 'table',
                             'title': 'Table Example',
