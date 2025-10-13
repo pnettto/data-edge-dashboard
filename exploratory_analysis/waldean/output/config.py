@@ -24,8 +24,28 @@ config = [
         'tab': 'Revenue & Sales',
         'items': [
             {
-                'type': 'markdown',
-                'content': INTRO_RS,
+                'columns': [
+                    {
+                        'type': 'markdown',
+                        'title': 'Why this matters',
+                        'content': """
+                        - Track growth, cash timing, and reliance on brokers (goal: increase **Direct** share).
+
+                        **What you’re seeing**
+                        - **Revenue (net)** by invoice month.
+                        - **Cash-in** by final pay month (includes VAT).
+                        - **Channel mix**: Direct vs Brokered.
+                        """,
+                    },
+                    {
+                        'type': 'markdown',
+                        'content': """
+                        **Insights**
+                        - Revenue shows trend & seasonality; cash-in usually lags → collections timing.
+                        - Brokered currently leads → opportunity to grow **Direct**.
+                        """,
+                    },
+                ]
             },
             {
                 'columns': [

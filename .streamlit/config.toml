@@ -16,7 +16,7 @@ dataframeHeaderBackgroundColor = "#1d293dff"
 
 # Base text
 font = "'Source Code Pro':https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,300..900;1,300..900&display=swap"
-baseFontWeight = 300
+baseFontWeight = 400
 baseFontSize = 16
 
 # Heading text

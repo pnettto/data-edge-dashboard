@@ -2,12 +2,15 @@ import pandas as pd
 import os
 
 # Helper function to read CSVs from outputs folder
+
+
 def csv_to_df(f):
     # Get the directory where this config.py file is located
     config_dir = os.path.dirname(os.path.abspath(__file__))
-    # Look for CSV in outputs/ subfolder
+    # Look for CSV in output/ subfolder
     csv_path = os.path.join(config_dir, '', f'{f}.csv')
     return pd.read_csv(csv_path)
+
 
 # Read KPIs for markdown
 kpis = csv_to_df('utilization_kpis')
@@ -29,7 +32,7 @@ config = [
                         'content': f"""
                         **What is Utilization?**
                         
-                        Utilization measures the percentage of total workforce hours spent on client-facing work. 
+                        Utilization measures the percentage of total workforce hours spent on billable work. 
                         Our target is 80%, meaning 20% for internal activities (training, admin, vacation, etc.).
                         
                         **Why it matters:**
@@ -54,19 +57,19 @@ config = [
                     },
                 ]
             },
-            
+
             # 2. Monthly Utilization Trend
             {
                 'type': 'line',
                 'title': 'Monthly Utilization Trend',
-                'description': 'Client-facing utilization over time (target: 80%)',
+                'description': 'Utilization over time (target: 80%)',
                 'df': csv_to_df('monthly_utilization'),
                 'x_field': 'month',
                 'x_label': 'Month',
                 'y_field': 'utilization',
                 'y_label': 'Utilization %',
             },
-            
+
             # 3. Employee Distribution by Category
             {
                 'type': 'bar',
@@ -77,8 +80,9 @@ config = [
                 'x_label': 'Utilization Category',
                 'y_field': 'count',
                 'y_label': 'Number of Employees',
+                'rotate_labels': True,
             },
-            
+
             # 4-5. Role Analysis (Side by Side)
             {
                 'columns': [
@@ -104,7 +108,7 @@ config = [
                     },
                 ]
             },
-            
+
             # 6-7. Internal Time Analysis (Side by Side)
             {
                 'columns': [
